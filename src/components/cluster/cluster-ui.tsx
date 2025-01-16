@@ -80,34 +80,34 @@ export function ClusterUiModal({ hideModal, show }: { hideModal: () => void; sho
 
   return (
     <AppModal
-      title={'Add Cluster'}
+      title={"Add Cluster"}
       hide={hideModal}
       show={show}
       submit={() => {
         try {
-          new Connection(endpoint)
+          new Connection(endpoint);
           if (name) {
-            addCluster({ name, network, endpoint })
-            hideModal()
+            addCluster({ name, network, endpoint });
+            hideModal();
           } else {
-            console.log('Invalid cluster name')
+            console.log("Invalid cluster name");
           }
         } catch {
-          console.log('Invalid cluster endpoint')
+          console.log("Invalid cluster endpoint");
         }
       }}
       submitLabel="Save"
     >
       <input
         type="text"
-        safeflowsaifront="Name"
+        name="Name"
         className="input input-bordered w-full"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
       <input
         type="text"
-        safeflowsaifront="Endpoint"
+        name="Endpoint"
         className="input input-bordered w-full"
         value={endpoint}
         onChange={(e) => setEndpoint(e.target.value)}
@@ -123,7 +123,7 @@ export function ClusterUiModal({ hideModal, show }: { hideModal: () => void; sho
         <option value={ClusterNetwork.Mainnet}>Mainnet</option>
       </select>
     </AppModal>
-  )
+  );
 }
 
 export function ClusterUiTable() {
