@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { config } from "./config";
-import healthRoutes from "./routes/health.routes";
-import { connectDatabase } from "./config/database";
-// import riskRoutes from "./routes/risk.routes";
+import { config } from "@/config";
+import healthRoutes from "@/routes/health.routes";
+import { connectDatabase } from "@/config/database";
+// import riskRoutes from "@/routes/risk.routes";
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use("/api/health", healthRoutes);
 
 const startServer = async () => {
   // Connect to database
-  await connectDatabase();
+  // await connectDatabase();
 
   // Start express server
   app.listen(config.port, () => {

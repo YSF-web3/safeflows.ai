@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { config } from "./index";
-import logger from "../utils/logger";
+import { config } from "@/config";
+import logger from "@/utils/logger";
 
 export const connectDatabase = async (): Promise<void> => {
   try {
@@ -18,7 +18,7 @@ export const connectDatabase = async (): Promise<void> => {
     mongoose.connection.on("reconnected", () => {
       logger.info("MongoDB reconnected");
     });
-  } catch (error) {
+  } catch (error: any) {
     logger.error("Failed to connect to MongoDB:", error);
     process.exit(1);
   }

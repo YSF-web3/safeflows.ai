@@ -1,5 +1,6 @@
 import { Connection, PublicKey } from "@solana/web3.js";
-import { config } from "../../config";
+import { config } from "@/config";
+import { UserPosition } from "@/types/position";
 
 export class SolendClient {
   private connection: Connection;
@@ -13,7 +14,7 @@ export class SolendClient {
     const programId = new PublicKey(config.solendProgramId);
 
     // Get user's obligation account (lending position)
-    const [obligationAccount] = await PublicKey.findProgramAddress(
+    const [obligationAccount] = PublicKey.findProgramAddressSync(
       [Buffer.from("obligation"), userWallet.toBuffer()],
       programId
     );
