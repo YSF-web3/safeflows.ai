@@ -1,0 +1,41 @@
+interface Collateral {
+	mint: string
+	amount: number
+	value: number
+	pythPriceAccount: string
+}
+
+interface Borrowed {
+	mint: string
+	amount: number
+	value: number
+	pythPriceAccount: string
+}
+
+export interface IPosition {
+	walletAddress: string
+	collateral: Collateral[]
+	borrowed: Borrowed[]
+	healthFactor: number
+	lastUpdated?: Date
+}
+
+export interface IAlert {
+	walletAddress: string
+	type: 'HEALTH_WARNING' | 'HEALTH_CRITICAL' | 'RISK_HIGH'
+	message?: string
+	healthFactor?: number
+	timestamp?: Date
+	isRead?: boolean
+}
+
+export interface IRiskScore {
+	poolAddress: string
+	score: number
+	metrics: {
+		ltv: number
+		volatility: number
+		liquidationEvents: number
+	}
+	timestamp?: Date
+}
