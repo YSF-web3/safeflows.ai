@@ -294,13 +294,13 @@ function ModalAirdrop({ hide, show, address }: { hide: () => void; show: boolean
         type="number"
         step="any"
         min="1"
-        safeflowsaifront="Amount"
+        name="Amount"
         className="input input-bordered w-full"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
     </AppModal>
-  )
+  );
 }
 
 function ModalSend({ hide, show, address }: { hide: () => void; show: boolean; address: PublicKey }) {
@@ -326,13 +326,13 @@ function ModalSend({ hide, show, address }: { hide: () => void; show: boolean; a
             destination: new PublicKey(destination),
             amount: parseFloat(amount),
           })
-          .then(() => hide())
+          .then(() => hide());
       }}
     >
       <input
         disabled={mutation.isPending}
         type="text"
-        safeflowsaifront="Destination"
+        name="Destination"
         className="input input-bordered w-full"
         value={destination}
         onChange={(e) => setDestination(e.target.value)}
@@ -342,11 +342,11 @@ function ModalSend({ hide, show, address }: { hide: () => void; show: boolean; a
         type="number"
         step="any"
         min="1"
-        safeflowsaifront="Amount"
+        name="Amount"
         className="input input-bordered w-full"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
     </AppModal>
-  )
+  );
 }
