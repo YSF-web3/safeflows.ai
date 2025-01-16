@@ -1,5 +1,4 @@
 interface PoolRisk {
-  // Current pool metrics
   metrics: {
     totalDeposits: number; // e.g., 1000000 USDC
     totalBorrows: number; // e.g., 800000 USDC
