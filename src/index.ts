@@ -3,7 +3,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import { config } from '@/config'
 import { healthRouter } from '@/routes'
-import { connectDatabase } from '@/db/database'
+import { connectDatabase } from '@/db'
 import logger from '@/utils/logger'
 
 const app = express()
