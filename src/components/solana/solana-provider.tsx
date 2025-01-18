@@ -9,23 +9,23 @@ import {useCluster} from '../cluster/cluster-data-access'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
+
 export const WalletButton = dynamic(async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton, {
-  ssr: false,
+    ssr: false,
 })
 
 export function SolanaProvider({ children }: { children: ReactNode }) {
-  const { cluster } = useCluster()
-  const endpoint = useMemo(() => cluster.endpoint, [cluster])
-  const onError = useCallback((error: WalletError) => {
-    console.error(error)
-  }, [])
+    const { cluster } = useCluster()
+    const endpoint = useMemo(() => cluster.endpoint, [cluster])
+    const onError = useCallback((error: WalletError) => {
+        console.error(error)
+    }, [])
 
-  return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={[]} onError={onError} autoConnect={true}>
-        <WalletModalProvider>{children}</WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
-  )
+    return (
+        <ConnectionProvider endpoint={endpoint}>
+            <WalletProvider wallets={[]} onError={onError} autoConnect={true}>
+                <WalletModalProvider>{children}</WalletModalProvider>
+            </WalletProvider>
+        </ConnectionProvider>
+    )
 }
-
