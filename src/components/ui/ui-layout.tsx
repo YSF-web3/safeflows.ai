@@ -14,53 +14,53 @@ export function UiLayout({ children, links }: { children: ReactNode; links: { la
     const pathname = usePathname()
 
     return (
-        <div className="h-full flex flex-col">
-            <div className="navbar bg-base-300 dark:text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
-                <div className="flex-1">
-                    <Link className="btn btn-ghost normal-case text-xl" href="/">
-                        Safeflowsaifront
-                    </Link>
-                    <ul className="menu menu-horizontal px-1 space-x-2">
-                        {links.map(({ label, path }) => (
-                        <li key={path}>
-                            <Link
-                            className={pathname.startsWith(path) ? "active" : ""}
-                            href={path}
-                            >
-                                {label}
-                            </Link>
-                        </li>
-                        ))}
-                    </ul>
+      <div className="h-full flex flex-col">
+        <div className="navbar bg-base-300 dark:text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
+          <div className="flex-1">
+            <Link className="btn btn-ghost normal-case text-xl" href="/">
+              Safeflowsaifront
+            </Link>
+            <ul className="menu menu-horizontal px-1 space-x-2">
+              {links.map(({ label, path }) => (
+                <li key={path}>
+                  <Link
+                    className={pathname.startsWith(path) ? "active" : ""}
+                    href={path}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex-none space-x-2">
+            <WalletButton />
+            <ClusterUiSelect />
+          </div>
+        </div>
+        <ClusterChecker>
+          <AccountChecker />
+        </ClusterChecker>
+        <div className="w-full h-full flex justify-center min-h-fit">
+          <div className="w-full h-full container min-h-fit">
+            <Suspense
+              fallback={
+                <div className="text-center my-32">
+                  <span className="loading loading-spinner loading-lg"></span>
                 </div>
-                <div className="flex-none space-x-2">
-                    <WalletButton />
-                    <ClusterUiSelect />
-                </div>
-            </div>
-            <ClusterChecker>
-                <AccountChecker />
-            </ClusterChecker>
-            <div className="w-full h-full flex justify-center min-h-fit">
-                <div className="w-full h-full container min-h-fit">
-                    <Suspense
-                        fallback={
-                            <div className="text-center my-32">
-                                <span className="loading loading-spinner loading-lg"></span>
-                            </div>
-                        }
-                    >
-                        {children}
-                    </Suspense>
-                    <Toaster position="bottom-right" />
-                </div>
-            </div>
-            <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+              }
+            >
+              {children}
+            </Suspense>
+            <Toaster position="bottom-right" />
+          </div>
+        </div>
+        {/* <footer className="footer footer-center p-4 bg-base-300 text-base-content">
                 <aside>
                     <p>Footer</p>
                 </aside>
-            </footer>
-        </div>
+            </footer> */}
+      </div>
     );
 }
 
