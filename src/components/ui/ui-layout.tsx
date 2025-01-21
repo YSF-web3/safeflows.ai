@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Image from 'next/image'
 import {usePathname} from 'next/navigation'
 import * as React from 'react'
 import {ReactNode, Suspense, useEffect, useRef} from 'react'
@@ -10,57 +10,116 @@ import {AccountChecker} from '../account/account-ui'
 import {ClusterChecker, ClusterUiSelect, ExplorerLink} from '../cluster/cluster-ui'
 import {WalletButton} from '../solana/solana-provider'
 
+import Header from './header'
+
+
 export function UiLayout({ children, links }: { children: ReactNode; links: { label: string; path: string }[] }) {
     const pathname = usePathname()
 
     return (
-      <div className="h-full flex flex-col">
-        <div className="navbar bg-base-300 dark:text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
-          <div className="flex-1">
-            <Link className="btn btn-ghost normal-case text-xl" href="/">
-              Safeflowsaifront
-            </Link>
-            <ul className="menu menu-horizontal px-1 space-x-2">
-              {links.map(({ label, path }) => (
-                <li key={path}>
-                  <Link
-                    className={pathname.startsWith(path) ? "active" : ""}
-                    href={path}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex-none space-x-2">
-            <WalletButton />
-            <ClusterUiSelect />
-          </div>
-        </div>
-        <ClusterChecker>
-          <AccountChecker />
-        </ClusterChecker>
-        <div className="w-full h-full flex justify-center min-h-fit">
-          <div className="w-full h-full container min-h-fit">
-            <Suspense
-              fallback={
-                <div className="text-center my-32">
-                  <span className="loading loading-spinner loading-lg"></span>
+        <div className="relative h-screen bg-[#000000] min-h-fit ">
+            <div className="absolute !overflow-hidden w-[100vw] h-[100vh]">
+                <div className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"></div>
+                <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
+            </div>
+
+
+            <div className="relative z-10 text-center min-h-fit">
+                <div className="h-full px-11 pt-11 pb-16 min-h-fit">
+                    <div className="flex items-center justify-center w-full">
+                        <Header links={links} />
+                    </div>
+                    {/* <div className="navbar bg-base-300 dark:text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
+                        <div className="flex-1">
+                            <Link className="btn btn-ghost normal-case text-xl" href="/">
+                                Safeflowsaifront
+                            </Link>
+                            <ul className="menu menu-horizontal px-1 space-x-2">
+                                {links.map(({ label, path }) => (
+                                <li key={path}>
+                                    <Link
+                                    className={pathname.startsWith(path) ? "active" : ""}
+                                    href={path}
+                                    >
+                                        {label}
+                                    </Link>
+                                </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="flex-none space-x-2">
+                            <WalletButton />
+                            <ClusterUiSelect />
+                        </div>
+                    </div> */}
+                    <ClusterChecker>
+                        <AccountChecker />
+                    </ClusterChecker>
+                    <div className="w-full h-full flex justify-center min-h-fit">
+                        <div className="w-full h-full container min-h-fit">
+                            <Suspense
+                                fallback={
+                                    <div className="text-center my-32">
+                                        <span className="loading loading-spinner loading-lg"></span>
+                                    </div>
+                                }
+                            >
+                                {children}
+                            </Suspense>
+                            <Toaster position="bottom-right" />
+                        </div>
+                    </div>
                 </div>
-              }
-            >
-              {children}
-            </Suspense>
-            <Toaster position="bottom-right" />
-          </div>
+            </div>
         </div>
-        {/* <footer className="footer footer-center p-4 bg-base-300 text-base-content">
-                <aside>
-                    <p>Footer</p>
-                </aside>
-            </footer> */}
-      </div>
+    )
+
+    return (
+        <div className="h-full bg-[#000000] px-11 pt-11 pb-16 min-h-fit">
+            <div className="flex items-center justify-center w-full">
+                <Header links={links} />
+            </div>
+            {/* <div className="navbar bg-base-300 dark:text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
+                <div className="flex-1">
+                    <Link className="btn btn-ghost normal-case text-xl" href="/">
+                        Safeflowsaifront
+                    </Link>
+                    <ul className="menu menu-horizontal px-1 space-x-2">
+                        {links.map(({ label, path }) => (
+                        <li key={path}>
+                            <Link
+                            className={pathname.startsWith(path) ? "active" : ""}
+                            href={path}
+                            >
+                                {label}
+                            </Link>
+                        </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="flex-none space-x-2">
+                    <WalletButton />
+                    <ClusterUiSelect />
+                </div>
+            </div> */}
+            <ClusterChecker>
+                <AccountChecker />
+            </ClusterChecker>
+            <div className="w-full h-full flex justify-center min-h-fit">
+                <div className="w-full h-full container min-h-fit">
+                    <Suspense
+                        fallback={
+                            <div className="text-center my-32">
+                                <span className="loading loading-spinner loading-lg"></span>
+                            </div>
+                        }
+                    >
+                        {children}
+                    </Suspense>
+                    <Toaster position="bottom-right" />
+                </div>
+            </div>
+        </div>
     );
 }
 

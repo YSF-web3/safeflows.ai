@@ -17,3 +17,18 @@ body {
 .wallet-adapter-button {
     font-family: inherit !important;
 }
+
+
+
+/* Global CSS file */
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+  
+.custom-scrollbar::-webkit-scrollbar-button {
+    display: none;
+}
+
+.scoll-pane::-webkit-scrollbar { 
+    display: none;
+}

@@ -35,63 +35,33 @@ export default function DashboardFeature() {
         <div className="w-full py-8 flex flex-col gap-8">
             {/* <AppHero title="gm" subtitle="Say hi to your new Solana dApp." /> */}
             <Cards />
-            <div className="grid grid-cols-2 w-full gap-4">
-                <div>
+            <div className="grid grid-cols-2 w-full gap-4 h-[409px] max-h-[409px]">
+                <div className="w-full h-full">
                     <AiNotifications />
                 </div>
-                <div className="w-full h-full grid grid-rows-2 gap-4">
-                    <HealthFactor />
-                    <SupplyBorrowFactor />
+                <div className="grid grid-cols-11 gap-4">
+                    <div className="col-span-6">
+                        <HealthFactor />
+                    </div>
+                    <div className="col-span-5">
+                        <SupplyBorrowFactor />
+                    </div>
                 </div>
             </div>
-            <div className="border rounded-md px-8 py-4 border-red-400">
-                <div className="">
-                    3 lending pools are high risk
+            <div className="flex w-full flex-col gap-2">
+                <div className="text-white text-[22px] font-normal text-left">AI Summary</div>
+                <div className="w-full border rounded-[13px] px-9 border-[#B52C24] h-[75px] text-white text-[22px] font-normal flex items-center text-left">
+                3 Lending Pools are high risk Lorem ipsum dolor sit amet consectetur. Leo enim diam sollicitudin integer nunc .
                 </div>
             </div>
-            <div className="grid grid-cols-2 w-full gap-4">
-                <div>
+            <div className="grid grid-cols-12 w-full gap-4 h-[365px]">
+                <div className="h-full w-full col-span-7">
                     <AiPredictedTrends />
                 </div>
-                <div>
+                <div className="h-full w-full col-span-5">
                     <PoolsHeatmap />
                 </div>
             </div>
-            {/* <div className="max-w-xl text-center flex">
-                <div className="space-y-2 w-full h-full">
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <HeatMapGrid
-                            data={data}
-                            xLabels={xLabels}
-                            yLabels={yLabels}
-                            // Render cell with tooltip
-                            cellRender={(x, y, value) => (
-                                <div title={`Pos(${x}, ${y}) = ${value}`}>{value}</div>
-                            )}
-                            xLabelsStyle={(index) => ({
-                                color: index % 2 ? 'transparent' : '#777',
-                                fontSize: '1rem'
-                            })}
-                            yLabelsStyle={() => ({
-                                fontSize: '.7rem',
-                                textTransform: 'uppercase',
-                                color: '#777'
-                            })}
-                            cellStyle={(_x, _y, ratio) => ({
-                                background: `rgb(12, 160, 44, ${ratio})`,
-                                fontSize: '.8rem',
-                                color: `rgb(0, 0, 0, ${ratio / 2 + 0.4})`
-                            })}
-                            cellHeight='2rem'
-                            xLabelsPos='bottom'
-                            onClick={(x, y) => alert(`Clicked (${x}, ${y})`)}
-                            yLabelsPos='right'
-                            square
-                        />
-                    </Suspense>
-                
-                </div>
-            </div> */}
         </div>
     )
 }

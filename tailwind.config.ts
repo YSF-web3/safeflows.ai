@@ -7,8 +7,15 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(circle, #C9F31DAB 0%, transparent 70%)',
+      },
+    },
   },
-  plugins: [require('daisyui')],
+  plugins: [
+    require('daisyui'), 
+    require('tailwind-scrollbar')
+  ],
 };
 export default config;
