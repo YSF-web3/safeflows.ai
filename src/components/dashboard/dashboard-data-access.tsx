@@ -30,7 +30,7 @@ export const defaultNotifications: Notification[] = [
         timestamp: "2021-01-01T00:00:00.000Z"
     }, 
     {
-        notification: "This is test notification 4", 
+        notification: "AI Notification 01 Lorem ipsum dolor sit amet consectetur.", 
         level: "Critical",
         timestamp: "2021-01-01T00:00:00.000Z"
     }, 
@@ -38,7 +38,17 @@ export const defaultNotifications: Notification[] = [
         notification: "This is test notification 5", 
         level: "Important",
         timestamp: "2021-01-01T00:00:00.000Z"
-    }
+    }, 
+    {
+        notification: "This is test notification 6", 
+        level: "Important",
+        timestamp: "2021-01-01T00:00:00.000Z"
+    }, 
+    {
+        notification: "This is test notification 7", 
+        level: "Important",
+        timestamp: "2021-01-01T00:00:00.000Z"
+    }, 
 ]
 
 const dashboardAtom = atomWithStorage<Notification[]>('dashboard-notifications', defaultNotifications)

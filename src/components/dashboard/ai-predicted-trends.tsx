@@ -28,57 +28,300 @@ export default function AiPredictedTrends() {
         { Date: new Date(2023, 0, 16), Close: Math.random() * 100 },
         { Date: new Date(2023, 0, 17), Close: Math.random() * 100 },
         { Date: new Date(2023, 0, 18), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 19), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 20), Close: Math.random() * 100 },
     ];
-    const width = 500;
+    const width = 800;
     const height = 300;
 
-        useEffect(() => {
-            const marginTop = 20;
-            const marginRight = 30;
-            const marginBottom = 30;
-            const marginLeft = 40;
+    // useEffect(() => {
+    //     const marginTop = 20;
+    //     const marginRight = 30;
+    //     const marginBottom = 30;
+    //     const marginLeft = 40;
+      
+    //     const x = d3
+    //         .scaleUtc()
+    //         .domain(d3.extent(data, (d) => d.Date) as [Date, Date])
+    //         .range([marginLeft, width - marginRight]);
+      
+    //     const y = d3
+    //         .scaleLinear()
+    //         .domain([0, d3.max(data, (d) => d.Close) || 0])
+    //         .nice()
+    //         .range([height - marginBottom, marginTop])
+      
+    //     const line = d3
+    //         .line<{ Date: Date; Close: number }>()
+    //         .x((d) => x(d.Date))
+    //         .y((d) => y(d.Close))
+    //         .curve(d3.curveMonotoneX);
+      
+    //     const area = d3
+    //         .area<{ Date: Date; Close: number }>()
+    //         .x((d) => x(d.Date))
+    //         .y0(height - marginBottom)  // Bottom of the chart
+    //         .y1((d) => y(d.Close))
+    //         .curve(d3.curveMonotoneX);      // Line position
+      
+    //     const svg = d3
+    //         .select(svgRef.current)
+    //         .attr("viewBox", `0 0 ${width} ${height}`)
+    //         .attr("width", width)
+    //         .attr("height", height)
+    //         .attr("style", `max-width: 100%; height: 300px; font: 10px sans-serif;`)
+    //         .style("-webkit-tap-highlight-color", "transparent")
+    //         .style("overflow", "visible")
+    //         .on("pointerenter pointermove", pointerMoved)
+    //         .on("pointerleave", pointerLeft)
+    //         .on("touchstart", (event) => event.preventDefault());
+      
+    //     svg.selectAll("*").remove();
+      
+    //     // Add gradient definition
+    //     const defs = svg.append("defs");
+    //     const gradient = defs.append("linearGradient")
+    //         .attr("id", "area-gradient")
+    //         .attr("x1", "0%")
+    //         .attr("x2", "0%")
+    //         .attr("y1", "0%")
+    //         .attr("y2", "100%");
+        
+    //     gradient.append("stop")
+    //         .attr("offset", "0%")
+    //         .attr("stop-color", "#C9F31D80")
+    //         .attr("stop-opacity", 0.7);
+      
+    //     gradient.append("stop")
+    //         .attr("offset", "100%")
+    //         .attr("stop-color", "#C9F31D80")
+    //         .attr("stop-opacity", 0);
+      
 
-            const x = d3
+    //     // Drawing horizontal text
+    //     svg
+    //         .append("g")
+    //         .attr("transform", `translate(0,${height - marginBottom})`)
+    //         .style("font-size", "14px")
+    //         .style("font-weight", "600")
+    //         .style("color", "#A4A8AB")
+    //         .call(d3
+    //             .axisBottom(x)
+    //             .ticks(width / 80)
+    //             .tickFormat((d: any) => {
+    //                 const options: Intl.DateTimeFormatOptions = { weekday: "short" }
+    //                 return new Date(d).toLocaleDateString("en-US", options);
+    //             }))
+    //         .selectAll(".tick line") // Select the tick marks (lines)
+    //         .remove(); // Remove all tick marks
+
+
+        
+    //     svg
+    //         .append("g")
+    //         .attr("transform", `translate(${marginLeft},0)`)
+    //         .style("font-size", "12px")
+    //         .style("font-weight", "400")
+    //         .style("color", "#A4A8AB")
+    //         .call(d3.axisLeft(y).ticks(height / 90))
+    //         .call((g) => g.select(".domain").remove())
+    //         .call((g) =>
+    //             g
+    //             .selectAll(".tick line")
+    //             .clone()
+    //             .attr("x2", width - marginLeft - marginRight)
+    //             .attr("stroke-opacity", 0.1)
+    //         )
+
+      
+    //     // Add area chart with gradient fill
+    //     svg
+    //         .append("path")
+    //         .datum(data)
+    //         .attr("fill", "url(#area-gradient)")
+    //         .attr("d", area);
+      
+    //     // Add the line chart
+    //     svg
+    //         .append("path")
+    //         .datum(data)
+    //         .attr("fill", "none")
+    //         .attr("stroke", "#C9F31D")
+    //         .attr("stroke-width", 3)
+    //         .attr("d", line);
+      
+    //     const tooltip = svg.append("g").style("display", "none");
+      
+    //     const bisect = d3.bisector<{ Date: Date; Close: number }, Date>((d) => d.Date).center;
+      
+      
+    //     function pointerMoved(event: any) {
+    //         const i = bisect(data, x.invert(d3.pointer(event)[0]));
+    //         tooltip.style("display", null);
+    //         tooltip.attr(
+    //             "transform",
+    //             `translate(${x(data[i].Date)},${y(data[i].Close)})`
+    //         );
+        
+    //         // Add white background behind the tooltip content
+    //         const padding = 6;
+    //         const textWidth = 150; // Adjust based on the length of the longest text
+    //         const textHeight = 40; // Adjust based on the number of rows
+        
+    //         tooltip.selectAll("rect")
+    //             .data([null])
+    //             .join("rect")
+    //             .attr("x", -textWidth / 2 - padding)
+    //             .attr("y", -textHeight / 2 - padding)
+    //             .attr("width", textWidth + 2 * padding)
+    //             .attr("height", textHeight + 2 * padding)
+    //             .attr("fill", "#12181F87")
+    //             .attr("stroke", "black")
+    //             .attr("stroke-width", 0)
+    //             .attr("rx", 5) // Rounded corners
+    //             .attr("ry", 5);
+        
+    //         // Add circles (dots) for each row
+    //         const dotRadius = 4; // Radius of the circle
+        
+    //         const circles = tooltip
+    //             .selectAll("circle")
+    //             .data([null, null]) // Two dots for two rows
+    //             .join("circle")
+    //             .attr("cx", -textWidth / 2 + dotRadius + 20) // Position the dots to the left of the text
+    //             .attr("cy", (_, i) => i * 20 - 10) // Vertical position
+    //             .attr("r", dotRadius) // Dot radius
+    //             .attr("fill", (_, i) => i === 0 ? "#C9F31D" : "#FF5733"); // Different colors for each dot
+        
+    //         // Add text elements for each row
+    //         const text = tooltip
+    //             .selectAll("text")
+    //             .data([null, null])
+    //             .join("text")
+    //             .attr("x", 100) // Adjust to align text with circles
+    //             .attr("y", (_, i) => i * 20 - 8) // Vertical position
+    //             .attr("margin-left", 10)
+    //             .attr("font-weight", (_, i) => (i ? null : "bold"))
+    //             .attr("font-size", (_, i) => (i ? 10 : 16))
+    //             .attr("fill", (_, i) => (i ? "#81818A" : "white"))
+    //             .call((text) =>
+    //                 text
+    //                     .selectAll("tspan")
+    //                     .data([
+    //                         "$500",
+    //                         "100",
+    //                     ])
+    //                     .join("tspan")
+    //                     .attr("x", -20)
+    //                     .text((d) => d)
+    //             );
+    //         // size(text as any, circles as any); // Adjust size based on content
+    //     }
+        
+        
+
+    //     function pointerLeft() {
+    //       tooltip.style("display", "none");
+    //     }
+      
+    //     function size(text: d3.Selection<SVGTextElement, unknown, null, undefined>, path: d3.Selection<SVGPathElement, unknown, null, undefined>) {
+    //         const { x, y, width: w, height: h } = text.node()!.getBBox();
+    //         text.attr("transform", `translate(${-w / 2},${15 - y})`);
+    //         path.attr(
+    //             "d",
+    //             `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`
+    //         );
+    //     }
+      
+    // }, [data, height, width]);
+      
+
+    useEffect(() => {
+        const marginTop = 20;
+        const marginRight = 30;
+        const marginBottom = 30;
+        const marginLeft = 40;
+    
+        const x = d3
             .scaleUtc()
             .domain(d3.extent(data, (d) => d.Date) as [Date, Date])
             .range([marginLeft, width - marginRight]);
-
-            const y = d3
+    
+        const y = d3
             .scaleLinear()
             .domain([0, d3.max(data, (d) => d.Close) || 0])
             .nice()
             .range([height - marginBottom, marginTop]);
-
-            const line = d3
+    
+        const line = d3
             .line<{ Date: Date; Close: number }>()
             .x((d) => x(d.Date))
-            .y((d) => y(d.Close));
-
-            const svg = d3
+            .y((d) => y(d.Close))
+            .curve(d3.curveMonotoneX);
+    
+        const area = d3
+            .area<{ Date: Date; Close: number }>()
+            .x((d) => x(d.Date))
+            .y0(height - marginBottom) // Bottom of the chart
+            .y1((d) => y(d.Close))
+            .curve(d3.curveMonotoneX); // Line position
+    
+        const svg = d3
             .select(svgRef.current)
             .attr("viewBox", `0 0 ${width} ${height}`)
             .attr("width", width)
             .attr("height", height)
-            .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;")
+            .attr("style", `max-width: 100%; height: 300px; font: 10px sans-serif;`)
             .style("-webkit-tap-highlight-color", "transparent")
             .style("overflow", "visible")
             .on("pointerenter pointermove", pointerMoved)
             .on("pointerleave", pointerLeft)
             .on("touchstart", (event) => event.preventDefault());
-
-            svg.selectAll("*").remove();
-
-            svg
+    
+        svg.selectAll("*").remove();
+    
+        // Add gradient definition
+        const defs = svg.append("defs");
+        const gradient = defs.append("linearGradient")
+            .attr("id", "area-gradient")
+            .attr("x1", "0%")
+            .attr("x2", "0%")
+            .attr("y1", "0%")
+            .attr("y2", "100%");
+    
+        gradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", "#C9F31D80")
+            .attr("stop-opacity", 0.7);
+    
+        gradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", "#C9F31D80")
+            .attr("stop-opacity", 0);
+    
+        // Drawing horizontal text
+        svg
             .append("g")
             .attr("transform", `translate(0,${height - marginBottom})`)
-            .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
-
-            svg
+            .style("font-size", "14px")
+            .style("font-weight", "600")
+            .style("color", "#A4A8AB")
+            .call(d3
+                .axisBottom(x)
+                .ticks(width / 80)
+                .tickFormat((d: any) => {
+                    const options: Intl.DateTimeFormatOptions = { weekday: "short" }
+                    return new Date(d).toLocaleDateString("en-US", options);
+                }))
+            .selectAll(".tick line") // Select the tick marks (lines)
+            .remove(); // Remove all tick marks
+    
+    
+        svg
             .append("g")
             .attr("transform", `translate(${marginLeft},0)`)
-            .call(d3.axisLeft(y).ticks(height / 40))
+            .style("font-size", "12px")
+            .style("font-weight", "400")
+            .style("color", "#A4A8AB")
+            .call(d3.axisLeft(y).ticks(height / 90))
             .call((g) => g.select(".domain").remove())
             .call((g) =>
                 g
@@ -87,92 +330,133 @@ export default function AiPredictedTrends() {
                 .attr("x2", width - marginLeft - marginRight)
                 .attr("stroke-opacity", 0.1)
             )
-            .call((g) =>
-                g
-                .append("text")
-                .attr("x", -marginLeft)
-                .attr("y", 10)
-                .attr("fill", "currentColor")
-                .attr("text-anchor", "start")
-                .text("↑ Daily Close ($)")
-            );
-
-            svg
+    
+        // Add area chart with gradient fill
+        svg
+            .append("path")
+            .datum(data)
+            .attr("fill", "url(#area-gradient)")
+            .attr("d", area);
+    
+        // Add the line chart
+        svg
             .append("path")
             .datum(data)
             .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 1.5)
+            .attr("stroke", "#C9F31D")
+            .attr("stroke-width", 3)
             .attr("d", line);
+    
+        const tooltip = svg.append("g").style("display", "none");
+        const bisect = d3.bisector<{ Date: Date; Close: number }, Date>((d) => d.Date).center;
+    
 
-            const tooltip = svg.append("g").style("display", "none");
+        const dot = svg.append("g") // Create a group to hold both circles
+            .style("pointer-events", "none") // Avoid interaction
+            .style("opacity", 0) // Initially hide the dot
 
-            const bisect = d3.bisector<{ Date: Date; Close: number }, Date>((d) => d.Date).center;
+        // Create the outer dot (green circle)
+        dot.append("circle")
+            .attr("r", 10) // Outer circle radius
+            .attr("fill", "#C9F31D"); // Green color for the outer circle
 
-            function pointerMoved(event: any) {
-                const i = bisect(data, x.invert(d3.pointer(event)[0]));
-                tooltip.style("display", null);
-                tooltip.attr(
-                    "transform",
-                    `translate(${x(data[i].Date)},${y(data[i].Close)})`
-                );
+        // Create the inner dot (black circle)
+        dot.append("circle")
+            .attr("r", 4) // Inner circle radius (smaller than outer circle)
+            .attr("fill", "black"); // Black color for the inner circle
 
-                const path = tooltip
-                    .selectAll("path")
-                    .data([null])
-                    .join("path")
-                    .attr("fill", "white")
-                    .attr("stroke", "black");
-
-                const text = tooltip
-                    .selectAll("text")
-                    .data([null])
-                    .join("text")
-                    .call((text) =>
+    
+        function pointerMoved(event: any) {
+            const i = bisect(data, x.invert(d3.pointer(event)[0]));
+            tooltip.style("display", null);
+            tooltip.attr(
+                "transform",
+                `translate(${x(data[i].Date)},${y(data[i].Close)})`
+            );
+    
+            // Update dot position
+            dot
+                .attr("transform", `translate(${x(data[i].Date)}, ${y(data[i].Close)})`)
+                .style("opacity", 1); // Show the dot
+    
+            // Add white background behind the tooltip content
+            const padding = 6;
+            const textWidth = 150; // Adjust based on the length of the longest text
+            const textHeight = 40; // Adjust based on the number of rows
+            const marginTop = 50;
+    
+            tooltip.selectAll("rect")
+                .data([null])
+                .join("rect")
+                .attr("x", -textWidth / 2 - padding)
+                .attr("y", -textHeight / 2 - padding + marginTop)
+                .attr("width", textWidth + 2 * padding)
+                .attr("height", textHeight + 2 * padding)
+                .attr("fill", "#12181F87")
+                .attr("stroke", "black")
+                .attr("stroke-width", 0)
+                .attr("rx", 5) // Rounded corners
+                .attr("ry", 5);
+    
+            // Add circles (dots) for each row
+            const dotRadius = 4; // Radius of the circle
+    
+            const circles = tooltip
+                .selectAll("circle")
+                .data([null, null]) // Two dots for two rows
+                .join("circle")
+                .attr("cx", -textWidth / 2 + dotRadius + 20) // Position the dots to the left of the text
+                .attr("cy", (_, i) => i * 20 - 10 + marginTop) // Vertical position
+                .attr("r", dotRadius) // Dot radius
+                .attr("fill", (_, i) => i === 0 ? "#C9F31D" : "#FF5733"); // Different colors for each dot
+    
+            // Add text elements for each row
+            const text = tooltip
+                .selectAll("text")
+                .data([null, null])
+                .join("text")
+                .attr("x", 100) // Adjust to align text with circles
+                .attr("y", (_, i) => i * 20 - 8 + marginTop) // Vertical position
+                .attr("margin-left", 10)
+                .attr("font-weight", (_, i) => (i ? null : "bold"))
+                .attr("font-size", (_, i) => (i ? 10 : 16))
+                .attr("fill", (_, i) => (i ? "#81818A" : "white"))
+                .call((text) =>
                     text
                         .selectAll("tspan")
                         .data([
-                        formatDate(data[i].Date),
-                        formatValue(data[i].Close),
+                            "$500",
+                            "100",
                         ])
                         .join("tspan")
-                        .attr("x", 0)
-                        .attr("y", (_, i) => `${i * 1.1}em`)
-                        .attr("font-weight", (_, i) => (i ? null : "bold"))
+                        .attr("x", -20)
                         .text((d) => d)
-                    );
-
-                size(text, path);
-            }
-
-            function pointerLeft() {
+                );
+        }
+    
+        function pointerLeft() {
             tooltip.style("display", "none");
-            }
+            dot.style("opacity", 0); // Hide dot on pointer leave
+        }
+    
+    }, [data, height, width]);
+    
 
-            function size(text: d3.Selection<SVGTextElement, unknown, null, undefined>, path: d3.Selection<SVGPathElement, unknown, null, undefined>) {
-            const { x, y, width: w, height: h } = text.node()!.getBBox();
-            text.attr("transform", `translate(${-w / 2},${15 - y})`);
-            path.attr(
-                "d",
-                `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`
-            );
-            }
+    return (
+        <div className="w-full h-full border border-[#333333] rounded-[15px] bg-[#1C252F9E] flex flex-col justify-between gap-3 pt-[18px] pb-6 px-[22px]">
+            <div className="flex justify-between items-center w-full">
+                <div className="text-base font-semibold text-white pl-8">AI Predicted Trends</div>
+                <div className="flex gap-2">
+                    <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">1D</button>
+                    <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">1M</button>
+                    <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">6M</button>
+                    <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">1Y</button>
+                    <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">YYD</button>
+                    <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-black bg-[#C9F31D]">All</button>
+                </div>
+            </div>
 
-            function formatValue(value: number) {
-            return value.toLocaleString("en", {
-                style: "currency",
-                currency: "USD",
-            });
-            }
-
-            function formatDate(date: Date) {
-            return date.toLocaleString("en", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-                timeZone: "UTC",
-            });
-            }
-        }, [data, height, width]);
-    return <svg ref={svgRef} className="w-full"></svg>;
+            <svg ref={svgRef} className="w-full"></svg>
+        </div>
+    )
 };
