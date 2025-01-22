@@ -20,15 +20,28 @@ body {
 
 
 
-/* Global CSS file */
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-}
+/* Override global scrollbar settings */
+* {
+    scrollbar-color: unset !important;
+  }
   
-.custom-scrollbar::-webkit-scrollbar-button {
-    display: none;
-}
-
-.scoll-pane::-webkit-scrollbar { 
-    display: none;
-}
+  /* Apply your custom scrollbar styles globally */
+  ::-webkit-scrollbar {
+    width: 5px !important;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent !important;
+    border-radius: 10px !important;
+    border: 0px solid transparent !important;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #D9D9D930 !important;
+    border-radius: 10px !important;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555 !important;
+  }
+  

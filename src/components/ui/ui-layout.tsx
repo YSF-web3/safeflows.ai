@@ -17,12 +17,9 @@ export function UiLayout({ children, links }: { children: ReactNode; links: { la
     const pathname = usePathname()
 
     return (
-        <div className="relative h-screen bg-[#000000] min-h-fit ">
-            <div className="absolute !overflow-hidden w-[100vw] h-[100vh]">
-                <div className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"></div>
-                <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
-            </div>
-
+        <div className="relative h-screen bg-[#000000] min-h-fit overflow-hidden">
+            <div className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"></div>
+            <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
 
             <div className="relative z-10 text-center min-h-fit">
                 <div className="h-full px-11 pt-11 pb-16 min-h-fit">
