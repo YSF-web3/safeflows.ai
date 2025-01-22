@@ -26,7 +26,7 @@ export default function AccountDetailFeature() {
   }
 
   return (
-    <div>
+    <div className="text-white">
       <AppHero
         title={<AccountBalance address={address} />}
         subtitle={

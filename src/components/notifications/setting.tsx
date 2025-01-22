@@ -14,7 +14,7 @@ export default function SettingPage () {
     const [ checked, setChecked ] = useState(false)
 
     return (
-        <div className="max-w-[697px] w-full h-[508px] border rounded-[13px] border-[#333333] px-[38px] pt-6 flex flex-col gap-5">
+        <div className="max-w-[697px] w-full lg:h-[508px] border rounded-[13px] border-[#333333] px-[38px] py-6 flex flex-col gap-5">
             <div className="w-full flex flex-col gap-2">
                 <div className="w-full text-white text-left text-base font-normal">Email Address</div>
                 <div className="bg-[#161D26] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
