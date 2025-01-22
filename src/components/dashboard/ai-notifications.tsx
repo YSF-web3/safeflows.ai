@@ -13,7 +13,7 @@ export default function AiNotifications () {
     return (
         <div className="w-full h-full border rounded-[13px] p-6 bg-[#0B0E12] bg-opacity-65 border-[#333333]">
             <div 
-                className="min-h-[360px] h-[360px] w-full space-y-3 overflow-y-scroll pr-2 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent custom-scrollbar "
+                className="min-h-[360px] h-[360px] w-full space-y-3 overflow-y-scroll pr-2"
             >
                 {
                     notifications.map((notification, index) => (
