@@ -6,28 +6,28 @@ import { healthRouter, pricesRouter } from '@/routes'
 import { connectDatabase } from '@/db'
 import logger from '@/utils/logger'
 
-const app = express()
+const app = express();
 
 // Middleware
-app.use(cors())
-app.use(helmet())
-app.use(express.json())
+app.use(cors());
+app.use(helmet());
+app.use(express.json());
 
 // Routes
 app.use('/api/health', healthRouter)
 app.use('/api', pricesRouter)
 
 const startServer = async () => {
-	// Connect to database
-	await connectDatabase()
+  // Connect to database
+  // await connectDatabase()
 
-	// Start express server
-	app.listen(config.port, () => {
-		logger.info(`Server is running on http://localhost:${config.port}`)
-	})
-}
+  // Start express server
+  app.listen(config.port, () => {
+    logger.info(`Server is running on http://localhost:${config.port}`);
+  });
+};
 
-startServer().catch(error => {
-	logger.error('Failed to start server', error)
-	process.exit(1)
-})
+startServer().catch((error) => {
+  logger.error("Failed to start server", error);
+  process.exit(1);
+});
