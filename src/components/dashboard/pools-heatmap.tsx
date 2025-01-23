@@ -23,9 +23,9 @@ export default function PoolsHeatmap({ onItemClicked }: { onItemClicked: (item: 
 
     return (
         <div className="w-full h-full flex flex-col gap-3 border p-[18px] rounded-[13px] border-[#333333]">
-            <div className="flex justify-between items-center w-full">
-                <div className="text-base font-semibold text-white pl-8">Real Time Risk Scoring (RTRS)</div>
-                <div className="flex gap-2">
+            <div className="flex flex-col lg:flex-row justify-between items-center w-full gap-2">
+                <div className="text-base font-semibold text-white lg:pl-8 w-full text-left">Real Time Risk Scoring (RTRS)</div>
+                <div className="flex gap-2 w-full justify-end">
                     <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">Weekly</button>
                     <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-black bg-[#C9F31D]">Daily</button>
                 </div>
@@ -34,14 +34,14 @@ export default function PoolsHeatmap({ onItemClicked }: { onItemClicked: (item: 
                 {
                     new Array(54).fill(0).map((_, i) => 
                         i % 9  === 0 ? 
-                        <div className="text-[#A4A8AB] text-[10px] leading-4 font-normal h-full flex items-center pl-4" key={i}>$840</div>
+                        <div className="text-[#A4A8AB] text-[10px] leading-4 font-normal h-full flex items-center lg:pl-4" key={i}>$840</div>
                         :
-                        <div className="size-[38px] border border-[#333333] rounded-[6px] text-[#0B0E129E] cursor-pointer" key={i} onClick={() => onItemClicked(i)}></div>
+                        <div className="size-6 lg:size-[38px] border border-[#333333] rounded-[6px] text-[#0B0E129E] cursor-pointer" key={i} onClick={() => onItemClicked(i)}></div>
                     )
                 }
                 {
                     yLabels.map((label, i) => (
-                        <div className="text-[#A4A8AB] text-xs leading-5 font-semibold h-full flex items-center w-full pl-2" key={i}>{label}</div>
+                        <div className="text-[#A4A8AB] text-xs leading-5 font-semibold h-full flex items-center w-full lg:pl-2" key={i}>{label}</div>
                     ))
                 }
             </div>

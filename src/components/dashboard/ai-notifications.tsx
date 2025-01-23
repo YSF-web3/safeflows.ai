@@ -17,14 +17,14 @@ export default function AiNotifications () {
             >
                 {
                     notifications.map((notification, index) => (
-                        <div key={index} className="h-[50px] w-full bg-[#151B21] rounded-xl flex items-center pl-[18px] pr-2">
-                            <div className="flex gap-[14px]">
+                        <div key={index} className="lg:h-[50px] w-full bg-[#151B21] rounded-xl flex items-center pl-[18px] pr-2 py-2">
+                            <div className="flex gap-[14px] h-full">
                                 <Image src={ AlarmIcon } alt="Notification" width={18} height={22} />
-                                <div className="flex flex-col gap-[6px] justify-center w-[71px]">
+                                <div className="flex flex-col gap-[6px] justify-center min-w-[71px]">
                                     <div className={`text-sm leading-5 font-normal ${notification.level === "Critical" ? "text-[#E73F28]": "text-[#2C9B2E]"}`}>{ notification.level }</div>
                                     <div className="text-white font-light text-[8px] leading-3">Mon 20 Jan</div>
                                 </div>
-                                <span className="h-8 border-r border-[#E0E4F5]"></span>
+                                <div className="border-r border-[#E0E4F5] flex"></div>
                                 <div className="text-[#C2C2C2] text-sm font-normal flex items-center">{ notification.notification }</div>
                             </div>
                         </div>

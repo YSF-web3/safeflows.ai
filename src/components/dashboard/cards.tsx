@@ -24,11 +24,11 @@ const items = [
 
 export default function Cards() {
     return (
-        <div className="w-full flex gap-2">
+        <div className="w-full flex gap-2 overflow-x-auto">
             {
                 items.map((item) => (
                     <div key={item.key} className="rounded-xl bg-[#12181F] h-[49px] px-5 flex items-center">
-                        <div className="text-[#C2C2C2] text-sm font-normal">{item.label}</div>
+                        <div className="text-[#C2C2C2] text-sm font-normal text-nowrap">{item.label}</div>
                         {/* <div className="text-white text-2xl font-bold">{item.value}</div> */}
                     </div>
                 ))
