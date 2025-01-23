@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import { config } from '@/config'
-import { healthRouter } from '@/routes'
+import { healthRouter, pricesRouter } from '@/routes'
 import { connectDatabase } from '@/db'
 import logger from '@/utils/logger'
 
@@ -15,6 +15,7 @@ app.use(express.json())
 
 // Routes
 app.use('/api/health', healthRouter)
+app.use('/api', pricesRouter)
 
 const startServer = async () => {
 	// Connect to database
