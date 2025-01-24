@@ -15,7 +15,7 @@ export class PricesService {
 	private solendPricesUrl: string
 
 	constructor() {
-		this.solendPricesUrl = process.env.SOLEND_PRICES_API!
+		this.solendPricesUrl = process.env.SOLEND_GLOBAL_API! + '/v1/prices?symbols='
 	}
 
 	async getPrices(symbols: string): Promise<Price[]> {
