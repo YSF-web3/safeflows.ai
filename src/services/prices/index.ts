@@ -56,7 +56,7 @@ export class PricesService {
 
 				if (!pairs) continue
 
-				const { baseToken, priceUsd, txns, volume, priceChange, liquidity } = pairs[0]
+				const { baseToken, priceUsd, txns, volume, priceChange, liquidity, fdv } = pairs[0]
 
 				const tokenData = {
 					...baseToken,
@@ -65,6 +65,7 @@ export class PricesService {
 					volume,
 					priceChange,
 					liquidity,
+					fdv,
 				}
 
 				// const prediction = await aiModel.predict(tokenData)
