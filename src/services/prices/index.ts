@@ -22,6 +22,10 @@ export class PricesService {
 		this.dexScreenerUrl = process.env.DEXSCREENER_API! + '/latest/dex/tokens/'
 	}
 
+	updateHappenedMoreThan1HourAgo = (lastUpdated: Date): boolean => {
+		return lastUpdated.getTime() < Date.now() - 1000 * 60 * 60
+	}
+
 	async getPrices(symbols: string): Promise<Price[]> {
 		let prices: Price[] = []
 
@@ -49,7 +53,7 @@ export class PricesService {
 			if (
 				!predictionExists ||
 				(predictionExists &&
-					predictionExists.updatedAt.getTime() < Date.now() - 1000 * 60 * 60)
+					this.updateHappenedMoreThan1HourAgo(predictionExists.updatedAt))
 			) {
 				const response = await fetch(this.dexScreenerUrl + mint)
 				const { pairs } = await response.json()
@@ -70,10 +74,10 @@ export class PricesService {
 
 				// const prediction = await aiModel.predict(tokenData)
 				// predictions[mint] = prediction
-				
+
 				// Mocked prediction
 				predictions[mint] = tokenData.priceUsd
-				
+
 				await createPrediction(mint, predictions[mint])
 			} else {
 				predictions[mint] = predictionExists.price
