@@ -12,6 +12,13 @@ interface Borrowed {
   pythPriceAccount: string;
 }
 
+export interface IPrediction {
+  mint: string;
+  price: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface IPosition {
   walletAddress: string;
   collateral: Collateral[];

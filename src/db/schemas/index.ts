@@ -29,28 +29,6 @@ export const PositionSchema = new mongoose.Schema({
 	},
 })
 
-export const AlertSchema = new mongoose.Schema({
-	walletAddress: {
-		type: String,
-		required: true,
-	},
-	type: {
-		type: String,
-		enum: ['HEALTH_WARNING', 'HEALTH_CRITICAL', 'RISK_HIGH'],
-		required: true,
-	},
-	message: String,
-	healthFactor: Number,
-	timestamp: {
-		type: Date,
-		default: Date.now,
-	},
-	isRead: {
-		type: Boolean,
-		default: false,
-	},
-})
-
 export const RiskScoreSchema = new mongoose.Schema({
 	poolAddress: {
 		type: String,
@@ -66,4 +44,23 @@ export const RiskScoreSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
+})
+
+export const PredictionSchema = new mongoose.Schema({
+	mint: {
+		type: String,
+		required: true,
+	},
+	price: {
+		type: Number,
+		required: true,
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now,
+	},
+	updatedAt: {
+		type: Date,
+		default: Date.now,
+	}
 })

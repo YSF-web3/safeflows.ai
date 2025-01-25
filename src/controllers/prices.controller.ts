@@ -27,4 +27,24 @@ export class PricesController {
       res.status(500).json({ error: 'Failed to fetch prices' })
     }
   }
+
+  async getPredictions(req: Request, res: Response) {
+    try {
+      const { mints } = req.query
+
+      if (!mints) {
+        res.json({ error: 'No mint addresses provided' })
+        return
+      }
+
+      const predictions = await this.pricesService.getPredictions(mints as string)
+
+      res.json({
+        predictions,
+        timestamp: new Date().toISOString(),
+      })
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch predictions' })
+    }
+  }
 }
