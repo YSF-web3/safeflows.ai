@@ -1,4 +1,4 @@
-import { createPrediction, getPrediction } from '@/db/actions/prediction'
+import { createPrediction, getPrediction, updatePrediction } from '@/db/actions/prediction'
 import { Prediction } from '@/types/ai'
 import { Price } from '@/types/solend'
 
@@ -13,6 +13,10 @@ type SolendPricesResponse = {
 	results: SolendPriceResponse[]
 }
 
+const updateHappenedMoreThan1HourAgo = (lastUpdated: Date): boolean => {
+	return lastUpdated.getTime() < Date.now() - 1000 * 60 * 60
+}
+
 export class PricesService {
 	private solendPricesUrl: string
 	private dexScreenerUrl: string
@@ -20,10 +24,6 @@ export class PricesService {
 	constructor() {
 		this.solendPricesUrl = process.env.SOLEND_GLOBAL_API! + '/v1/prices?symbols='
 		this.dexScreenerUrl = process.env.DEXSCREENER_API! + '/latest/dex/tokens/'
-	}
-
-	updateHappenedMoreThan1HourAgo = (lastUpdated: Date): boolean => {
-		return lastUpdated.getTime() < Date.now() - 1000 * 60 * 60
 	}
 
 	async getPrices(symbols: string): Promise<Price[]> {
@@ -44,16 +44,15 @@ export class PricesService {
 		return prices
 	}
 
-	async getPredictions(mints: string): Promise<Prediction> {
+	async getPredictions(mints: string[]): Promise<Prediction> {
 		let predictions: Prediction = {}
 
-		for (const mint of mints.split(',')) {
+		for (const mint of mints) {
 			const predictionExists = await getPrediction(mint)
 
 			if (
 				!predictionExists ||
-				(predictionExists &&
-					this.updateHappenedMoreThan1HourAgo(predictionExists.updatedAt))
+				(predictionExists && updateHappenedMoreThan1HourAgo(predictionExists.updatedAt))
 			) {
 				const response = await fetch(this.dexScreenerUrl + mint)
 				const { pairs } = await response.json()
@@ -78,7 +77,11 @@ export class PricesService {
 				// Mocked prediction
 				predictions[mint] = tokenData.priceUsd
 
-				await createPrediction(mint, predictions[mint])
+				if (predictionExists) {
+					await updatePrediction(mint, predictions[mint])
+				} else {
+					await createPrediction(mint, predictions[mint])
+				}
 			} else {
 				predictions[mint] = predictionExists.price
 			}

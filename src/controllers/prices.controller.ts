@@ -2,49 +2,51 @@ import { PricesService } from '@/services/prices'
 import { Request, Response } from 'express'
 
 export class PricesController {
-  private pricesService: PricesService
+	private pricesService: PricesService
 
-  constructor() {
-    this.pricesService = new PricesService()
-  }
+	constructor() {
+		this.pricesService = new PricesService()
+	}
 
-  async getPrices(req: Request, res: Response) {
-    try {
-      const { symbols } = req.query
+	async getPrices(req: Request, res: Response) {
+		try {
+			const { symbols } = req.query
 
-      if (!symbols) {
-        res.json({ error: 'No symbols provided' })
-        return
-      }
+			if (!symbols) {
+				res.json({ error: 'No symbols provided' })
+				return
+			}
 
-      const prices = await this.pricesService.getPrices(symbols as string)
+			const prices = await this.pricesService.getPrices(symbols as string)
 
-      res.json({
-        prices,
-        timestamp: new Date().toISOString(),
-      })
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch prices' })
-    }
-  }
+			res.json({
+				prices,
+				timestamp: new Date().toISOString(),
+			})
+		} catch (error) {
+			res.status(500).json({ error: 'Failed to fetch prices' })
+		}
+	}
 
-  async getPredictions(req: Request, res: Response) {
-    try {
-      const { mints } = req.query
+	async getPredictions(req: Request, res: Response) {
+		try {
+			const { mints } = req.query
 
-      if (!mints) {
-        res.json({ error: 'No mint addresses provided' })
-        return
-      }
+			if (!mints) {
+				res.json({ error: 'No mint addresses provided' })
+				return
+			}
 
-      const predictions = await this.pricesService.getPredictions(mints as string)
+			const predictions = await this.pricesService.getPredictions(
+				(mints as string).split(',')
+			)
 
-      res.json({
-        predictions,
-        timestamp: new Date().toISOString(),
-      })
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch predictions' })
-    }
-  }
+			res.json({
+				predictions,
+				timestamp: new Date().toISOString(),
+			})
+		} catch (error) {
+			res.status(500).json({ error: 'Failed to fetch predictions' })
+		}
+	}
 }
