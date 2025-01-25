@@ -26,7 +26,7 @@ app.use('/api/health', healthRouter)
 
 const startServer = async () => {
 	// Connect to database
-	// await connectDatabase()
+	await connectDatabase()
 
 	// Start express server
 	app.listen(config.port, () => {
