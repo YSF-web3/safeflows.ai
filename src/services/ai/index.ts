@@ -1,15 +1,13 @@
 import OpenAI from "openai";
 
-const OPEN_AI_API_KEY = "";
-const OPEN_AI_ASSISTANT_ID = "";
+const OPEN_AI_API_KEY = process.env.OPEN_AI_API_KEY;
+const OPEN_AI_ASSISTANT_ID = process.env.OPEN_AI_ASSISTANT_ID;
 
 export class AiService {
   private openai: OpenAI;
   private threadIds: Map<string, string> = new Map(); // Use a Map to store thread IDs per user
 
   constructor() {
-    console.log("configService.openAi.apiKey", OPEN_AI_API_KEY);
-
     this.openai = new OpenAI({
       apiKey: OPEN_AI_API_KEY,
       dangerouslyAllowBrowser: false, // Disable browser-specific feature
@@ -20,8 +18,7 @@ export class AiService {
     userId: string, // Accept userId to track threads
     prompt: string
   ): Promise<{
-    swapInfoArray: string[];
-    message: string;
+    predictedPriceUsd: number;
   } | null> {
     try {
       let threadId = this.threadIds.get(userId); // Get the thread ID for the user
@@ -39,8 +36,6 @@ export class AiService {
         content: prompt,
       });
 
-      console.log(OPEN_AI_ASSISTANT_ID);
-
       const run = await this.openai.beta.threads.runs.createAndPoll(threadId, {
         assistant_id: OPEN_AI_ASSISTANT_ID!,
       });
@@ -54,30 +49,20 @@ export class AiService {
         )
         .pop();
 
-      console.log(lastMessageForRun?.content[0]);
-
-      const swapInfoRaw = JSON.parse(
+      const predictionRaw = JSON.parse(
         JSON.stringify(lastMessageForRun?.content[0])
       ).text.value;
 
-      const swapInfoCleaned = swapInfoRaw
+      const predictionCleaned = predictionRaw
         .replace(/```json/g, "")
         .replace(/```/g, "")
         .trim();
 
-      const swapInfo: {
-        swapInfoArray: string[];
-        message: string;
-        token_info?: string;
-        action: "show_token_info" | "swap";
-      } = JSON.parse(swapInfoCleaned);
+      const prediction: {
+        predictedPriceUsd: number;
+      } = JSON.parse(predictionCleaned);
 
-      if (swapInfo.action)
-        if (!swapInfo.message || !swapInfo.swapInfoArray) {
-          throw new Error("Missing details in swapInfoArray");
-        }
-
-      return swapInfo;
+      return prediction;
     } catch (error) {
       console.error(`Processing request: ${error}`);
       return null;
@@ -90,4 +75,4 @@ export class AiService {
   }
 }
 
-export const openAiService3 = new AiService();
+export const openAiService = new AiService();
