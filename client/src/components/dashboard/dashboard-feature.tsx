@@ -2,7 +2,8 @@
 
 import * as d3 from "d3";
 // import { HeatMapGrid } from 'react-grid-heatmap'
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react'
 
 
 import { AppHero } from '../ui/ui-layout'
@@ -13,6 +14,8 @@ import SupplyBorrowFactor from "./HF";
 import PoolsHeatmap from "./pools-heatmap";
 import AiPredictedTrends from "./ai-predicted-trends";
 import PoolsTable from "./pools-table";
+
+import { useGetPools } from "./dashboard-data-access";
 
 const links: { label: string; href: string }[] = [
   { label: 'Solana Docs', href: 'https://docs.solana.com/' },
@@ -25,10 +28,19 @@ const links: { label: string; href: string }[] = [
 export default function DashboardFeature() {
 
     const [ showTable, setShowTable ] = useState(false)
+    const { publicKey } = useWallet()
 
     const onPoolItemClicked = (item: any) => {
         setShowTable(true)
     }
+
+    const query = useGetPools({ address: publicKey || undefined })
+
+    useEffect(() => {
+        if( !query.isLoading && publicKey ) {
+            query.refetch();
+        }
+    }, [ publicKey ])
 
     return (
         <div className="w-full py-8">
@@ -36,7 +48,7 @@ export default function DashboardFeature() {
             {
                 !showTable ? 
                 <div className="flex flex-col gap-8 w-full">
-                    <Cards />
+                    <Cards poolsData={query.data} />
                     <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-4">
                         <div className="w-full h-full">
                             <AiNotifications />

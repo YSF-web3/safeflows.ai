@@ -5,10 +5,23 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { createContext, ReactNode, useContext } from 'react'
 import toast from 'react-hot-toast'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
+
+import api from '@/app/api/api'
+
+import {
+    PublicKey
+} from "@solana/web3.js"
+
 
 export interface Notification {
     notification: string
     level: string
+    timestamp: string
+}
+
+export interface Pools {
+    pools: any[], 
     timestamp: string
 }
 
@@ -54,9 +67,6 @@ export const defaultNotifications: Notification[] = [
 const dashboardAtom = atomWithStorage<Notification[]>('dashboard-notifications', defaultNotifications)
 
 
-
-
-
 export interface DashboardProviderContext {
     notifications: Notification[]
 }
@@ -77,4 +87,15 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
 
 export function useDashboard() {
     return useContext(Context)
+}
+
+
+export function useGetPools ({ address }: { address: PublicKey | undefined }) {
+    return useQuery({
+        queryKey: ['get-pools'],
+        queryFn: async () => {
+            const response = await api.get(`/pools?wallet=${ address }`)
+            return response.data
+        }
+    })
 }
