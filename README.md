@@ -1,3 +1,7 @@
+
+![Logo](https://github.com/YSF-web3/safeflows.ai/blob/main/client/public/safeflow-logo.png?raw=true)
+
+
 # SafeFlows.ai: Revolutionizing Risk Management in DeFi 🛡️  
 
 Welcome to **SafeFlows.ai**, the next-generation platform leveraging artificial intelligence to empower users in the decentralized finance (DeFi) ecosystem. With advanced risk analysis, real-time monitoring, and actionable insights, we help you navigate the complexities of DeFi securely and confidently.  
@@ -32,7 +36,7 @@ At SafeFlows.ai, we aim to set a new standard for safety, transparency, and acce
 - Regular updates to align with the changing dynamics of the DeFi ecosystem.  
 
 
-## **🤖 Supercharged by DeepSeek AI**
+## **🐋 Supercharged by DeepSeek AI**
 
 
 
