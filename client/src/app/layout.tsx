@@ -4,6 +4,7 @@ import { DashboardProvider } from "@/components/dashboard/dashboard-data-access"
 import { SolanaProvider } from "@/components/solana/solana-provider";
 import { UiLayout } from "@/components/ui/ui-layout";
 import { ReactQueryProvider } from "./react-query-provider";
+import { NotificationsProvider } from "@/components/notifications/alert-data-access";
 
 export const metadata = {
   title: "SafeFlows.ai",
@@ -27,7 +28,9 @@ export default function RootLayout({
           <ClusterProvider>
             <SolanaProvider>
               <DashboardProvider>
-                <UiLayout links={links}>{children}</UiLayout>
+                <NotificationsProvider>
+                  <UiLayout links={links}>{children}</UiLayout>
+                </NotificationsProvider>
               </DashboardProvider>
             </SolanaProvider>
           </ClusterProvider>
