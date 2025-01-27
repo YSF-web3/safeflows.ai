@@ -39,7 +39,7 @@ At SafeFlows.ai, we aim to set a new standard for safety, transparency, and acce
 Protect your positions and maximize lending yields with institutional-grade AI. SafeFlows.ai leverages DeepSeek's advanced AI to revolutionize Solana lending:
 
 
-![Logo](https://cdn.deepseek.com/logo.png)
+![Logo](https://camo.githubusercontent.com/411fd835329fcfba1075b78394c85e18837862872c07620d052cc1dd6196da9c/68747470733a2f2f63646e2e646565707365656b2e636f6d2f6c6f676f2e706e67)
 
 ### 🛡️ Liquidation Defense System
 - Predict collateral price movements before they impact your positions
