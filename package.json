@@ -11,9 +11,11 @@
 	},
 	"dependencies": {
 		"@ai-sdk/deepseek": "^0.1.6",
+		"@ai-sdk/openai": "^1.1.5",
 		"@pythnetwork/client": "^2.22.0",
 		"@solana/web3.js": "^1.98.0",
 		"@solendprotocol/solend-sdk": "^0.13.42",
+		"ai": "^4.1.9",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.7",
 		"express": "^4.21.2",

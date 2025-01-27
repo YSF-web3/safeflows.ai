@@ -6,6 +6,7 @@ import {
 import { Prediction } from "@/types/ai";
 import { Price } from "@/types/solend";
 import { openAiService } from "../ai";
+import { deepSeekService } from "../ai/deepseek";
 
 type SolendPriceResponse = {
   symbol: string;
@@ -86,17 +87,20 @@ export class PricesService {
           fdv,
         };
 
-        const prediction: { predictedPriceUsd: number } | null =
-          await openAiService.newThread("1", JSON.stringify(tokenData));
-
+        const prediction: {
+          predictedPriceUsd: number;
+          message: string;
+        } | null = process.env.DEEPSEEK_API_KEY
+          ? await deepSeekService.predictTokenPrice(tokenData)
+          : await openAiService.newThread("1", JSON.stringify(tokenData));
         if (!prediction) continue;
 
         predictions[mint] = prediction.predictedPriceUsd;
 
         if (predictionExists) {
-          await updatePrediction(mint, predictions[mint]);
+          await updatePrediction(mint, predictions[mint], prediction.message);
         } else {
-          await createPrediction(mint, predictions[mint]);
+          await createPrediction(mint, predictions[mint], prediction.message);
         }
       } else {
         predictions[mint] = predictionExists.price;
