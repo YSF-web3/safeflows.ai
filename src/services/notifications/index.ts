@@ -1,3 +1,5 @@
+import { Notification } from "@/db/types";
+
 export class NotificationsService {
   constructor() {}
 
