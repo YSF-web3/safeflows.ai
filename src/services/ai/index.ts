@@ -60,6 +60,7 @@ export class AiService {
 
       const prediction: {
         predictedPriceUsd: number;
+        message: "";
       } = JSON.parse(predictionCleaned);
 
       return prediction;
