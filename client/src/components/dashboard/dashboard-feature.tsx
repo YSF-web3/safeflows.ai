@@ -59,7 +59,6 @@ export default function DashboardFeature() {
 
     useEffect(() => {
         if( query.data ) {
-            console.log(query.data)
             // const symbols = query.data.pools.map((pool: any) => {
             //     return pool.deposits.map((deposit: any) => deposit.symbol);
             // }).flat();
@@ -85,7 +84,7 @@ export default function DashboardFeature() {
             {
                 !showTable ? 
                 <div className="flex flex-col gap-8 w-full">
-                    <Cards poolsData={query.data} />
+                    <Cards poolsData={query.data} predictionsData={predictionsQuery.data} />
                     <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-4">
                         <div className="w-full h-full">
                             <AiNotifications poolsData={query.data} />
