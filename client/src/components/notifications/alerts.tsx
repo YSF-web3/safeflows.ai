@@ -12,7 +12,7 @@ export default function ActiveAlerts() {
           >
             <div className="flex flex-col gap-2 flex-grow h-full">
               <div className="text-[#C2C2C2] text-sm font-normal text-left">
-                AI Notification 01 Lorem ipsum dolor sit amet consectetur.
+                AI Notification: ain pool has a high concentration in SOL, which could be risky if SOL prices drop significantly.
               </div>
             </div>
             <div className="flex flex-col gap-[14px] h-full">

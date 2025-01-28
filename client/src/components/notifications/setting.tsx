@@ -56,7 +56,7 @@ export default function SettingPage () {
                     :
                     <Image src={ CircleIcon } width={24} height={24} alt="Check" className="cursor-pointer" />
                 }
-                <div className="text-[#808195] font-normal text-lg">Lorem ipsum dolor sit amet</div>
+                <div className="text-[#808195] font-normal text-lg">One Time</div>
             </div>
 
             <div className="w-full flex items-center justify-end">

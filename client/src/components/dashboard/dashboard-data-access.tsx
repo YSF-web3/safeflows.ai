@@ -45,41 +45,38 @@ export interface Predictions {
 
 
 export const defaultNotifications: Notification[] = [
+    
     {
-        notification: "This is test notification 1", 
+        notification: "🔔 Reminder: Solend Protocol has updated its liquidation threshold for SOL collateral from 80% to 85%. Please adjust your positions.",
         level: "Important",
-        timestamp: "2021-01-01T00:00:00.000Z"
-    }, 
+        timestamp: "2025-01-28T10:30:00.000Z"
+    },
     {
-        notification: "This is test notification 2", 
+        notification: "⚡ Solend: Borrowing rates for USDC have increased to 6.2% due to high utilization. Consider repaying or rebalancing.",
         level: "Important",
-        timestamp: "2021-01-01T00:00:00.000Z"
-    }, 
+        timestamp: "2025-01-27T15:00:00.000Z"
+    },
     {
-        notification: "This is test notification 3", 
+        notification: "🚨 Solend Alert: Wallet Abc789 has been liquidated. $15,000 worth of SOL collateral was sold to cover a USDC debt of $12,000.",
         level: "Critical",
-        timestamp: "2021-01-01T00:00:00.000Z"
-    }, 
+        timestamp: "2025-01-27T14:45:00.000Z"
+    },
     {
-        notification: "AI Notification 01 Lorem ipsum dolor sit amet consectetur.", 
+        notification: "ℹ️ Solend Market Update: SOL collateral ratio is stabilizing after the recent price recovery. Risk levels have decreased.",
+        level: "Info",
+        timestamp: "2025-01-27T13:00:00.000Z"
+    },
+    {
+        notification: "🔔 Solend Governance Proposal #23 passed: Maximum borrow limits for stablecoins reduced by 10% to mitigate risk.",
+        level: "Important",
+        timestamp: "2025-01-26T18:00:00.000Z"
+    },
+    {
+        notification: "⚠️ Solend Alert: High liquidation activity detected on SOL markets. Ensure your positions are above the required threshold.",
         level: "Critical",
-        timestamp: "2021-01-01T00:00:00.000Z"
-    }, 
-    {
-        notification: "This is test notification 5", 
-        level: "Important",
-        timestamp: "2021-01-01T00:00:00.000Z"
-    }, 
-    {
-        notification: "This is test notification 6", 
-        level: "Important",
-        timestamp: "2021-01-01T00:00:00.000Z"
-    }, 
-    {
-        notification: "This is test notification 7", 
-        level: "Important",
-        timestamp: "2021-01-01T00:00:00.000Z"
-    }, 
+        timestamp: "2025-01-26T12:00:00.000Z"
+    }
+    
 ]
 
 const dashboardAtom = atomWithStorage<Notification[]>('dashboard-notifications', defaultNotifications)

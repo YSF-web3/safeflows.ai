@@ -9,7 +9,7 @@ export default function History() {
                     new Array(20).fill(0).map((_, i) => 
                         <div className="w-full lg:h-[80px] border-none rounded-xl bg-[#151B21] flex flex-row justify-between items-center px-[21px] pb-3 pt-[14px]" key={i}>
                             <div className="flex flex-col gap-2 flex-grow h-full">
-                                <div className="text-[#C2C2C2] text-sm font-normal text-left">AI Notification 01 Lorem ipsum dolor sit amet consectetur.</div>
+                                <div className="text-[#C2C2C2] text-sm font-normal text-left"></div>
                                 {
                                     i < 2 && 
                                     <div className="h-[23px] rounded-[3px] bg-[#C9F31D] text-black px-[21px] text-xs font-semibold flex items-center w-fit">View More</div>
