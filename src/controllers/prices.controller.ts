@@ -1,4 +1,6 @@
 import { PricesService } from '@/services/prices'
+import { mapPredictionTrends } from '@/utils'
+
 import { Request, Response } from 'express'
 
 export class PricesController {
@@ -28,6 +30,8 @@ export class PricesController {
 		}
 	}
 
+
+
 	async getPredictions(req: Request, res: Response) {
 		try {
 			const { mints } = req.query
@@ -41,11 +45,16 @@ export class PricesController {
 				(mints as string).split(',')
 			)
 
+
+			const mappedPredictions = mapPredictionTrends(predictions)
+			
 			res.json({
-				predictions,
+				predictions:mappedPredictions,
 				timestamp: new Date().toISOString(),
 			})
 		} catch (error) {
+			console.log(error);
+			
 			res.status(500).json({ error: 'Failed to fetch predictions' })
 		}
 	}

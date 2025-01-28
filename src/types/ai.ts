@@ -1,3 +1,12 @@
 export type Prediction = {
-  [key: string]: number
+  [key: string]: {
+    predictedPriceUsd: number
+    predictedTrend: number[]
+    lastCalculated: Date
+  }
+}
+
+export interface PriceWithTimestamp {
+  price: number;
+  timestamp: string;
 }

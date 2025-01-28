@@ -15,6 +15,7 @@ interface Borrowed {
 export interface IPrediction {
   mint: string;
   price: number;
+  predictedTrend: number[];
   createdAt: Date;
   updatedAt: Date;
 }

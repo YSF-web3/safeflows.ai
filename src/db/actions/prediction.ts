@@ -7,18 +7,21 @@ export const getPrediction = async (mint: string) => {
 export const updatePrediction = async (
   mint: string,
   price: number,
-  message: string
+  message: string,
+  predictedTrend: number[]
 ) => {
   return await Prediction.updateOne(
     { mint },
-    { price, updatedAt: new Date(), message }
+    { price, updatedAt: new Date(), message,predictedTrend }
   );
 };
 
 export const createPrediction = async (
   mint: string,
   price: number,
-  message: string
+  message: string,
+  predictedTrend: number[]
+
 ) => {
-  return await Prediction.create({ mint, price, message });
+  return await Prediction.create({ mint, price, message,predictedTrend });
 };

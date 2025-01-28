@@ -7,6 +7,7 @@ import { Prediction } from "@/types/ai";
 import { Price } from "@/types/solend";
 import { openAiService } from "../ai";
 import { deepSeekService } from "../ai/deepseek";
+import { aiPredictedTrendService } from "../ai/AIPredictedTrends";
 
 type SolendPriceResponse = {
   symbol: string;
@@ -90,23 +91,50 @@ export class PricesService {
         const prediction: {
           predictedPriceUsd: number;
           message: string;
-        } | null = process.env.DEEPSEEK_API_KEY
-          ? await deepSeekService.predictTokenPrice(tokenData)
-          : await openAiService.newThread("1", JSON.stringify(tokenData));
-        if (!prediction) continue;
+        } | null = 
+        // process.env.DEEPSEEK_API_KEY
+          // ? await deepSeekService.predictTokenPrice(tokenData)
+          // : 
+          await openAiService.newThread("1", JSON.stringify(tokenData));
 
-        predictions[mint] = prediction.predictedPriceUsd;
+        if (!prediction) continue;
+        console.log(prediction);
+        
+        const predictedTrend: number[] =  await aiPredictedTrendService.newThread("1", JSON.stringify(tokenData));
+        console.log(predictedTrend);
+        
+        if(!Boolean(predictions[mint])){
+          predictions[mint] = {
+            predictedPriceUsd:0,
+            predictedTrend: [],
+            lastCalculated: new Date()
+          }
+        }
+        console.log(predictedTrend);
+        
+        predictions[mint].predictedPriceUsd = prediction.predictedPriceUsd;
+        predictions[mint].predictedTrend = predictedTrend;
 
         if (predictionExists) {
-          await updatePrediction(mint, predictions[mint], prediction.message);
+          await updatePrediction(mint, predictions[mint].predictedPriceUsd, prediction.message, predictedTrend);
         } else {
-          await createPrediction(mint, predictions[mint], prediction.message);
+          await createPrediction(mint, predictions[mint].predictedPriceUsd, prediction.message, predictedTrend);
         }
       } else {
-        predictions[mint] = predictionExists.price;
+        if(!Boolean(predictions[mint])){
+          predictions[mint] = {
+            predictedPriceUsd:0,
+            predictedTrend: [],
+            lastCalculated: new Date()
+          }
+        }
+        predictions[mint].predictedPriceUsd = predictionExists.price;
+        predictions[mint].predictedTrend = predictionExists.predictedTrend;
+        predictions[mint].lastCalculated = predictionExists.updatedAt;
       }
     }
 
     return predictions;
   }
+
 }

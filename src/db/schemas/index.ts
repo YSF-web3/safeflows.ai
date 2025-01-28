@@ -63,6 +63,10 @@ export const PredictionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  predictedTrend: {
+    type: Array<number>,
+    default: [],
+  },
   updatedAt: {
     type: Date,
     default: Date.now,
