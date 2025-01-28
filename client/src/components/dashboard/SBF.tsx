@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import * as d3 from "d3";
+import { Pools } from "./dashboard-data-access"
 
-export default function SupplyBorrowFactor() {
+
+export default function SupplyBorrowFactor({ poolsData }: { poolsData: Pools }) {
 
     const svgRef = useRef(null);
-    const width = 225
-    const [ data, setData ] = useState([
-        {apples: 53245, oranges: 200},
-        {apples: 28479, oranges: 200},
-    ])
+    const width = 225;
+    const borrowedRef = useRef(0);
 
     useEffect(() => {
         const height = width * 0.8; // Increase height for 270-degree arc
@@ -68,28 +67,48 @@ export default function SupplyBorrowFactor() {
             .style("fill", "#C9F31D")  // Text color
             .style("font-weight", "400")
             .text("$0");  // Initial value
-      
+        
+        const limit = poolsData?.pools.reduce((total, obligation) => {
+            const sum = obligation.borrowLimit;
+            return total + sum;
+        }, 0);
+
+        const borrowed = poolsData?.pools.reduce((total, obligation) => {
+            const sum = obligation.borrowValueUSD;
+            return total + sum;
+        }, 0);
+
+        const percent = ((borrowed / limit) * 100) || 0;
+
+        if( borrowedRef.current !== borrowed) {
+            foreground
+                .transition()
+                .duration(750)
+                .attrTween("d", arcTween((percent / 100) * arcSpan - arcSpan / 2) as any);
+        
+            textValue.transition()
+                .duration(750)
+                .tween("text", function () {
+                    const currentValue = parseFloat(d3.select(this).text().replace(/[^0-9.]/g, "")) || 0;
+                    const interpolator = d3.interpolateNumber(currentValue, borrowed || 0);
+            
+                    return function (t) {
+                        d3.select(this).text(`$${interpolator(t).toFixed(2)}`);
+                    };
+                });
+
+            borrowedRef.current = borrowed;
+        } else {
+            foreground
+                .transition()
+                .duration(0)
+                .attrTween("d", arcTween((percent / 100) * arcSpan - arcSpan / 2) as any);
+        
+            textValue
+                .text(`$${(borrowed || 0).toFixed(2)}`);
+        }
 
       
-        // Animation for dynamic updates
-        const interval = d3.interval(() => {
-          const randomValue = Math.random() * 100; // Generate a random value between 0-100%
-      
-          foreground
-            .transition()
-            .duration(750)
-            .attrTween("d", arcTween((randomValue / 100) * arcSpan - arcSpan / 2) as any); // Scale value within -135 to +135
-      
-          textValue.transition()
-            .duration(750)
-            .tween("text", () => {
-                const i = d3.interpolateNumber(parseFloat(textValue.text()), randomValue * 10);
-                return function (t) {
-                    textValue.text(`$${Math.round(t * 10000)}`);
-                };
-            });
-      
-        }, 1500);
       
         function arcTween(newAngle: number) {
             return function (d: { endAngle: number }) {
@@ -101,8 +120,8 @@ export default function SupplyBorrowFactor() {
             };
         }
       
-        return () => interval.stop();
-    }, [width]);
+        // return () => interval.stop();
+    }, [width, poolsData]);
       
       
       
@@ -110,14 +129,35 @@ export default function SupplyBorrowFactor() {
         <div className="w-full h-full flex flex-col gap-5 justify-between border border-[#333333] rounded-md p-8 bg-[#0B0E12] bg-opacity-60">
             <div className="h-[225px] w-full flex flex-col justify-center items-center">
                 <svg ref={svgRef} className="max-w-[225px] max-h-[225px]"></svg>
-                <div className="text-sm font-normal text-white">Overall Borrow Limit: $14000</div>
+                <div className="text-sm font-normal text-white">
+                    {
+                        `Overall Borrow Limit : $${
+                            (poolsData?.pools.reduce((total, obligation) => {
+                                const sum = obligation.borrowLimit;
+                                return total + sum;
+                            }, 0) || 0).toFixed(2)
+                        }`
+                    }
+                </div>
             </div>
 
             <div>
                 <div className="text-[19px] font-bold text-white leading-9">Supply Borrow Factor</div>
-                <div className="text-[19px] font-normal text-white leading-9">Supplied as Collateral: <span className="text-[#C9F31D]">$25000</span></div>
-                <div className="text-[19px] font-normal text-white leading-9">Supplied: <span className="text-[#C9F31D]">$89000</span></div>
+                <div className="text-[19px] font-normal text-white leading-9 flex gap-1 justify-center">
+                    Supplied as Collateral : 
+                    <span className="text-[#C9F31D]">
+                        {
+                            `$${
+                                (poolsData?.pools.reduce((total, obligation) => {
+                                    const sum = obligation.depositValueUSD;
+                                    return total + sum;
+                                }, 0) || 0).toFixed(2)
+                            }`
+                        }
+                    </span>
+                </div>
             </div>
+            <div></div>
         </div>
     )
 }

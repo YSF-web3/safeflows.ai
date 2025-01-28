@@ -90,12 +90,31 @@ export function useDashboard() {
 }
 
 
-export function useGetPools ({ address }: { address: PublicKey | undefined }) {
+export function useGetPools({ address }: { address: PublicKey | undefined }) {
     return useQuery({
-        queryKey: ['get-pools'],
+        queryKey: ['get-pools', address?.toBase58() || 'no-address'],
         queryFn: async () => {
-            const response = await api.get(`/pools?wallet=${ address }`)
-            return response.data
-        }
-    })
+            if (!address) {
+                throw new Error("No address provided");
+            }
+
+            const response = await api.get(`/pools?wallet=${ address.toBase58() }`);
+            return response.data;
+        },
+        enabled: !!address,
+    });
+}
+
+export function useGetPrices({ symbols }: { symbols: string[] }) {
+    return useQuery({
+        queryKey: ['get-prices', symbols],
+        queryFn: async () => {
+            if (symbols.length === 0) {
+                throw new Error("No symbols provided");
+            }
+
+            const response = await api.get(`/prices?symbols=${symbols.join(',')}`);
+            return response.data;
+        },
+    });
 }

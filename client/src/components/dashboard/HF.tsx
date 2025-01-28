@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import * as d3 from "d3";
+import { Pools } from "./dashboard-data-access"
 
-export default function HealthFactor () {
-
+export default function HealthFactor ({ poolsData }: { poolsData: Pools }) {
+    
     const svgRef = useRef(null);
-    const width = 225
+    const width = 225;
+    const borrowedRef = useRef(0);
+    
 
     useEffect(() => {
         const height = width * 0.8; // Increase height for 270-degree arc
@@ -55,39 +58,55 @@ export default function HealthFactor () {
             .style("font-weight", "700")
             .text("0%");  // Initial value
       
+        const collateral = poolsData?.pools.reduce((total, obligation) => {
+            const sum = obligation.depositValueUSD;
+            return total + sum;
+        }, 0);
 
-      
-        // Animation for dynamic updates
-        const interval = d3.interval(() => {
-            const randomValue = Math.random() * 100; // Generate a random value between 0-100%
+        const borrowed = poolsData?.pools.reduce((total, obligation) => {
+            const sum = obligation.borrowValueUSD;
+            return total + sum;
+        }, 0);
 
-            // Determine color based on value
-            let color;
-            if (randomValue >= 70) {
-              color = "#3BD32D";  // Good Health (Green)
-            } else if (randomValue >= 40) {
-              color = "#FDAA35";  // Ordinary (Orange)
-            } else {
-              color = "#B52C24";  // Worst (Red)
-            }
-        
+        const percent = 100 - ((borrowed / collateral) * 100) || 0;
+
+
+        let color;
+        if (percent >= 70) {
+          color = "#3BD32D";  // Good Health (Green)
+        } else if (percent >= 40) {
+          color = "#FDAA35";  // Ordinary (Orange)
+        } else {
+          color = "#B52C24";  // Worst (Red)
+        }
+
+        if( borrowedRef.current !== borrowed ) {
             foreground
               .transition()
               .duration(750)
-              .attrTween("d", arcTween((randomValue / 100) * arcSpan - arcSpan / 2) as any) // Scale value within -135 to +135
+              .attrTween("d", arcTween((percent / 100) * arcSpan - arcSpan / 2) as any) // Scale value within -135 to +135
               .style("fill", color);
       
-          textValue.transition()
-            .style("fill", color)
-            .duration(750)
-            .tween("text", () => {
-                const i = d3.interpolateNumber(parseFloat(textValue.text()), randomValue );
-                return function (t) {
-                    textValue.text(`${Math.round(i(t))}%`);
-                };
-            });
-      
-        }, 1500);
+            textValue.transition()
+                .style("fill", color)
+                .duration(750)
+                .tween("text", () => {
+                    const i = d3.interpolateNumber(parseFloat(textValue.text()), percent );
+                    return function (t) {
+                        textValue.text(`${Math.round(i(t))}%`);
+                    };
+                });
+
+            borrowedRef.current = borrowed;
+        } else {
+            foreground
+              .transition()
+              .duration(0)
+              .attrTween("d", arcTween((percent / 100) * arcSpan - arcSpan / 2) as any) // Scale value within -135 to +135
+              .style("fill", color);
+                
+            textValue.text(`${percent.toFixed(0)}%`).style("fill", color);
+        }
       
         function arcTween(newAngle: number) {
             return function (d: { endAngle: number }) {
@@ -99,8 +118,7 @@ export default function HealthFactor () {
             };
         }
       
-        return () => interval.stop();
-    }, [width]); 
+    }, [width, poolsData]); 
      
     return (
         <div className="w-full h-full flex flex-col gap-4 border border-[#333333] rounded-md p-8 bg-[#0B0E12] bg-opacity-60">

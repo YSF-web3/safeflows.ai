@@ -4,6 +4,7 @@ import * as d3 from "d3";
 // import { HeatMapGrid } from 'react-grid-heatmap'
 import { Suspense, useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react'
+import { useQueryClient } from "@tanstack/react-query";
 
 
 import { AppHero } from '../ui/ui-layout'
@@ -15,7 +16,7 @@ import PoolsHeatmap from "./pools-heatmap";
 import AiPredictedTrends from "./ai-predicted-trends";
 import PoolsTable from "./pools-table";
 
-import { useGetPools } from "./dashboard-data-access";
+import { useGetPools, useGetPrices } from "./dashboard-data-access";
 
 const links: { label: string; href: string }[] = [
   { label: 'Solana Docs', href: 'https://docs.solana.com/' },
@@ -29,18 +30,46 @@ export default function DashboardFeature() {
 
     const [ showTable, setShowTable ] = useState(false)
     const { publicKey } = useWallet()
+    const [symbols, setSymbols] = useState<string[]>([]);
 
     const onPoolItemClicked = (item: any) => {
         setShowTable(true)
     }
 
     const query = useGetPools({ address: publicKey || undefined })
+    const pricesQuery = useGetPrices({ symbols })
 
     useEffect(() => {
-        if( !query.isLoading && publicKey ) {
-            query.refetch();
+    
+        if (publicKey) {
+            console.log("Fetching pools for:", publicKey.toString());
+
+            query.refetch();  // Initial refetch when publicKey changes
+
+            const interval = setInterval(() => {
+                console.log("Auto refetching pools...");
+                query.refetch();
+            }, 10000);
+    
+            return () => clearInterval(interval);  // Cleanup the interval
         }
-    }, [ publicKey ])
+    
+        return () => {};  // Proper cleanup when publicKey is falsy
+    }, [publicKey]);
+
+    useEffect(() => {
+        if( query.data ) {
+            const symbols = query.data.pools.map((pool: any) => {
+                return pool.deposits.map((deposit: any) => deposit.symbol);
+            }).flat();
+
+            const uniqueSymbols = [...new Set<string>(symbols) as unknown as string[]];
+
+            setSymbols(uniqueSymbols)
+        }
+    }, [ query.data ])
+
+    console.log("pricesQuery.data", pricesQuery.data)
 
     return (
         <div className="w-full py-8">
@@ -55,10 +84,10 @@ export default function DashboardFeature() {
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-11 gap-4">
                             <div className="lg:col-span-6">
-                                <HealthFactor />
+                                <HealthFactor poolsData={query.data} />
                             </div>
                             <div className="lg:col-span-5">
-                                <SupplyBorrowFactor />
+                                <SupplyBorrowFactor poolsData={query.data} />
                             </div>
                         </div>
                     </div>

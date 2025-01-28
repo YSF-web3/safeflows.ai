@@ -7,7 +7,7 @@ export default function Cards({ poolsData }: { poolsData: Pools }) {
         {
             key: "collateral_value", 
             label: "Total Collateral Value", 
-            value: "$ 1 234 567.89 USD"
+            value: "$ 0.00 USD"
         }, 
         {
             key: "borrowed_value",
@@ -30,23 +30,27 @@ export default function Cards({ poolsData }: { poolsData: Pools }) {
     useEffect(() => {
 
         const totalDepositValue = poolsData?.pools.reduce((total, obligation) => {
-            const depositSum = obligation.deposits.reduce((sum: number, deposit: any) => {
-                return sum + deposit.pricePerTokenInUSD * deposit.depositedAmount;
-            }, 0);
+            const depositSum = obligation.depositValueUSD;
             return total + depositSum;
         }, 0);
 
         const totalBorrowedValue = poolsData?.pools.reduce((total, obligation) => {
-            const borrowedSum = obligation.borrows.reduce((sum: number, borrow: any) => {
-                return sum + borrow.pricePerTokenInUSD * borrow.borrowedAmount;
-            }, 0);
+            const borrowedSum = obligation.borrowValueUSD
             return total + borrowedSum;
         }, 0);
+
+        const totalHF = poolsData?.pools.reduce((total, obligation) => {
+            const sum = obligation.healthFactor;
+            return total + sum;
+        }, 0);
+
+
 
         setItems((prevItems) => {
             const updatedItems = [...prevItems];
             updatedItems[0].value = `$${(totalDepositValue || 0).toFixed(2)} USD`;
             updatedItems[1].value = `$${(totalBorrowedValue || 0).toFixed(2)} USD`;
+            updatedItems[2].value = (totalHF || 1).toFixed(2);
             return updatedItems;
         });
 

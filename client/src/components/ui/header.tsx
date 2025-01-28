@@ -80,9 +80,9 @@ export default function Header ({ links }: { links: { label: string; path: strin
                 </div>
                 
                 <WalletButton />
-                <div className="hidden lg:block">
+                {/* <div className="hidden lg:block">
                     <ClusterUiSelect />
-                </div>
+                </div> */}
                 {/* <button className="w-[60px] h-[60px] flex items-center justify-center bg-[#161D26] rounded-xl">
                     <Image src={UserIcon} width={26} height={30} alt='Account'  />
                 </button> */}
