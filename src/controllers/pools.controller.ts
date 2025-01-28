@@ -19,8 +19,9 @@ export class PoolsController {
 
       const pools = await this.poolsService.getPools(wallet as string)
 
+
       res.json({
-        pools,
+        ...pools,
         timestamp: new Date().toISOString(),
       })
     } catch (error) {

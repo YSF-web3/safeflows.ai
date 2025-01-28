@@ -74,8 +74,16 @@ export const AISummarySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  message: {
+  analysis: {
     type: String,
+    required: false,
+  },
+  warnings: {
+    type: Array<String>,
+    required: false,
+  },
+  suggestions: {
+    type: Array<String>,
     required: false,
   },
   createdAt: {

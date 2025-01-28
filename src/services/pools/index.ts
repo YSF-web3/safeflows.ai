@@ -1,4 +1,8 @@
+import { updateHappenedMoreThan1HourAgo } from '@/utils'
 import { ReservesService } from '../reserves'
+import { createSummary, getAiSumamry, getAiSummaries, updateSummary } from '@/db/actions/ai-summaries'
+import { getPrediction } from '@/db/actions/prediction'
+import { deepSeekService } from '../ai/deepseek'
 
 export class PoolsService {
 	private solendAPI: string
@@ -9,7 +13,7 @@ export class PoolsService {
 		this.reservesService = new ReservesService()
 	}
 
-	async getPools(wallet: string): Promise<any[]> {
+	async getPools(wallet: string): Promise<any> {
 		let pools: any[] = []
 
 		const response = await fetch(this.solendAPI + wallet)
@@ -103,7 +107,41 @@ export class PoolsService {
 		} catch (error) {
 			console.error('Failed to fetch pools:', error)
 		}
+		const message = await this.updateAiSummaryOfPools(wallet, pools)
+		
+		
+		
+		
 
-		return pools
+		return {pools, message}
+	}
+
+	async  updateAiSummaryOfPools(wallet:string, pools:any){
+		if(!pools.length) return []
+		
+		const summaryExists = await getAiSumamry(wallet);
+		const predictionExists = await getPrediction(wallet);
+
+		if (
+			!summaryExists ||
+			(summaryExists &&
+			  updateHappenedMoreThan1HourAgo(summaryExists.updatedAt))
+		  ) {
+			const message = await deepSeekService.analyzeLendingPools(pools)
+
+			console.log(message);
+			
+	
+			if (summaryExists) {
+			  await updateSummary(wallet, message?.analysis!, message?.warnings ?? [], message?.suggestions ?? []);
+			} else {
+			  await createSummary(wallet,message?.analysis!, message?.warnings ??  [], message?.suggestions ?? []);
+			}
+		} 
+
+		const userPoolsSummaries = await getAiSumamry(wallet)
+
+		return userPoolsSummaries
+		
 	}
 }

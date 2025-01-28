@@ -49,7 +49,11 @@ export interface Notification {
 
 export interface ISummary {
   address:string,
-  message:string
+  analysis:string
+  warnings:string[],
+  suggestions:string[],
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export enum NotificationType {
