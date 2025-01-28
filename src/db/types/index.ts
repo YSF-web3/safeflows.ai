@@ -47,8 +47,14 @@ export interface Notification {
   isRead?: boolean;
 }
 
+export interface ISummary {
+  address:string,
+  message:string
+}
+
 export enum NotificationType {
   HEALTH_WARNING = "HEALTH_WARNING",
   HEALTH_CRITICAL = "HEALTH_CRITICAL",
   RISK_HIGH = "RISK_HIGH",
 }
+
