@@ -13,6 +13,10 @@
 		"outDir": "./dist",
 		"rootDir": "./src"
 	},
+	"tsc-alias": {
+    "resolveFullPaths": true,
+    "verbose": false
+  },
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"]
 }
