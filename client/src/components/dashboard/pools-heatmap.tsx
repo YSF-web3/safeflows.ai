@@ -23,11 +23,12 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
             }))
         );
     
-        const fixedColumns = 11;
-        const fixedRows = 6;
     
-        let x_elements = Array.from(new Set(data.map((item) => item.symbol)));
-        let y_elements = Array.from(new Set(data.map((item) => item.pool)));
+        let x_elements = Array.from(new Set(data?.map((item) => item.symbol)));
+        let y_elements = Array.from(new Set(data?.map((item) => item.pool)));
+
+        const fixedColumns = Math.max(11, x_elements.length);
+        const fixedRows = Math.max(6, y_elements.length);
     
         while (x_elements.length < fixedColumns) {
             x_elements.push(`Placeholder ${x_elements.length + 1}`);
@@ -39,7 +40,7 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
         const fullGrid = [];
         for (let y = 0; y < y_elements.length; y++) {
             for (let x = 0; x < x_elements.length; x++) {
-                const match = data.find(
+                const match = data?.find(
                     (d) => d.symbol === x_elements[x] && d.pool === y_elements[y]
                 );
                 const value = match?.value || 0;
@@ -72,7 +73,7 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
         const colorScale = d3
             .scaleThreshold<number, string>()
             .domain([1])
-            .range(["#3BD32D", "#FDAA35", "#B52C24"]);
+            .range([ "#B52C24", "#FDAA35", "#3BD32D"]);
     
         // Tooltip setup
         const tooltip = d3
@@ -162,10 +163,7 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
 
 
     useEffect(() => {
-        if( poolsData && predictionsData) {
-            drawChart();
-        }
-
+        drawChart();
     }, [poolsData, predictionsData]);
 
     
