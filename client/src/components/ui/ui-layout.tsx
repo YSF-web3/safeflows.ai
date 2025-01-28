@@ -30,7 +30,7 @@ export function UiLayout({ children, links }: { children: ReactNode; links: { la
                 }
             `}</style>
 
-            <div className="relative h-screen bg-[#000000] min-h-fit overflow-hidden">
+            <div className="relative h-screen bg-[#000000] min-h-fit overflow-x-hidden">
                 <div className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"></div>
                 <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
 
