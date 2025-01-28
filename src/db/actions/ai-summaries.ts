@@ -1,14 +1,21 @@
 import { AISummary } from "@/db/models"
 import { ISummary } from "@/db/types"
 
-export const createSummary = async (summaryData: ISummary) => {
-	const position = new AISummary(summaryData)
-	return await position.save()
+export const getAiSummaries = async (address: string) => {
+	return await AISummary.find({ address });
+};
+
+export const getAiSumamry = async (address: string) => {
+	return await AISummary.findOne({ address });
+};
+  
+
+export const createSummary = async (address: string, analysis: string, warnings:string[], suggestions:string[]) => {
+	return await AISummary.create({ address, analysis, suggestions, warnings });
+
 }
 
-export const updateSummary = async (address: string, summaryData: ISummary) => {
-	return await AISummary.findOneAndUpdate({ address }, summaryData, {
-		new: true,
-		upsert: true,
-	})
+export const updateSummary = async (address: string, analysis: string, warnings:string[], suggestions:string[]) => {
+	return await AISummary.updateOne( { address },
+		{ updatedAt: new Date(), analysis, warnings, suggestions  })
 }
