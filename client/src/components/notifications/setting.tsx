@@ -22,6 +22,18 @@ export default function SettingPage() {
             <h2 className="text-2xl text-white uppercase font-bold">  Set Alert</h2>
             </div>
             <div className="w-full flex flex-col gap-2">
+                <div className="w-full text-white text-left text-base font-normal">Description</div>
+                <div className="bg-[#161D26] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
+                    <input
+                        name="description"
+                        type="text"
+                        placeholder="Alert description"
+                        className="bg-transparent outline-none text-white w-full text-lg font-normal"
+                    />
+                    <Image src={CheckIcon} width={12} height={12} alt="Check" />
+                </div>
+            </div>
+            <div className="w-full flex flex-col gap-2">
                 <div className="w-full text-white text-left text-base font-normal">Email Address</div>
                 <div className="bg-[#161D26] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
                     <input
@@ -42,7 +54,7 @@ export default function SettingPage() {
                         min="1"
                         max="100"
                         value={threshold}
-                        onChange={(e) => setThreshold(e.target.value)}
+                        onChange={(e) => setThreshold(Number(e.target.value))}
                         className="w-full appearance-none bg-[#333333] h-2 rounded-lg cursor-pointer"
                         style={{
                             background: `linear-gradient(to right, #C9F31D 0%, #C9F31D ${threshold}%, #333333 ${threshold}%, #333333 100%)`
@@ -60,7 +72,7 @@ export default function SettingPage() {
                         min="1"
                         max="100"
                         value={collateralThreshold}
-                        onChange={(e) => setCollateralThreshold(e.target.value)}
+                        onChange={(e) => setCollateralThreshold(Number(e.target.value))}
                         className="w-full appearance-none bg-[#333333] h-2 rounded-lg cursor-pointer"
                         style={{
                             background: `linear-gradient(to right, #C9F31D 0%, #C9F31D ${collateralThreshold}%, #333333 ${collateralThreshold}%, #333333 100%)`

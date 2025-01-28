@@ -15,7 +15,7 @@ export default function Footer ({ links }: { links: { label: string; path: strin
     return (
         <div className="container w-full h-[75px] bg-[#0B0E12] rounded-[13px] pl-6 pr-3 flex items-center justify-between">
             <div>
-                <div className="text-white text-xl">SafeFlows.ai</div>
+                <div className="text-white text-xl"><img src="/logo.svg" width={180} alt="" /></div>
             </div>
             <div className="pr-4 flex items-center gap-4">
                 <Link href={"https://discord.com"} target="_blank" >
