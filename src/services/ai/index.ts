@@ -19,6 +19,7 @@ export class AiService {
     prompt: string
   ): Promise<{
     predictedPriceUsd: number;
+    message: string;
   } | null> {
     try {
       let threadId = this.threadIds.get(userId); // Get the thread ID for the user

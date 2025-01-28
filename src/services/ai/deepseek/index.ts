@@ -33,6 +33,7 @@ export class AiService {
 
   async predictTokenPrice(tokenData: object): Promise<{
     predictedPriceUsd: number;
+    message: string;
   } | null> {
     console.log("Processing Deep Seek service");
 
