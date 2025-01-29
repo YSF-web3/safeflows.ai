@@ -14,8 +14,8 @@ const config: Config = {
       keyframes: {
         pulse: {
           '0%': { transform: 'scale(1)', opacity: '1' },
-          '25%': { transform: 'scale(1)', opacity: '1' },
-          '50%': { transform: 'scale(2.5)', opacity: '0.8' },
+          '25%': { transform: 'scale(1.1)', opacity: '1' },
+          '50%': { transform: 'scale(0.7)', opacity: '0.8' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
       },

@@ -24,6 +24,35 @@ const defaultItems = [
     }
 ];
 
+const AnimatedBorderCard = ({ item, index }) => {
+    return (
+      <div className="relative group">
+        {/* Animated border gradient background */}
+        <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-sm group-hover:blur opacity-70 transition-all duration-500 animate-gradient-xy" />
+        
+        {/* Main content */}
+        <div className="relative rounded-xl border border-[#12181F]/50 bg-black h-[49px] px-5 flex items-center gap-1">
+          <div className="text-[#C2C2C2] text-sm font-normal text-nowrap">
+            {item.label} :
+          </div>
+          <div
+            className={`font-bold text-nowrap ${
+              index === 3 && Number(item.value) < 1
+                ? "text-red-600 text-base"
+                : `${
+                    index === 3 && Number(item.value) > 1
+                      ? "text-green-500"
+                      : "text-white"
+                  } text-sm`
+            }`}
+          >
+            {index === 3 ? Number(item.value) : item.value}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
 export default function Cards({ poolsData, predictionsData }: { poolsData: Pools, predictionsData: Predictions }) {
 
     const [ items, setItems ] = useState(defaultItems)
@@ -86,17 +115,8 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
         <div className="w-full flex gap-2 overflow-x-auto">
             {
                 items.map((item, index) => (
-                    <div key={item.key} className="rounded-xl bg-[#12181F] h-[49px] px-5 flex items-center gap-1">
-                        <div className="text-[#C2C2C2] text-sm font-normal text-nowrap">{item.label} : </div>
-                        <div className={`font-bold text-nowrap ${ ( index === 3 && Number(item.value) < 1 ) ? "animate-pulse-custom text-red-600 text-base": `${( index === 3 && Number(item.value) > 1 ) ? "text-green-500 animate-pulse-custom": "text-white"} text-sm` }`}>
-                            {
-                                index === 3 ? 
-                                Number(item.value)
-                                :
-                                item.value
-                            }
-                        </div>
-                    </div>
+                    <AnimatedBorderCard item={item} index={index} />
+
                 ))
             }
         </div>

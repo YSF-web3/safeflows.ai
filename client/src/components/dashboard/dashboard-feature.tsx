@@ -138,7 +138,7 @@ export default function DashboardFeature() {
                         
                         <AnimatedBrain size={40} color="#c9f31d" className="animate-pulse-custom"/>
                         {
-                            <span className=" text-md text-[#888888]">
+                            <span className=" text-md text-[white] text-opacity-60">
 {query.data?.message?.analysis || "No Summary"}
                             </span>
                             

@@ -4,7 +4,7 @@ import { WalletButton } from "../solana/solana-provider";
 import { Shield, Lightbulb, Layout, Bell, ExternalLink } from 'lucide-react';
 
 const FeatureItem = ({ icon: Icon, title, description }:any) => (
-  <div className="bg-[#161D26] rounded-xl p-4 flex flex-col gap-3 border border-[#333333] hover:border-[#C9F31D] hover:scale-105 cursor-pointer transition-colors">
+  <div className="bg-[#161D26] rounded-xl p-2 flex flex-col gap-3 border border-[#333333] hover:border-[#C9F31D] hover:scale-105 cursor-pointer transition-colors">
     <div className="text-[#C9F31D] flex items-center justify-center">
       <Icon size={40} />
     </div>
@@ -35,9 +35,9 @@ const OnBoardingModal = ({ isOpen, onClose, poolsData }: any) => {
 
   if (!shouldShowModal) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
-      <div className="max-w-[697px] w-full border rounded-[13px] border-[#333333] bg-[#0B0E12] h-fit">
-        <div className="px-[38px] py-6 flex flex-col gap-2 lg:gap-5 pt-12">
+    <div className="fixed z-10 inset-0 bg-black bg-opacity-50 flex items-center justify-center  max-h-[100vh] ">
+      <div className="overflow-y-auto max-h-[100vh] max-w-[697px] w-full border rounded-[13px] border-[#333333] bg-[#0B0E12] h-fit">
+        <div className="px-[20px] py-6 flex flex-col gap-2 lg:gap-5 pt-12">
           {!connected ? (
             <>
               <div className="flex flex-col gap-2 items-center">
