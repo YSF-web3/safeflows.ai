@@ -1,9 +1,10 @@
+
 import React, { useEffect, useRef } from 'react';
 import { createChart } from 'lightweight-charts';
 
-export const HealthFactorChart = ({ data }) => {
-    const chartContainerRef = useRef(null);
-    const chart = useRef(null);
+export const HealthFactorChart = ({ data }:any) => {
+    const chartContainerRef = useRef<HTMLDivElement>(null);
+    const chart:any = useRef(null);
   
     useEffect(() => {
       if (!chartContainerRef.current || !data) return;
@@ -40,7 +41,7 @@ export const HealthFactorChart = ({ data }) => {
   
       // Format the data
       const currentTime = new Date();
-      const chartData = data.map((value, index) => ({
+      const chartData = data.map((value:any, index:number) => ({
         time: new Date(currentTime.getTime() + index * 60 * 60 * 1000).getTime() / 1000,
         value: value
       }));
@@ -55,7 +56,7 @@ export const HealthFactorChart = ({ data }) => {
       const handleResize = () => {
         if (chart.current && chartContainerRef.current) {
           chart.current.applyOptions({
-            width: chartContainerRef.current.clientWidth
+            width: chartContainerRef.current!.clientWidth 
           });
         }
       };

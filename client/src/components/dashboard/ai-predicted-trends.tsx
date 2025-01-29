@@ -35,7 +35,7 @@ const calculatePredictedHF = (selectedPool: any, predictions: any) => {
 
     deposits.forEach((d: any, i: number) => {
     console.log("d,i",d,i);
-      predctionPerMint[d.mint].forEach((k, j) => {
+      predctionPerMint[d.mint].forEach((k:any, j:number) => {
         if (j > min - 1) return;
         console.log("xxxx" ,d.liquidationThreshold,
             d.depositedAmount ,
@@ -58,7 +58,7 @@ const calculatePredictedHF = (selectedPool: any, predictions: any) => {
     });
 
     borrows.forEach((d: any, i: number) => {
-      predctionPerMint[d.mint].forEach((k, j) => {
+      predctionPerMint[d.mint].forEach((k:any, j:number) => {
         if (j > min - 1) return;
         if (i > 0) {
           borrowWeightPerHour[j] +=
@@ -96,7 +96,7 @@ export default function AiPredictedTrends({
   const [calculatedHealthFactor, setCalculatedHealthFactor] = useState<any>();
   const [options, setOptions] = useState<string[]>([]);
 
-  const handleMintChange = (e) => {
+  const handleMintChange = (e:any) => {
     console.log(e.target.value);
 
     setSelectedPool(

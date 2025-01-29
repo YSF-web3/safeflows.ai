@@ -136,7 +136,7 @@ export default function DashboardFeature() {
                         <div className="text-white text-[22px] font-normal text-left">AI Summary</div>
                         <div className="w-full  px-4 lg:px-9 border border-[#333333] rounded-md p-8  bg-opacity-60 min-h-[75px] text-white text-base lg:text-xl font-end flex items-center text-left py-2 lg:py-4 gap-5">
                         
-                        <AnimatedBrain size={40} color="#c9f31d" className="animate-pulse-custom"/>
+                        <AnimatedBrain size={40} color="#c9f31d"/>
                         {
                             <span className=" text-md text-[white] text-opacity-60">
 {query.data?.message?.analysis || "No Summary"}

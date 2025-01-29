@@ -24,7 +24,7 @@ const defaultItems = [
     }
 ];
 
-const AnimatedBorderCard = ({ item, index }) => {
+const AnimatedBorderCard = ({ item, index }:any) => {
     return (
       <div className="relative group">
         {/* Animated border gradient background */}

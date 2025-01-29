@@ -1,8 +1,8 @@
 import React from 'react';
 import { Shield, AlertTriangle, TrendingUp, Activity } from 'lucide-react';
 
-const LendingDashboard = ({ data }) => {
-  const getHealthColor = (health) => {
+const LendingDashboard = ({ data }:any) => {
+  const getHealthColor = (health:any) => {
     if (health > 2) return 'text-[#C9F31D]';
     if (health > 1.5) return 'text-yellow-400';
     return 'text-red-500';
@@ -20,7 +20,7 @@ const LendingDashboard = ({ data }) => {
             <h2 className="font-semibold text-white">Warnings</h2>
           </div>
           <ul className="list-disc pl-4 mt-2 text-white">
-            {data?.message.warnings.map((warning, index) => (
+            {data?.message.warnings.map((warning:any, index:any) => (
               <li key={index} className="text-sm text-left mb-2">{warning}</li>
             ))}
           </ul>
@@ -33,7 +33,7 @@ const LendingDashboard = ({ data }) => {
             <h2 className="font-semibold text-white">Suggestions</h2>
           </div>
           <ul className="list-disc pl-4 mt-2 text-white">
-            {data?.message.suggestions.map((suggestion, index) => (
+            {data?.message.suggestions.map((suggestion:any, index:number) => (
               <li key={index} className="text-sm text-left mb-2">{suggestion}</li>
             ))}
           </ul>
@@ -42,7 +42,7 @@ const LendingDashboard = ({ data }) => {
 
       {/* Pools */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {data.pools.map((pool) => (
+        {data.pools.map((pool:any) => (
           <div key={pool.obligationID} className="border border-[#333333] bg-[#161D26] rounded-xl overflow-hidden">
             <div className="border-b border-[#333333] p-4">
               <div className="flex justify-between items-center">
@@ -66,7 +66,7 @@ const LendingDashboard = ({ data }) => {
                   Deposits (${pool.depositValueUSD.toFixed(2)})
                 </h3>
                 <div className="space-y-2">
-                  {pool.deposits.map((deposit) => (
+                  {pool.deposits.map((deposit:any) => (
                     <div key={deposit.mint} className="flex items-center justify-between bg-[#1A2026] p-3 rounded-xl border border-[#333333]">
                       <div className="flex items-center space-x-3">
                         <img src={deposit.logo} alt={deposit.symbol} className="w-6 h-6 rounded-full" />
@@ -88,7 +88,7 @@ const LendingDashboard = ({ data }) => {
                   Borrows (${pool.borrowValueUSD.toFixed(2)})
                 </h3>
                 <div className="space-y-2">
-                  {pool.borrows.map((borrow) => (
+                  {pool.borrows.map((borrow:any) => (
                     <div key={borrow.mint} className="flex items-center justify-between bg-[#1A2026] p-3 rounded-xl border border-[#333333]">
                       <div className="flex items-center space-x-3">
                         <img src={borrow.logo} alt={borrow.symbol} className="w-6 h-6 rounded-full" />
