@@ -53,6 +53,9 @@ export class PoolsService {
 								ltv,
 								liquidationThreshold,
 								pricePerTokenInUSD: reserve['price'],
+								logo: reserve['logo'],
+								name: reserve['name'],
+								symbol: reserve['symbol'],
 								valueUSD,
 								depositedAmount,
 							})
@@ -91,6 +94,9 @@ export class PoolsService {
 								...borrow,
 								borrowWeight,
 								pricePerTokenInUSD: reserve['price'],
+								logo: reserve['logo'],
+								name: reserve['name'],
+								symbol: reserve['symbol'],
 								valueUSD,
 								borrowedAmount,
 							})
