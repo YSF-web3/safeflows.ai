@@ -97,7 +97,7 @@ export default function Header({
                     (path === "/" && pathname === "/")
                       ? "text-[#C9F31D] font-bold [&>span]:border-[#C9F31D]"
                       : "text-white font-normal [&>span]:border-transparent"
-                  } text-[22px] leading-8 flex flex-col gap-[18px]`}
+                  } text-[22px] leading-8 flex flex-col gap-4`}
                   href={path}
                 >
                   {label}
@@ -116,12 +116,12 @@ export default function Header({
               className="bg-transparent outline-none w-full h-full text-white font-normal text-sm leading-5"
             />
           </div>
-          <button className="w-[60px] h-[60px] hidden lg:flex items-center justify-center bg-[#161D26] rounded-xl">
+          <button className="min-w-[60px] h-[60px] hidden lg:flex items-center justify-center bg-[#161D26] rounded-xl px-4">
             <div className="flex items-baseline">
               <span className="text-white font-bold mr-2">
-                {(data ?? 0) / LAMPORTS_PER_SOL}
+                {((data ?? 0) / LAMPORTS_PER_SOL).toFixed(2)}
               </span>
-              <span className="text-sm text-white">SOL</span>
+              <span className="text-xs text-white">SOL</span>
             </div>
           </button>
           <WalletButton />

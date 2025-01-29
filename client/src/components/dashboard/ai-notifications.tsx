@@ -27,7 +27,7 @@ export default function AiNotifications ({ poolsData }: { poolsData: Pools }) {
                                 <Image src={ AlarmIcon } alt="Notification" width={18} height={22} />
                                 <div className="flex flex-col gap-[6px] justify-center min-w-[71px]">
                                         <div className={`text-sm leading-5 font-normal text-[#FDAA35]`}>Warning</div>
-                                    <div className="text-white font-light text-[8px] leading-3">
+                                    <div className="text-white font-light text-[10px] leading-3">
                                         {
                                             new Date(poolsData.message.createdAt).toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short' })
                                         }
@@ -46,7 +46,7 @@ export default function AiNotifications ({ poolsData }: { poolsData: Pools }) {
                                 <Image src={ AlarmIcon } alt="Notification" width={18} height={22} />
                                 <div className="flex flex-col gap-[6px] justify-center min-w-[71px]">
                                         <div className={`text-sm leading-5 font-normal text-[#3BD32D]`}>Suggestion</div>
-                                    <div className="text-white font-light text-[8px] leading-3">
+                                    <div className="text-white font-light text-[10px] leading-3">
                                         {
                                             new Date(poolsData.message.createdAt).toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short' })
                                         }

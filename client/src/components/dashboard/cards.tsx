@@ -65,10 +65,22 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
                 return updatedItems;
             });
         } else {
-            setItems(defaultItems)
+
+            setItems((prevItems) => {
+                const updatedItems = [...prevItems];
+                updatedItems[0].value = `$0.00 USD`;
+                updatedItems[1].value = `$0.00 USD`;
+                updatedItems[2].value = `1.00`;
+                updatedItems[3].value = `1.00`;
+                return updatedItems;
+            });
         }
 
     }, [ poolsData, predictionsData ])
+
+    useEffect(() => {
+        console.log("items changed : ", items)
+    }, [ items ])
 
     return (
         <div className="w-full flex gap-2 overflow-x-auto">
@@ -76,7 +88,7 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
                 items.map((item, index) => (
                     <div key={item.key} className="rounded-xl bg-[#12181F] h-[49px] px-5 flex items-center gap-1">
                         <div className="text-[#C2C2C2] text-sm font-normal text-nowrap">{item.label} : </div>
-                        <div className={`font-bold text-nowrap ${ ( index === 3 && Number(item.value) < 1 ) ? "animate-pulse-custom text-red-600 text-base": `${index === 3 ? "text-green-500": "text-white"} text-sm` }`}>
+                        <div className={`font-bold text-nowrap ${ ( index === 3 && Number(item.value) < 1 ) ? "animate-pulse-custom text-red-600 text-base": `${( index === 3 && Number(item.value) > 1 ) ? "text-green-500 animate-pulse-custom": "text-white"} text-sm` }`}>
                             {
                                 index === 3 ? 
                                 Number(item.value)
