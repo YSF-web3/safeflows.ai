@@ -30,6 +30,11 @@ export interface Prices {
     timestamp: string
 }
 
+export interface Predictions {
+    predictions: any, 
+    timestamp: string
+}
+
 
 export const defaultNotifications: Notification[] = [
     {
@@ -103,7 +108,7 @@ export function useGetPools({ address }: { address: PublicKey | undefined }) {
                 throw new Error("No address provided");
             }
 
-            const response = await api.get(`/pools?wallet=${ address.toBase58() ? "HsUwYB9RswS2tzmwrakEhDTGfvxRYLnNGrWoPZ5nTtyC" : address.toBase58() }`);
+            const response = await api.get(`/pools?wallet=${ process.env.NEXT_PUBLIC_WALLET_ENV === "dev" && address.toBase58() ? "HsUwYB9RswS2tzmwrakEhDTGfvxRYLnNGrWoPZ5nTtyC" : address.toBase58() }`);
             return response.data;
         },
         enabled: !!address,
@@ -119,6 +124,20 @@ export function useGetPrices({ symbols }: { symbols: string[] }) {
             }
 
             const response = await api.get(`/prices?symbols=${symbols.join(',')}`);
+            return response.data;
+        },
+    });
+}
+
+export function useGetPredictions({ mints }: { mints: string[] }) {
+    return useQuery({
+        queryKey: ['get-predictions', mints],
+        queryFn: async () => {
+            if (mints.length === 0) {
+                throw new Error("No mints provided");
+            }
+
+            const response = await api.get(`/predictions?mints=${mints.join(',')}`);
             return response.data;
         },
     });

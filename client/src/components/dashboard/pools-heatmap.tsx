@@ -1,29 +1,26 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from "d3";
-import { Pools, Prices } from "./dashboard-data-access"
+import { Pools, Prices, Predictions } from "./dashboard-data-access"
 
 
-export default function PoolsHeatmap({ onItemClicked, poolsData, pricesData }: { onItemClicked: (item: any) => void, poolsData: Pools, pricesData: Prices }) {
+export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData }: { onItemClicked: (item: any) => void, poolsData: Pools, predictionsData: Predictions }) {
     const svgRef = useRef(null);
 
     const drawChart = () => {
-        const prices = pricesData?.prices?.reduce((price, item) => {
-            price[item.symbol] = item.price;
-            return price;
-        }, {});
+        const predictions = {...predictionsData?.predictions}
 
         const margin = { top: 50, right: 0, bottom: 0, left: 50 };
     
-        const width = 750 - margin.right - margin.left;
         const height = 330 - margin.top - margin.bottom;
     
         const data = poolsData?.pools?.flatMap((pool: any) =>
             pool.deposits.map((deposit: any,j : number) => ({
                 pool: pool.lendingMarketName,
                 symbol: `${deposit.symbol}`,
-                value: prices[deposit.symbol] / deposit.pricePerTokenInUSD,
+                value: predictions[deposit.mint] / deposit.pricePerTokenInUSD,
             }))
         );
+
 
         const x_elements = Array.from(new Set(data.map((item) => item.symbol)));
         const y_elements = Array.from(new Set(data.map((item) => item.pool)));
@@ -89,11 +86,11 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, pricesData }: {
 
 
     useEffect(() => {
-        if( poolsData && pricesData) {
+        if( poolsData && predictionsData) {
             drawChart();
         }
 
-    }, [poolsData, pricesData]);
+    }, [poolsData, predictionsData]);
 
     
     return (

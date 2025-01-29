@@ -16,7 +16,7 @@ import PoolsHeatmap from "./pools-heatmap";
 import AiPredictedTrends from "./ai-predicted-trends";
 import PoolsTable from "./pools-table";
 
-import { useGetPools, useGetPrices } from "./dashboard-data-access";
+import { useGetPools, useGetPredictions, useGetPrices } from "./dashboard-data-access";
 
 const links: { label: string; href: string }[] = [
   { label: 'Solana Docs', href: 'https://docs.solana.com/' },
@@ -31,6 +31,7 @@ export default function DashboardFeature() {
     const [ showTable, setShowTable ] = useState(false)
     const { publicKey } = useWallet()
     const [symbols, setSymbols] = useState<string[]>([]);
+    const [mints, setMints] = useState<string[]>([]);
 
     const onPoolItemClicked = (item: any) => {
         setShowTable(true)
@@ -38,6 +39,7 @@ export default function DashboardFeature() {
 
     const query = useGetPools({ address: publicKey || undefined })
     const pricesQuery = useGetPrices({ symbols })
+    const predictionsQuery = useGetPredictions({ mints })
 
     useEffect(() => {
     
@@ -57,13 +59,21 @@ export default function DashboardFeature() {
 
     useEffect(() => {
         if( query.data ) {
-            const symbols = query.data.pools.map((pool: any) => {
-                return pool.deposits.map((deposit: any) => deposit.symbol);
+            // const symbols = query.data.pools.map((pool: any) => {
+            //     return pool.deposits.map((deposit: any) => deposit.symbol);
+            // }).flat();
+
+            // const uniqueSymbols = [...new Set<string>(symbols) as unknown as string[]];
+
+            // setSymbols(uniqueSymbols)
+
+            const mints = query.data.pools.map((pool: any) => {
+                return pool.deposits.map((deposit: any) => deposit.mint);
             }).flat();
 
-            const uniqueSymbols = [...new Set<string>(symbols) as unknown as string[]];
+            const uniqueMints = [...new Set<string>(mints) as unknown as string[]];
 
-            setSymbols(uniqueSymbols)
+            setMints(uniqueMints)
         }
     }, [ query.data ])
 
@@ -99,7 +109,7 @@ export default function DashboardFeature() {
                             <AiPredictedTrends />
                         </div>
                         <div className="h-full w-full lg:col-span-5">
-                            <PoolsHeatmap onItemClicked={onPoolItemClicked} poolsData={query.data} pricesData={pricesQuery.data} />
+                            <PoolsHeatmap onItemClicked={onPoolItemClicked} poolsData={query.data} predictionsData={predictionsQuery.data} />
                         </div>
                     </div>
                 </div>
