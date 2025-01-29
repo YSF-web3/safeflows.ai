@@ -40,7 +40,7 @@ export class NotificationsController {
 
   deleteNotification = async (req: Request, res: Response) => {
     try {
-      const { id } = req.query;
+      const { userAddress } = req.query;
       console.log(userAddress);
 
       if (!userAddress) {
