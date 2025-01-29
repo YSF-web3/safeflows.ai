@@ -13,10 +13,16 @@ import SettingIcon from "@/assets/svg/setting.svg";
 import SearchIcom from "@/assets/svg/search-normal.svg";
 
 import { WalletButton } from '../solana/solana-provider'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useGetBalance } from '../account/account-data-access'
+import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 
 
 export default function Header ({ links }: { links: { label: string; path: string }[] }) {
     const pathname = usePathname()
+    const { publicKey } = useWallet(); // Get the wallet public key
+    const {data} = useGetBalance({address:publicKey!})
+    
 
     return (
         <div className="container w-full h-[75px] bg-[#0B0E12] border border-[#333333] rounded-[13px] pl-6 pr-3 flex items-center justify-between">
@@ -70,15 +76,24 @@ export default function Header ({ links }: { links: { label: string; path: strin
                 </ul>
             </div>
             <div className="flex items-center gap-3">
-                <button className="w-[60px] h-[60px] hidden lg:flex items-center justify-center bg-[#161D26] rounded-xl">
-                    <Image src={SettingIcon} alt='Setting' width={20} height={20} />
-                </button>
+       
 
                 <div className="bg-[#161D26] rounded-xl lg:w-[310px] h-[60px] px-[26px] hidden lg:flex items-center gap-[18px]">
                     <Image src={SearchIcom} width={20} height={20} alt='Search' />
                     <input type="text" placeholder="Search" className="bg-transparent outline-none w-full h-full text-white font-normal text-sm leading-5" />
                 </div>
-                
+                 <button className="w-[60px] h-[60px] hidden lg:flex items-center justify-center bg-[#161D26] rounded-xl">
+                    <div className='flex items-baseline'>
+
+                    <span className='text-white font-bold mr-2'>
+                    {(data ?? 0 )/ LAMPORTS_PER_SOL}
+                    </span>
+                    <span className='text-sm'>
+                        SOL
+                    </span>
+                    </div>
+                     
+                </button>
                 <WalletButton />
                 {/* <div className="hidden lg:block">
                     <ClusterUiSelect />
