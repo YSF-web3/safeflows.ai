@@ -36,7 +36,7 @@ export function UiLayout({ children, links }: { children: ReactNode; links: { la
                 <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
 
                 <div className="relative z-10 text-center min-h-fit">
-                    <div className="h-full px-11 pt-11 pb-8 min-h-fit">
+                    <div className="h-full px-4 lg:px-11 pt-4 lg:pt-11 pb-8 min-h-fit">
                         <div className="flex items-center justify-center w-full">
                             <Header links={links} />
                         </div>

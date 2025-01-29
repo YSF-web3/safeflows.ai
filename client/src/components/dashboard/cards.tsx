@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Pools, Predictions } from "./dashboard-data-access"
+import { Pools, Predictions, PricePredictions } from "./dashboard-data-access"
 
 export default function Cards({ poolsData, predictionsData }: { poolsData: Pools, predictionsData: Predictions }) {
 
@@ -45,10 +45,12 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
                 return total + sum;
             }, 0);
             
-            const predictions = { ...predictionsData?.predictions };
+            const predictions: PricePredictions = { ...predictionsData?.predictions };
+
+            console.log("predictions: ", predictions)
 
             const data = poolsData?.pools?.flatMap((pool: any) =>
-                pool.deposits.map((deposit: any) => predictions[deposit.mint] / deposit.pricePerTokenInUSD)
+                pool.deposits.map((deposit: any) => predictions[deposit.mint].predictedPriceUsd / deposit.pricePerTokenInUSD)
             );
 
             const average_LPRC = data.reduce((acc, val) => acc + val, 0) / data.length;

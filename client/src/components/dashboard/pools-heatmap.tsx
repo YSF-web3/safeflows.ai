@@ -9,8 +9,9 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
     const tooltipRef = useRef(null);
 
     const drawChart = () => {
-        const predictions = { ...predictionsData?.predictions };
-    
+
+        const predictions = Object.fromEntries(Object.entries(predictionsData?.predictions || {}).map(([key, value]) => [key, value.predictedPriceUsd]));
+
         const margin = { top: 50, right: 0, bottom: 0, left: 50 };
         const width = 750 - margin.right - margin.left;
         const height = 330 - margin.top - margin.bottom;
@@ -22,8 +23,7 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
                 value: predictions[deposit.mint] / deposit.pricePerTokenInUSD,
             }))
         );
-    
-    
+
         let x_elements = Array.from(new Set(data?.map((item) => item.symbol)));
         let y_elements = Array.from(new Set(data?.map((item) => item.pool)));
 
