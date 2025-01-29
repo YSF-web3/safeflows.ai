@@ -6,7 +6,8 @@ import Link from 'next/link'
 
 import XIcon from "@/assets/svg/x.svg";
 import FacebookIcon from "@/assets/svg/facebook.svg"
-import DiscordIcon from "@/assets/svg/discord.svg"
+import GithubIcon from "@/assets/svg/github.svg"
+import TelegramIcon from "@/assets/svg/telegram.svg"
 
 
 export default function Footer ({ links }: { links: { label: string; path: string }[] }) {
@@ -18,12 +19,12 @@ export default function Footer ({ links }: { links: { label: string; path: strin
                 <div className="text-white text-xl"><img src="/logo.svg" width={180} alt="" /></div>
             </div>
             <div className="pr-4 flex items-center gap-4">
-                <Link href={"https://discord.com"} target="_blank" >
-                    <Image src={DiscordIcon} alt='discord.com' className="size-8" />
+                <Link href={"https://github.com"} target="_blank" >
+                    <Image src={GithubIcon} alt='github.com' className="size-8" />
                 </Link>
 
-                <Link href={"https://facebook.com"} target="_blank" >
-                    <Image src={FacebookIcon} alt='facebook.com' className="size-8" />
+                <Link href={"https://web.telegram.org"} target="_blank" >
+                    <Image src={TelegramIcon} alt='telegram.com' className="size-8" />
                 </Link>
 
                 <Link href={"https://x.com/SafeFlowsAI"} target="_blank" >

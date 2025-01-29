@@ -72,7 +72,7 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
         const colorScale = d3
             .scaleThreshold<number, string>()
             .domain([1])
-            .range(["#3BD32D", "#FDAA35", "#B52C24"]);
+            .range([ "#B52C24", "#FDAA35", "#3BD32D"]);
     
         // Tooltip setup
         const tooltip = d3
