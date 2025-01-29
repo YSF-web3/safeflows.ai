@@ -11,6 +11,7 @@ import {ClusterChecker, ClusterUiSelect, ExplorerLink} from '../cluster/cluster-
 import {WalletButton} from '../solana/solana-provider'
 
 import Header from './header'
+import Footer from "./footer";
 
 const poppins = Poppins({
     weight: ['400', '500', '600', '700'],
@@ -34,7 +35,7 @@ export function UiLayout({ children, links }: { children: ReactNode; links: { la
                 <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
 
                 <div className="relative z-10 text-center min-h-fit">
-                    <div className="h-full px-11 pt-11 pb-16 min-h-fit">
+                    <div className="h-full px-11 pt-11 pb-8 min-h-fit">
                         <div className="flex items-center justify-center w-full">
                             <Header links={links} />
                         </div>
@@ -77,6 +78,9 @@ export function UiLayout({ children, links }: { children: ReactNode; links: { la
                                 </Suspense>
                                 <Toaster position="bottom-right" />
                             </div>
+                        </div>
+                        <div className="flex items-center justify-center w-full mt-8">
+                            <Footer links={links} />
                         </div>
                     </div>
                 </div>
