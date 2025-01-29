@@ -10,53 +10,49 @@ export default function HealthFactor ({ poolsData }: { poolsData: Pools }) {
     
 
     useEffect(() => {
-        const height = width * 0.8; // Increase height for 270-degree arc
+        const height = width * 0.8;
         const outerRadius = width / 2; 
         const innerRadius = outerRadius * 0.80;
-        const arcSpan = (7 * Math.PI) / 5; // 270 degrees in radians
+        const arcSpan = (7 * Math.PI) / 5;
       
         d3.select(svgRef.current).selectAll("*").remove();
       
         const svg = d3
           .select(svgRef.current)
-          .attr("viewBox", `0 0 ${width} ${height}`) // Adjust view to fit the 270-degree arc
+          .attr("viewBox", `0 0 ${width} ${height}`)
           .attr("preserveAspectRatio", "xMidYMid meet");
       
         const g = svg
           .append("g")
-          .attr("transform", `translate(${width / 2}, ${outerRadius})`); // Centering for 270 degrees
+          .attr("transform", `translate(${width / 2}, ${outerRadius})`);
       
-        // Create the arc generator with rounded corners
         const arc = d3
           .arc<{ endAngle: number }>()
           .innerRadius(innerRadius)
           .outerRadius(outerRadius)
-          .startAngle(-arcSpan / 2)  // Start at -135 degrees (left side)
-          .cornerRadius(50); // Rounded edges
+          .startAngle(-arcSpan / 2)
+          .cornerRadius(50);
       
-        // Background arc (full 270 degrees)
         const background = g
           .append("path")
-          .datum({ endAngle: arcSpan / 2 }) // 270-degree arc
+          .datum({ endAngle: arcSpan / 2 })
           .style("fill", "#3D3E52")
           .attr("d", d => arc(d));
       
-        // Foreground arc (progress fill)
         const foreground = g
           .append("path")
-          .datum({ endAngle: -arcSpan / 2 }) // Start with no progress
+          .datum({ endAngle: -arcSpan / 2 })
           .style("fill", "#C9F31D")
           .attr("d", d => arc(d));
       
-        // Add first line of text (value percentage)
         const textValue = g
             .append("text")
             .attr("text-anchor", "middle")
-            .attr("dy", "0.4em") // Move the first line a bit up
+            .attr("dy", "0.4em")
             .style("font-size", "60px")
-            .style("fill", "#B52C24")  // Text color
+            .style("fill", "#B52C24")
             .style("font-weight", "700")
-            .text("0%");  // Initial value
+            .text("0%");
       
         const collateral = poolsData?.pools.reduce((total, obligation) => {
             const sum = obligation.depositValueUSD;
@@ -84,7 +80,7 @@ export default function HealthFactor ({ poolsData }: { poolsData: Pools }) {
             foreground
               .transition()
               .duration(750)
-              .attrTween("d", arcTween((percent / 100) * arcSpan - arcSpan / 2) as any) // Scale value within -135 to +135
+              .attrTween("d", arcTween((percent / 100) * arcSpan - arcSpan / 2) as any)
               .style("fill", color);
       
             textValue.transition()
@@ -102,7 +98,7 @@ export default function HealthFactor ({ poolsData }: { poolsData: Pools }) {
             foreground
               .transition()
               .duration(0)
-              .attrTween("d", arcTween((percent / 100) * arcSpan - arcSpan / 2) as any) // Scale value within -135 to +135
+              .attrTween("d", arcTween((percent / 100) * arcSpan - arcSpan / 2) as any)
               .style("fill", color);
                 
             textValue.text(`${percent.toFixed(0)}%`).style("fill", color);

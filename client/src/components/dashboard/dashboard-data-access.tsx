@@ -22,6 +22,14 @@ export interface Notification {
 
 export interface Pools {
     pools: any[], 
+    message: {
+        _id: string, 
+        address: string, 
+        analysis: string, 
+        warnings: string[], 
+        suggestions: string[], 
+        createdAt: string
+    }, 
     timestamp: string
 }
 

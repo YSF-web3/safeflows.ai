@@ -88,7 +88,7 @@ export default function DashboardFeature() {
                     <Cards poolsData={query.data} />
                     <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-4">
                         <div className="w-full h-full">
-                            <AiNotifications />
+                            <AiNotifications poolsData={query.data} />
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-11 gap-4">
                             <div className="lg:col-span-6">
@@ -101,8 +101,10 @@ export default function DashboardFeature() {
                     </div>
                     <div className="flex w-full flex-col gap-2">
                         <div className="text-white text-[22px] font-normal text-left">AI Summary</div>
-                        <div className="w-full border rounded-[13px] px-9 border-[#B52C24] min-h-[75px] text-white text-lg lg:text-[22px] font-normal flex items-center text-left py-2">
-                        3 Lending Pools are high risk Lorem ipsum dolor sit amet consectetur. Leo enim diam sollicitudin integer nunc .
+                        <div className="w-full border rounded-[13px] px-4 lg:px-9 border-[#B52C24] min-h-[75px] text-white text-base lg:text-xl font-normal flex items-center text-left py-2 lg:py-4">
+                        {
+                            query.data?.message?.analysis || "No Summary"
+                        }
                         </div>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-12 w-full gap-4 ">

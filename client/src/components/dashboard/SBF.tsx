@@ -10,63 +10,57 @@ export default function SupplyBorrowFactor({ poolsData }: { poolsData: Pools }) 
     const borrowedRef = useRef(0);
 
     useEffect(() => {
-        const height = width * 0.8; // Increase height for 270-degree arc
+        const height = width * 0.8;
         const outerRadius = width / 2; 
         const innerRadius = outerRadius * 0.80;
-        const arcSpan = (7 * Math.PI) / 5; // 270 degrees in radians
+        const arcSpan = (7 * Math.PI) / 5;
       
         d3.select(svgRef.current).selectAll("*").remove();
       
         const svg = d3
           .select(svgRef.current)
-          .attr("viewBox", `0 0 ${width} ${height}`) // Adjust view to fit the 270-degree arc
+          .attr("viewBox", `0 0 ${width} ${height}`)
           .attr("preserveAspectRatio", "xMidYMid meet");
       
         const g = svg
           .append("g")
-          .attr("transform", `translate(${width / 2}, ${outerRadius})`); // Centering for 270 degrees
+          .attr("transform", `translate(${width / 2}, ${outerRadius})`);
       
-        // Create the arc generator with rounded corners
         const arc = d3
           .arc<{ endAngle: number }>()
           .innerRadius(innerRadius)
           .outerRadius(outerRadius)
-          .startAngle(-arcSpan / 2)  // Start at -135 degrees (left side)
-          .cornerRadius(50); // Rounded edges
+          .startAngle(-arcSpan / 2)
+          .cornerRadius(50);
       
-        // Background arc (full 270 degrees)
         const background = g
           .append("path")
-          .datum({ endAngle: arcSpan / 2 }) // 270-degree arc
+          .datum({ endAngle: arcSpan / 2 })
           .style("fill", "#3D3E52")
           .attr("d", d => arc(d));
       
-        // Foreground arc (progress fill)
         const foreground = g
           .append("path")
-          .datum({ endAngle: -arcSpan / 2 }) // Start with no progress
+          .datum({ endAngle: -arcSpan / 2 })
           .style("fill", "#C9F31D")
           .attr("d", d => arc(d));
 
-                // Add second line of text (label)
-        const textLabel = g
-            .append("text")
+         g.append("text")
             .attr("text-anchor", "middle")
-            .attr("dy", "-0.3em") // Move second line below the first
+            .attr("dy", "-0.3em")
             .style("font-size", "24px")
-            .style("fill", "#C9F31D")  // Label color
+            .style("fill", "#C9F31D")
             .style("font-weight", "400")
-            .text("Completion");  // Initial label
+            .text("Completion");
       
-        // Add first line of text (value percentage)
         const textValue = g
             .append("text")
             .attr("text-anchor", "middle")
-            .attr("dy", "1.2em") // Move the first line a bit up
+            .attr("dy", "1.2em")
             .style("font-size", "24px")
-            .style("fill", "#C9F31D")  // Text color
+            .style("fill", "#C9F31D")
             .style("font-weight", "400")
-            .text("$0");  // Initial value
+            .text("$0");
         
         const limit = poolsData?.pools.reduce((total, obligation) => {
             const sum = obligation.borrowLimit;
@@ -120,7 +114,6 @@ export default function SupplyBorrowFactor({ poolsData }: { poolsData: Pools }) 
             };
         }
       
-        // return () => interval.stop();
     }, [width, poolsData]);
       
       
