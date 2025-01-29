@@ -59,6 +59,7 @@ export default function DashboardFeature() {
 
     useEffect(() => {
         if( query.data ) {
+            console.log(query.data)
             // const symbols = query.data.pools.map((pool: any) => {
             //     return pool.deposits.map((deposit: any) => deposit.symbol);
             // }).flat();
