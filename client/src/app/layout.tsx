@@ -14,6 +14,7 @@ export const metadata = {
 const links: { label: string; path: string }[] = [
   { label: "Dashboard", path: "/" },
   { label: "Notifications", path: "/notifications" },
+  { label: "Pools", path: "/pools" },
 ];
 
 export default function RootLayout({

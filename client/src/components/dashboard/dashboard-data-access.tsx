@@ -135,13 +135,16 @@ export function useGetPrices({ symbols }: { symbols: string[] }) {
 }
 
 export function useGetPredictions({ mints }: { mints: string[] }) {
+
+    
+
     return useQuery({
         queryKey: ['get-predictions', mints],
         queryFn: async () => {
             if (mints.length === 0) {
                 throw new Error("No mints provided");
             }
-
+            
             const response = await api.get(`/predictions?mints=${mints.join(',')}`);
             return response.data;
         },

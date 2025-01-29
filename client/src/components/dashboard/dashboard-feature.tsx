@@ -5,7 +5,7 @@ import * as d3 from "d3";
 import { Suspense, useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useQueryClient } from "@tanstack/react-query";
-
+import {Brain} from "lucide-react"
 
 import { AppHero } from '../ui/ui-layout'
 import Cards from "./cards";
@@ -40,7 +40,7 @@ export default function DashboardFeature() {
     const query = useGetPools({ address: publicKey || undefined })
     const pricesQuery = useGetPrices({ symbols })
     const predictionsQuery = useGetPredictions({ mints })
-
+    
     useEffect(() => {
     
         if (publicKey) {
@@ -54,6 +54,7 @@ export default function DashboardFeature() {
             return () => clearInterval(interval);  // Cleanup the interval
         }
     
+        
         return () => {};  // Proper cleanup when publicKey is falsy
     }, [publicKey]);
 
@@ -100,7 +101,9 @@ export default function DashboardFeature() {
                     </div>
                     <div className="flex w-full flex-col gap-2">
                         <div className="text-white text-[22px] font-normal text-left">AI Summary</div>
-                        <div className="w-full border rounded-[13px] px-4 lg:px-9 border-[#B52C24] min-h-[75px] text-white text-base lg:text-xl font-normal flex items-center text-left py-2 lg:py-4">
+                        <div className="w-full  px-4 lg:px-9 border border-[#333333] rounded-md p-8 bg-[#0B0E12] bg-opacity-60 min-h-[75px] text-white text-base lg:text-xl font-end flex items-center text-left py-2 lg:py-4 gap-2">
+                        
+                        <Brain/>
                         {
                             query.data?.message?.analysis || "No Summary"
                         }
@@ -108,7 +111,7 @@ export default function DashboardFeature() {
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-12 w-full gap-4 ">
                         <div className="h-full w-full lg:col-span-7">
-                            <AiPredictedTrends />
+                            <AiPredictedTrends isLoading={predictionsQuery.isLoading} predictions={predictionsQuery.data} />
                         </div>
                         <div className="h-full w-full lg:col-span-5">
                             <PoolsHeatmap onItemClicked={onPoolItemClicked} poolsData={query.data} predictionsData={predictionsQuery.data} />

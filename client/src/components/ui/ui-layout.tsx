@@ -20,7 +20,8 @@ const poppins = Poppins({
 
 
 export function UiLayout({ children, links }: { children: ReactNode; links: { label: string; path: string }[] }) {
-    const pathname = usePathname()
+
+     
 
     return (
         <>
