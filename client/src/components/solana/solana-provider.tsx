@@ -13,8 +13,6 @@ import {useCluster} from '../cluster/cluster-data-access'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
-import UserIcon from "@/assets/svg/user.svg";
-
 
 export const WalletButton = dynamic(async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton, {
     ssr: false,

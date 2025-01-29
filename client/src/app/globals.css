@@ -45,3 +45,8 @@ body {
     background: #555 !important;
   }
   
+
+  .wallet-adapter-button-trigger {
+    background-color: #161D26 !important;
+    height: 60px !important;
+  }
