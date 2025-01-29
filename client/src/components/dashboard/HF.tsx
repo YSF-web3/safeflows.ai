@@ -117,7 +117,7 @@ export default function HealthFactor ({ poolsData }: { poolsData: Pools }) {
     }, [width, poolsData]); 
      
     return (
-        <div className="w-full h-full flex flex-col gap-4 border border-[#333333] rounded-md p-8 bg-[#0B0E12] bg-opacity-60">
+        <div className="w-full h-full flex flex-col gap-4 border border-[#333333] rounded-md p-8  bg-opacity-60">
             <div className="w-full text-[#C2C2C2] text-[32px] font-normal">Health Factor</div>
             <div className="h-[225px] w-full flex flex-col justify-center items-center">
                 <svg ref={svgRef} className="max-w-[225px] max-h-[225px]"></svg>

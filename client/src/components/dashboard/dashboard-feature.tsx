@@ -26,6 +26,42 @@ const links: { label: string; href: string }[] = [
   { label: 'Solana Developers GitHub', href: 'https://github.com/solana-developers/' },
 ]
 
+const AnimatedBrain = ({ size = 40, color = "#c9f31d" }) => {
+  return (
+    <div className="relative inline-flex items-center justify-center">
+      {/* Subtle glowing background effect */}
+      <div className="absolute inset-0 animate-pulse">
+        <Brain 
+          size={size} 
+          color={color} 
+          className="opacity-40 transform scale-105" 
+        />
+      </div>
+      
+      {/* Main brain with gentle rotation */}
+      <Brain 
+        size={size} 
+        color={color} 
+        className="relative animate-spin-slow" 
+        style={{
+          animationDuration: '3s',
+          animationTimingFunction: 'linear',
+          animationIterationCount: 'infinite'
+        }}
+      />
+      
+      {/* Subtle pulsing overlay */}
+      <div className="absolute inset-0">
+        <Brain 
+          size={size} 
+          color={color} 
+          className="opacity-20 animate-subtle-ping" 
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function DashboardFeature() {
 
     const [ showTable, setShowTable ] = useState(false)
@@ -60,19 +96,17 @@ export default function DashboardFeature() {
 
     useEffect(() => {
         if( query.data ) {
-            // const symbols = query.data.pools.map((pool: any) => {
-            //     return pool.deposits.map((deposit: any) => deposit.symbol);
-            // }).flat();
+           
 
-            // const uniqueSymbols = [...new Set<string>(symbols) as unknown as string[]];
-
-            // setSymbols(uniqueSymbols)
-
-            const mints = query.data.pools.map((pool: any) => {
+            const mintsDeposits = query.data.pools.map((pool: any) => {
                 return pool.deposits.map((deposit: any) => deposit.mint);
             }).flat();
+            const mintsBorrows = query.data.pools.map((pool: any) => {
+                return pool.borrows.map((borrow: any) => borrow.mint);
+            }).flat();
 
-            const uniqueMints = [...new Set<string>(mints) as unknown as string[]];
+
+            const uniqueMints = [...new Set<string>(mintsDeposits) as unknown as string[],...new Set<string>(mintsBorrows) as unknown as string[]];
 
             setMints(uniqueMints)
         }
@@ -81,7 +115,6 @@ export default function DashboardFeature() {
 
     return (
         <div className="w-full py-4 lg:py-8">
-            {/* <AppHero title="gm" subtitle="Say hi to your new Solana dApp." /> */}
             {
                 !showTable ? 
                 <div className="flex flex-col gap-4 lg:gap-8 w-full">
@@ -101,11 +134,14 @@ export default function DashboardFeature() {
                     </div>
                     <div className="flex w-full flex-col gap-2">
                         <div className="text-white text-[22px] font-normal text-left">AI Summary</div>
-                        <div className="w-full  px-4 lg:px-9 border border-[#333333] rounded-md p-8 bg-[#0B0E12] bg-opacity-60 min-h-[75px] text-white text-base lg:text-xl font-end flex items-center text-left py-2 lg:py-4 gap-2">
+                        <div className="w-full  px-4 lg:px-9 border border-[#333333] rounded-md p-8  bg-opacity-60 min-h-[75px] text-white text-base lg:text-xl font-end flex items-center text-left py-2 lg:py-4 gap-5">
                         
-                        <Brain/>
+                        <AnimatedBrain size={40} color="#c9f31d" className="animate-pulse-custom"/>
                         {
-                            query.data?.message?.analysis || "No Summary"
+                            <span className=" text-md text-[#888888]">
+{query.data?.message?.analysis || "No Summary"}
+                            </span>
+                            
                         }
                         </div>
                     </div>

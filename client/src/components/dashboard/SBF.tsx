@@ -119,7 +119,7 @@ export default function SupplyBorrowFactor({ poolsData }: { poolsData: Pools }) 
       
       
     return (
-        <div className="w-full h-full flex flex-col gap-5 justify-between border border-[#333333] rounded-md p-8 bg-[#0B0E12] bg-opacity-60">
+        <div className="w-full h-full flex flex-col gap-5 justify-between border border-[#333333] rounded-md p-8  bg-opacity-60">
             <div className="h-[225px] w-full flex flex-col justify-center items-center">
                 <svg ref={svgRef} className="max-w-[225px] max-h-[225px]"></svg>
                 <div className="text-sm font-normal text-white">

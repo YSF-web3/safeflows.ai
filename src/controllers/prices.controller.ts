@@ -47,7 +47,8 @@ export class PricesController {
 
 
 			const mappedPredictions = mapPredictionTrends(predictions)
-			
+				console.log(mappedPredictions);
+				
 			res.json({
 				predictions:mappedPredictions,
 				timestamp: new Date().toISOString(),
