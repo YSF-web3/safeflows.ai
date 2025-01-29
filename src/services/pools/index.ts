@@ -57,9 +57,9 @@ export class PoolsService {
 
 					pool['depositValueUSD'] = totalDepositValueUSD
 					pool['borrowLimit'] = borrowLimit
-          pool['avgBorrowLimitThreshold'] = borrowLimit / totalDepositValueUSD
+          			pool['avgBorrowLimitThreshold'] = borrowLimit / totalDepositValueUSD
 					pool['liquidationAt'] = liquidationAt
-          pool['avgLiquidationThreshold'] = liquidationAt / totalDepositValueUSD
+          			pool['avgLiquidationThreshold'] = liquidationAt / totalDepositValueUSD
 					pool['deposits'] = updatedDeposits
 
 					const updatedBorrows = []
@@ -95,7 +95,7 @@ export class PoolsService {
 
 					pool['borrowValueUSD'] = totalWeightedBorrow
 					pool['borrows'] = updatedBorrows
-          pool['healthFactor'] = liquidationAt / totalWeightedBorrow
+          			pool['healthFactor'] = liquidationAt / totalWeightedBorrow
 
 					pools.push(pool)
 				}

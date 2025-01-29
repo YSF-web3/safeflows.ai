@@ -1,49 +1,109 @@
+import React, { useEffect, useRef } from 'react';
+import * as d3 from "d3";
+import { Pools, Prices } from "./dashboard-data-access"
 
-export default function PoolsHeatmap({ onItemClicked }: { onItemClicked: (item: any) => void }) {
 
-    const xLabels = new Array(7).fill(0).map((_, i) => `${i}`)
-    const yLabels = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon']
-    const data = new Array(yLabels.length)
-      .fill(0)
-      .map(() =>
-        new Array(xLabels.length).fill(0).map(() => Math.floor(Math.random() * 50 + 50))
-    )
+export default function PoolsHeatmap({ onItemClicked, poolsData, pricesData }: { onItemClicked: (item: any) => void, poolsData: Pools, pricesData: Prices }) {
+    const svgRef = useRef(null);
 
-    const getColor = (ratio : number) => {
-        if (ratio <= 0.5) {
-            // Interpolate between red (1, 0, 0) and yellow (1, 1, 0)
-            const green = Math.round(255 * (ratio / 0.5)); // Green increas               es
-            return `rgb(255, ${green}, 0)`;
-        } else {
-            // Interpolate between yellow (1, 1, 0) and green (0, 1, 0)
-            const red = Math.round(255 * (1 - (ratio - 0.5) / 0.5)); // Red decreases
-            return `rgb(${red}, 255, 0)`;
+    const drawChart = () => {
+        const prices = pricesData?.prices?.reduce((price, item) => {
+            price[item.symbol] = item.price;
+            return price;
+        }, {});
+
+        const margin = { top: 50, right: 0, bottom: 0, left: 50 };
+    
+        const width = 750 - margin.right - margin.left;
+        const height = 330 - margin.top - margin.bottom;
+    
+        const data = poolsData?.pools?.flatMap((pool: any) =>
+            pool.deposits.map((deposit: any,j : number) => ({
+                pool: pool.lendingMarketName,
+                symbol: `${deposit.symbol}`,
+                value: prices[deposit.symbol] / deposit.pricePerTokenInUSD,
+            }))
+        );
+
+        const x_elements = Array.from(new Set(data.map((item) => item.symbol)));
+        const y_elements = Array.from(new Set(data.map((item) => item.pool)));
+    
+        const itemSize = height / Math.max(x_elements.length, y_elements.length);
+        // const itemSize = 30;
+    
+        const xScale = d3.scaleBand()
+            .domain(x_elements)
+            .range([0, x_elements.length * itemSize])
+            .padding(0.05);
+    
+        const yScale = d3.scaleBand()
+            .domain(y_elements)
+            .range([0, y_elements.length * itemSize])
+            .padding(0.05);
+    
+        const colorScale = d3.scaleThreshold<number, string>()
+            .domain([1])
+            .range(["#3BD32D", "#FDAA35", "#B52C24"]);
+    
+        d3.select(svgRef.current).selectAll("*").remove();
+        const svg = d3.select(svgRef.current)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("width", "100%")
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+        svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("class", "cell")
+            .attr("width", xScale.bandwidth())
+            .attr("height", yScale.bandwidth())
+            .attr("x", (d) => xScale(d.symbol) || 0)
+            .attr("y", (d) => yScale(d.pool) || 0)
+            .attr("fill", (d) => colorScale(d.value))
+            .attr("rx", 4) // Border radius for x-axis
+            .attr("ry", 4) // Border radius for y-axis
+            .on("click", (event, d) => {});
+    
+        const xAxis = svg.append("g")
+            .attr("class", "x axis")
+            .style("color", `#FFFFFF`)
+            .style("font-size", "12px")
+            .call(d3.axisTop(xScale));
+    
+        xAxis.select("path").remove(); // Remove the axis line
+        xAxis.selectAll("line").remove(); // Remove the tick lines
+    
+        const yAxis = svg.append("g")
+            .attr("class", "y axis")
+            .style("color", `#FFFFFF`)
+            .style("font-size", "14px")
+            .style("font-weight", "600")
+            .call(d3.axisLeft(yScale));
+    
+        yAxis.select("path").remove(); // Remove the axis line
+        yAxis.selectAll("line").remove(); // Remove the tick lines
+    };
+    
+
+
+    useEffect(() => {
+        if( poolsData && pricesData) {
+            drawChart();
         }
-    }
 
+    }, [poolsData, pricesData]);
+
+    
     return (
         <div className="w-full h-full flex flex-col gap-3 border p-[18px] rounded-[13px] border-[#333333]">
             <div className="flex flex-col lg:flex-row justify-between items-center w-full gap-2">
                 <div className="text-base font-semibold text-white lg:pl-8 w-full text-left">Real Time Risk Scoring (RTRS)</div>
-                <div className="flex gap-2 w-full justify-end">
-                    <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">Weekly</button>
-                    <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-black bg-[#C9F31D]">Daily</button>
-                </div>
+
             </div>
-            <div className="grid grid-cols-9 gap-4">
-                {
-                    new Array(54).fill(0).map((_, i) => 
-                        i % 9  === 0 ? 
-                        <div className="text-[#A4A8AB] text-[10px] leading-4 font-normal h-full flex items-center lg:pl-4" key={i}>$840</div>
-                        :
-                        <div className="size-6 lg:size-[38px] border border-[#333333] rounded-[6px] text-[#0B0E129E] cursor-pointer" key={i} onClick={() => onItemClicked(i)}></div>
-                    )
-                }
-                {
-                    yLabels.map((label, i) => (
-                        <div className="text-[#A4A8AB] text-xs leading-5 font-semibold h-full flex items-center w-full lg:pl-2" key={i}>{label}</div>
-                    ))
-                }
+            <div>
+                <svg ref={svgRef} />
             </div>
         </div>
     )

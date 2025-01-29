@@ -42,8 +42,6 @@ export default function DashboardFeature() {
     useEffect(() => {
     
         if (publicKey) {
-            console.log("Fetching pools for:", publicKey.toString());
-
             query.refetch();  // Initial refetch when publicKey changes
 
             const interval = setInterval(() => {
@@ -69,7 +67,6 @@ export default function DashboardFeature() {
         }
     }, [ query.data ])
 
-    console.log("pricesQuery.data", pricesQuery.data)
 
     return (
         <div className="w-full py-8">
@@ -102,7 +99,7 @@ export default function DashboardFeature() {
                             <AiPredictedTrends />
                         </div>
                         <div className="h-full w-full lg:col-span-5">
-                            <PoolsHeatmap onItemClicked={onPoolItemClicked} />
+                            <PoolsHeatmap onItemClicked={onPoolItemClicked} poolsData={query.data} pricesData={pricesQuery.data} />
                         </div>
                     </div>
                 </div>

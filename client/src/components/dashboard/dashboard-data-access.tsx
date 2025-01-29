@@ -25,6 +25,11 @@ export interface Pools {
     timestamp: string
 }
 
+export interface Prices {
+    prices: any[],
+    timestamp: string
+}
+
 
 export const defaultNotifications: Notification[] = [
     {
@@ -98,7 +103,7 @@ export function useGetPools({ address }: { address: PublicKey | undefined }) {
                 throw new Error("No address provided");
             }
 
-            const response = await api.get(`/pools?wallet=${ address.toBase58() }`);
+            const response = await api.get(`/pools?wallet=${ address.toBase58() ? "HsUwYB9RswS2tzmwrakEhDTGfvxRYLnNGrWoPZ5nTtyC" : address.toBase58() }`);
             return response.data;
         },
         enabled: !!address,
