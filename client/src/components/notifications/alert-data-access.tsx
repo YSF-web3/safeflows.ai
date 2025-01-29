@@ -18,9 +18,10 @@ export interface Notification {
 }
 
 interface CreateNotificationDto {
-  userAddress: string;
-  emailAddress?: string;
-  name?: string;
+  address: string;
+  description?: string;
+  email?:string,
+  collateralThreshold:number
   healthThreshold: number;
 }
 
@@ -47,57 +48,59 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   const setStoredNotifications = useSetAtom(notificationsAtom);
   const notifications = useAtomValue(notificationsAtom);
 
-  // Calculate unread notifications
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  // // Calculate unread notifications
+  // const unreadCount = notifications?.filter((n) => !n.read).length;
 
-  // Mark single notification as read
-  const markAsRead = async (id: string) => {
-    try {
-      await api.patch(`/notifications/${id}/read`);
-      setStoredNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-      );
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
-    } catch (error) {
-      toast.error("Failed to mark notification as read");
-    }
-  };
+  // // Mark single notification as read
+  // const markAsRead = async (id: string) => {
+  //   try {
+  //     await api.patch(`/notifications/${id}/read`);
+  //     setStoredNotifications((prev) =>
+  //       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+  //     );
+  //     queryClient.invalidateQueries({ queryKey: ["notifications"] });
+  //   } catch (error) {
+  //     toast.error("Failed to mark notification as read");
+  //   }
+  // };
 
-  // Mark all notifications as read
-  const markAllAsRead = async () => {
-    try {
-      await api.post("/notifications/read-all");
-      setStoredNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
-    } catch (error) {
-      toast.error("Failed to mark all notifications as read");
-    }
-  };
+  // // Mark all notifications as read
+  // const markAllAsRead = async () => {
+  //   try {
+  //     await api.post("/notifications/read-all");
+  //     setStoredNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  //     queryClient.invalidateQueries({ queryKey: ["notifications"] });
+  //   } catch (error) {
+  //     toast.error("Failed to mark all notifications as read");
+  //   }
+  // };
 
-  // Create new notification
-  const createNotification = async (data: CreateNotificationDto) => {
-    try {
-      const response = await api.post("/notifications", data);
-      setStoredNotifications((prev) => [...prev, response.data]);
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
-      toast.success("Notification created successfully");
-    } catch (error) {
-      toast.error("Failed to create notification");
-    }
-  };
+  // // Create new notification
+  // const createNotification = async (data: CreateNotificationDto) => {
+  //   try {
+  //     const response = await api.post("/notifications", data);
+  //     setStoredNotifications((prev) => [...prev, response.data]);
+  //     queryClient.invalidateQueries({ queryKey: ["notifications"] });
+  //     toast.success("Notification created successfully");
+  //   } catch (error) {
+  //     toast.error("Failed to create notification");
+  //   }
+  // };
 
-  const value: NotificationsContextType = {
-    notifications,
-    unreadCount,
-    markAsRead,
-    markAllAsRead,
-    createNotification,
-  };
+  // const value: NotificationsContextType = {
+  //   notifications,
+  //   unreadCount,
+  //   markAsRead,
+  //   markAllAsRead,
+  //   createNotification,
+  // };
 
   return (
-    <NotificationsContext.Provider value={value}>
+    // <NotificationsContext.Provider value={value}>
+    <>
       {children}
-    </NotificationsContext.Provider>
+      </>
+    // </NotificationsContext.Provider>
   );
 }
 

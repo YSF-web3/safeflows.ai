@@ -91,7 +91,9 @@ const OnBoardingModal = ({ isOpen, onClose, poolsData }: any) => {
               </div>
               <div className="flex flex-col gap-2 justify-end items-center">
                 <WalletButton />
-                <button className="hover:text-white active:scale-95">
+                <button className="hover:text-white active:scale-95" onClick={()=>{
+                  onClose()
+                }}>
                   Connect later
                 </button>
               </div>

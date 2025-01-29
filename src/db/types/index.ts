@@ -39,7 +39,30 @@ export interface IRiskScore {
   timestamp?: Date;
 }
 
-export interface Notification {
+
+export interface INotificationSetting {
+  collateralThreshold: number
+  description: string
+  email: string
+  oneTime:boolean
+  healthThreshold:number
+  createdAt: Date
+  notificatiosn: INotification[]
+}
+
+export interface INotificationSettingDTO {
+  address: Date,
+  collateralThreshold: number
+  description: string
+  email: string
+  oneTime:boolean
+  healthThreshold:number
+}
+
+
+
+
+export interface INotification {
   walletAddress: string;
   type: "HEALTH_WARNING" | "HEALTH_CRITICAL" | "RISK_HIGH";
   message?: string;

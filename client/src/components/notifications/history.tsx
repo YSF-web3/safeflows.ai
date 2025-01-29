@@ -1,7 +1,8 @@
 
+"use client"
 
-export default function History() {
-    const history = new Array(0).fill(0).map((_, i) => 
+export default function History({notifications}:any) {
+    const historyRender = notifications.map((_, i) => 
     <div className="w-full lg:h-[80px] border-none rounded-xl bg-[#151B21] flex flex-row justify-between items-center px-[21px] pb-3 pt-[14px]" key={i}>
         <div className="flex flex-col gap-2 flex-grow h-full">
             <div className="text-[#C2C2C2] text-sm font-normal text-left"></div>
@@ -21,7 +22,7 @@ export default function History() {
             <div className="text-white text-[22px] font-normal leading-8 w-full text-left">History</div>
             <div className="overflow-y-auto pr-3 space-y-2">
                 {
-                 history.length ? history : <div className="text-gray-400 p-12"> No alerts yet   </div>
+                 historyRender.length ? historyRender : <div className="text-gray-400 p-12"> No alerts yet   </div>
                 }
             </div>
         </div>

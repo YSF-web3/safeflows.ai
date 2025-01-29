@@ -1,11 +1,15 @@
-import { Notification } from "@/db/types";
+import { createNotificationSetting,  getNotificationSettings } from "@/db/actions/alert";
+
 
 export class NotificationsService {
   constructor() {}
 
   async getNotifications(address: string): Promise<Notification[]> {
-    let notifications: Notification[] = [];
+    let notifications: any = await getNotificationSettings(address);;
 
-    return notifications;
+    console.log(notifications);
+    
+    return notifications
+    
   }
 }

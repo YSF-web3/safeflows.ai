@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { number } from "zod";
+import { INotification } from "@/db/types"
 
 export const PositionSchema = new mongoose.Schema({
   walletAddress: {
@@ -28,6 +30,80 @@ export const PositionSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+export const NotificationSettingSchema = new mongoose.Schema({
+  address: {
+    type: String,
+    required: true,
+    index: true,
+  },
+  collateralThreshold: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  healthThreshold: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  description: {
+    type: String,
+    required: true,
+    index: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    index: true,
+  },
+  oneTime: {
+    type: String,
+    required: true,
+    index: true,
+  },
+  active: {
+    type: String,
+    required: false,
+    default: true
+
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  notifications: {
+    type: [
+      {
+        walletAddress: {
+          type: String,
+          required: true,
+        },
+        type: {
+          type: String,
+          enum: ["HEALTH_WARNING", "HEALTH_CRITICAL", "RISK_HIGH"],
+          required: true,
+        },
+        message: {
+          type: String,
+        },
+        healthFactor: {
+          type: Number,
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+        isRead: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
+    default: [],
+  },
+});
+
 
 export const RiskScoreSchema = new mongoose.Schema({
   poolAddress: {

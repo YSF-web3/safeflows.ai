@@ -77,7 +77,7 @@ export function UiLayout({ children, links }: { children: ReactNode; links: { la
                                 >
                                     {children}
                                 </Suspense>
-                                <Toaster position="bottom-right" />
+                                <Toaster position="top-center" />
                             </div>
                         </div>
                         <div className="flex items-center justify-center w-full mt-8">
