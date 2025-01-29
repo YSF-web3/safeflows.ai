@@ -2,7 +2,7 @@
 "use client"
 
 export default function History({notifications}:any) {
-    const historyRender = notifications.map((_, i) => 
+    const historyRender = notifications.map((_:any, i:number) => 
     <div className="w-full lg:h-[80px] border-none rounded-xl bg-[#151B21] flex flex-row justify-between items-center px-[21px] pb-3 pt-[14px]" key={i}>
         <div className="flex flex-col gap-2 flex-grow h-full">
             <div className="text-[#C2C2C2] text-sm font-normal text-left"></div>
