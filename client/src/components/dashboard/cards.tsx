@@ -47,8 +47,6 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
             
             const predictions: PricePredictions = { ...predictionsData?.predictions };
 
-            console.log("predictions: ", predictions)
-
             const data = poolsData?.pools?.flatMap((pool: any) =>
                 pool.deposits.map((deposit: any) => predictions[deposit.mint].predictedPriceUsd / deposit.pricePerTokenInUSD)
             );
