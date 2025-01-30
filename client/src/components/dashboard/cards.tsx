@@ -26,7 +26,9 @@ const defaultItems = [
 
 const AnimatedBorderCard = ({ item, index }:any) => {
     return (
-      <div className="relative group">
+      <div className="relative group " style={{
+        zIndex:-1
+      }}>
         {/* Animated border gradient background */}
         <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-sm group-hover:blur opacity-70 transition-all duration-500 animate-gradient-xy" />
         

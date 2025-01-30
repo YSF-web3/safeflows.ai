@@ -15,7 +15,7 @@ const FeatureItem = ({ icon: Icon, title, description }:any) => (
   </div>
 );
 
-const ProtocolCard = ({ logo, name, isLive = true }:any) => (
+export const ProtocolCard = ({ logo, name, isLive = true }:any) => (
   <div className="bg-[#161D26] rounded-xl p-4 flex flex-col items-center gap-3 border border-[#333333] hover:border-[#C9F31D] transition-colors relative">
     <img src={logo} alt={name} className="h-12 w-12 object-contain" />
     <span className="text-white font-bold text-lg">{name}</span>

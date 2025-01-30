@@ -7,7 +7,7 @@ import { useCreateNotification } from "./alert-data-access";
 import CheckIcon from "@/assets/svg/circle-check.svg";
 import CircleIcon from "@/assets/svg/circle.svg";
 import CircleCheckedIcon from "@/assets/svg/circle-checked.svg";
-import { IconBell } from "@tabler/icons-react";
+import { IconSettings } from "@tabler/icons-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function SettingPage() {
@@ -42,7 +42,7 @@ export default function SettingPage() {
   return (
     <div className="max-w-[697px] w-full border rounded-[13px] border-[#333333] px-[38px] py-6 flex flex-col gap-5">
       <div className="flex items-center gap-2 m-auto">
-        <IconBell />
+        <IconSettings color="#C9F31D" />
         <h2 className="text-2xl text-white uppercase font-bold">Set Alert</h2>
       </div>
 
@@ -50,7 +50,7 @@ export default function SettingPage() {
         {/* Description Input */}
         <div className="w-full flex flex-col gap-2">
           <div className="w-full text-white text-left text-base font-normal">Description</div>
-          <div className="bg-[#161D26] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
+          <div className="bg-[black] border border-[#333333] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
             <input
               name="description"
               type="text"
@@ -66,7 +66,7 @@ export default function SettingPage() {
         {/* Email Input */}
         <div className="w-full flex flex-col gap-2">
           <div className="w-full text-white text-left text-base font-normal">Email Address</div>
-          <div className="bg-[#161D26] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
+          <div className="bg-[black] border border-[#333333] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
             <input
               name="email"
               type="email"
@@ -82,7 +82,7 @@ export default function SettingPage() {
         {/* Threshold Setting */}
         <div className="w-full flex flex-col gap-2">
           <div className="w-full text-white text-left text-base font-normal">Threshold Setting</div>
-          <div className="bg-[#161D26] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
+          <div className="bg-[black] border border-[#333333] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
             <input
               type="range"
               min="1"
@@ -101,7 +101,7 @@ export default function SettingPage() {
         {/* Collateral Health Thresholds */}
         <div className="w-full flex flex-col gap-2">
           <div className="w-full text-white text-left text-base font-normal">Collateral Health Thresholds</div>
-          <div className="bg-[#161D26] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
+          <div className="bg-[black] border border-[#333333] h-16 w-full flex items-center px-6 rounded-2xl gap-4">
             <input
               type="range"
               min="1"
