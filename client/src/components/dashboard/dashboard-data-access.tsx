@@ -95,20 +95,34 @@ export const defaultNotifications: Notification[] = [
 ]
 
 const dashboardAtom = atomWithStorage<Notification[]>('dashboard-notifications', defaultNotifications)
+const loadingAtom = atomWithStorage<boolean>('dashboard-loading', false)
+
+const activeLoadingAtom = atom<boolean>((get) => {
+    return get(loadingAtom)
+})
 
 
 export interface DashboardProviderContext {
     notifications: Notification[]
+    loading: boolean, 
+    addLoading: (cluster: boolean) => void
 }
 
 const Context = createContext<DashboardProviderContext>({} as DashboardProviderContext)
 
 export function DashboardProvider({ children }: { children: ReactNode }) {
 
+    const loading = useAtomValue(activeLoadingAtom)
     const notifications = useAtomValue(dashboardAtom)
+    const setLoading = useSetAtom(loadingAtom)
+
 
     const value: DashboardProviderContext = {
-        notifications: notifications
+        notifications: notifications, 
+        loading: loading, 
+        addLoading: (b: boolean) => {
+            setLoading(b)
+        }
     }
 
 

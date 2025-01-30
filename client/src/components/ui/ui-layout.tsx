@@ -6,8 +6,10 @@ import * as React from "react";
 import { ReactNode, Suspense, useEffect, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useDashboard } from "../dashboard/dashboard-data-access";
 import { AccountChecker } from "../account/account-ui";
+
+
 import {
   ClusterChecker,
   ClusterUiSelect,
@@ -17,6 +19,7 @@ import { WalletButton } from "../solana/solana-provider";
 
 import Header from "./header";
 import Footer from "./footer";
+import LoadingScreen from "./loader";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -36,70 +39,80 @@ const pageTransition = {
 };
 
 export function UiLayout({
-  children,
-  links,
+    children,
+    links,
 }: {
-  children: ReactNode;
-  links: { label: string; path: string }[];
+    children: ReactNode;
+    links: { label: string; path: string }[];
 }) {
-  const pathname = usePathname();
+    const pathname = usePathname();
 
-  return (
-    <>
-      <style jsx global>{`
-        html {
-          font-family: ${poppins.style.fontFamily};
-        }
-      `}</style>
+    const { loading } = useDashboard()
 
-      <div className="relative h-screen bg-[#000000] min-h-fit overflow-x-hidden">
-        <div className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"></div>
-        <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
 
-        <div className="relative z-10 text-center min-h-fit">
-          <div className="h-full px-4 lg:px-11 pt-4 lg:pt-11 pb-8 min-h-fit">
-            <div className="flex items-center justify-center w-full">
-              <Header links={links} />
-            </div>
-            <ClusterChecker>
-              <AccountChecker />
-            </ClusterChecker>
-            <div className="w-full h-full flex justify-center min-h-fit">
-              <div className="w-full h-full container min-h-fit">
-                <Suspense
-                  fallback={
-                    <div className="text-center my-32">
-                      <span className="loading loading-spinner loading-lg"></span>
+    return (
+        <>
+            <style jsx global>{`
+                html {
+                font-family: ${poppins.style.fontFamily};
+                }
+            `}</style>
+
+            <div className="relative h-screen bg-[#000000] min-h-fit overflow-x-hidden">
+                <div className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"></div>
+                <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
+
+                {
+                    loading && 
+                    <div className="absolute z-20 w-[100vw] h-[100vh] flex items-center justify-center">
+                        <LoadingScreen />
                     </div>
-                  }
-                >
-                  <AnimatePresence initial={false} mode="wait">
-                    <motion.div
-                      key={pathname}
-                      variants={slideVariants}
-                      initial="enter"
-                      animate="center"
-                      exit="exit"
-                      transition={{
-                        x: { type: "spring", stiffness: 300, damping: 30 },
-                        opacity: { duration: 0.1 },
-                      }}
-                    >
-                      {children}
-                    </motion.div>
-                  </AnimatePresence>
-                </Suspense>
-                <Toaster position="top-center" />
-              </div>
+                }
+
+                <div className="relative z-10 text-center min-h-fit">
+                    <div className="h-full px-4 lg:px-11 pt-4 lg:pt-11 pb-8 min-h-fit">
+                        <div className="flex items-center justify-center w-full">
+                            <Header links={links} />
+                        </div>
+                        <ClusterChecker>
+                            <AccountChecker />
+                        </ClusterChecker>
+                        <div className="w-full h-full flex justify-center min-h-fit">
+                            <div className="w-full h-full container min-h-fit">
+                                <Suspense
+                                    fallback={
+                                        <div className="text-center my-32">
+                                            <span className="loading loading-spinner loading-lg"></span>
+                                        </div>
+                                    }
+                                >
+                                    <AnimatePresence initial={false} mode="wait">
+                                        <motion.div
+                                            key={pathname}
+                                            variants={slideVariants}
+                                            initial="enter"
+                                            animate="center"
+                                            exit="exit"
+                                            transition={{
+                                                x: { type: "spring", stiffness: 300, damping: 30 },
+                                                opacity: { duration: 0.1 },
+                                            }}
+                                        >
+                                        {children}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </Suspense>
+                                <Toaster position="top-center" />
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-center w-full mt-8">
+                            <Footer links={links} />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="flex items-center justify-center w-full mt-8">
-              <Footer links={links} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+        </>
+    );
 }
 
 export function AppModal({

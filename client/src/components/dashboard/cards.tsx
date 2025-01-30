@@ -59,7 +59,6 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
 
     const [ items, setItems ] = useState(defaultItems)
 
-    
     useEffect(() => {
 
         if( poolsData && predictionsData ) {
@@ -109,16 +108,11 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
 
     }, [ poolsData, predictionsData ])
 
-    useEffect(() => {
-        console.log("items changed : ", items)
-    }, [ items ])
-
     return (
         <div className="w-full flex gap-2 overflow-x-auto h-[24]">
             {
                 items.map((item, index) => (
-                    <AnimatedBorderCard item={item} index={index} />
-
+                    <AnimatedBorderCard item={item} key={index} />
                 ))
             }
         </div>
