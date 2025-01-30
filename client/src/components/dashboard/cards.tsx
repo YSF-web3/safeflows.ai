@@ -88,7 +88,7 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
                 items.map((item, index) => (
                     <div key={item.key} className="rounded-xl bg-[#12181F] h-[49px] px-5 flex items-center gap-1">
                         <div className="text-[#C2C2C2] text-sm font-normal text-nowrap">{item.label} : </div>
-                        <div className={`font-bold text-nowrap ${ ( index === 3 && Number(item.value) < 1 ) ? "animate-pulse-custom text-red-600 text-base": `${index === 3 ? "text-green-500 animate-pulse-custom": "text-white"} text-sm` }`}>
+                        <div className={`font-bold text-nowrap ${ ( index === 3 && Number(item.value) < 1 ) ? "animate-pulse-custom text-red-600 text-base": `${( index === 3 && Number(item.value) > 1 ) ? "text-green-500 animate-pulse-custom": "text-white"} text-sm` }`}>
                             {
                                 index === 3 ? 
                                 Number(item.value)
