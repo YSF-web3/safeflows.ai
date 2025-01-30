@@ -2,6 +2,13 @@
 ![Logo](https://github.com/YSF-web3/safeflows.ai/blob/main/client/public/safeflow-logo.png?raw=true)
 
 
+
+
+https://github.com/user-attachments/assets/aa04ad84-2b59-46a4-9c96-f795b3583cef
+
+
+
+
 # SafeFlows.ai: Revolutionizing Risk Management in DeFi 🛡️  
 
 SafeFlows.ai is a next-generation, AI-powered platform designed to simplify and elevate risk management in the decentralized finance (DeFi) space. Powered by the **Solana Blockchain** and enhanced by DeepSeek AI, SafeFlows.ai combines cutting-edge technology with an intuitive interface to deliver **real-time insights**, **smart monitoring tools**, and **customizable strategies**.
