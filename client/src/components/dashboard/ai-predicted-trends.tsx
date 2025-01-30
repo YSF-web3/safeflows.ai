@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
-import { Pools, PriceData, Predictions } from "./dashboard-data-access"
+import { Pools, PredictedTrendItem, Predictions } from "./dashboard-data-access"
 
 
 
@@ -9,231 +9,283 @@ export default function AiPredictedTrends({ poolsData, predictionsData }: { pool
     const svgRef = useRef(null);
     const [ selectedPool, setSelectedPool ] = useState<string>("So11111111111111111111111111111111111111112");
 
-
-    const width = 800;
-    const height = 300;
-
-
-
-    useEffect(() => {
-        const marginTop = 20;
-        const marginRight = 30;
-        const marginBottom = 30;
-        const marginLeft = 40;
-
-        const predictions: any = predictionsData?.predictions || {};
-
-        const data: {price: number, timestamp: Date}[] = [ ...(predictions[selectedPool]?.predictedTrend ? predictions[selectedPool]?.predictedTrend: []) ].map((pre: any) => ({price: pre.price, timestamp: new Date(pre.timestamp)}));
-
-        console.log(data)
+    
+    const drawChart = (data: PredictedTrendItem[]) => {
+        const width = 800;
+        const height = 300;
+        const margin = { top: 20, right: 30, bottom: 30, left: 50 };
     
         const x = d3
             .scaleUtc()
             .domain(d3.extent(data, (d) => d.timestamp) as [Date, Date])
-            .range([marginLeft, width - marginRight]);
+            .range([margin.left, width - margin.right]);
     
         const y = d3
             .scaleLinear()
-            .domain([0, d3.max(data, (d) => d.price) || 0])
+            .domain([d3.min(data, (d) => d.price) || 0, d3.max(data, (d) => d.price) || 1])
             .nice()
-            .range([height - marginBottom, marginTop]);
+            .range([height - margin.bottom, margin.top]);
     
-        const line = d3
+        const svg = d3.select(svgRef.current);
+        svg.selectAll("*").remove(); // Clear previous chart
+    
+        // Apply a dark theme
+        svg
+            .style("background", "#1e1e1e")
+            .style("color", "#fff");
+    
+        // Define line generator
+        const lineGenerator = d3
             .line<{ timestamp: Date; price: number }>()
             .x((d) => x(d.timestamp))
             .y((d) => y(d.price))
-            .curve(d3.curveMonotoneX);
+            .curve(d3.curveBasis); // Smooth curve
     
-        const area = d3
-            .area<{ timestamp: Date; price: number }>()
-            .x((d) => x(d.timestamp))
-            .y0(height - marginBottom) // Bottom of the chart
-            .y1((d) => y(d.price))
-            .curve(d3.curveMonotoneX); // Line position
+        // Draw Axes with custom styling
+        svg.append("g")
+            .attr("transform", `translate(0,${height - margin.bottom})`)
+            .call(d3.axisBottom(x).ticks(5).tickFormat(d3.timeFormat("%H:%M") as any))
+            .selectAll("text")
+            .style("fill", "#aaa");
     
-        const svg = d3
-            .select(svgRef.current)
-            .attr("viewBox", `0 0 ${width} ${height}`)
-            .attr("width", width)
-            .attr("height", height)
-            .attr("style", `max-width: 100%; height: 300px; font: 10px sans-serif;`)
-            .style("-webkit-tap-highlight-color", "transparent")
-            .style("overflow", "visible")
-            .on("pointerenter pointermove", pointerMoved)
-            .on("pointerleave", pointerLeft)
-            .on("touchstart", (event) => event.preventDefault());
+        svg.append("g")
+            .attr("transform", `translate(${margin.left},0)`)
+            .call(d3.axisLeft(y))
+            .selectAll("text")
+            .style("fill", "#aaa");
     
-        svg.selectAll("*").remove();
+        // Add gridlines
+        // svg.append("g")
+        //     .attr("class", "grid")
+        //     .call(
+        //         d3
+        //             .axisBottom(x)
+        //             .ticks(5)
+        //             .tickSize(-height + margin.top + margin.bottom)
+        //             .tickFormat("")
+        //     )
+        //     .selectAll("line")
+        //     .style("stroke", "#444")
+        //     .style("stroke-width", "0.5px");
     
-        // Add gradient definition
-        const defs = svg.append("defs");
-        const gradient = defs.append("linearGradient")
-            .attr("id", "area-gradient")
-            .attr("x1", "0%")
-            .attr("x2", "0%")
-            .attr("y1", "0%")
-            .attr("y2", "100%");
+        // svg.append("g")
+        //     .attr("class", "grid")
+        //     .call(
+        //         d3
+        //             .axisLeft(y)
+        //             .ticks(5)
+        //             .tickSize(-width + margin.left + margin.right)
+        //             .tickFormat("")
+        //     )
+        //     .selectAll("line")
+        //     .style("stroke", "#444")
+        //     .style("stroke-width", "0.5px");
     
-        gradient.append("stop")
-            .attr("offset", "0%")
-            .attr("stop-color", "#C9F31D80")
-            .attr("stop-opacity", 0.7);
+        // Split data into segments for red/green lines
+        let segment: { timestamp: Date; price: number }[] = [];
+        let currentColor = data[0].price >= 1 ? "green" : "red";
     
-        gradient.append("stop")
-            .attr("offset", "100%")
-            .attr("stop-color", "#C9F31D80")
-            .attr("stop-opacity", 0);
+        for (let i = 0; i < data.length; i++) {
+            const current = data[i];
+            const next = data[i + 1];
     
-        // Drawing horizontal text
-        svg
-            .append("g")
-            .attr("transform", `translate(0,${height - marginBottom})`)
-            .style("font-size", "14px")
-            .style("font-weight", "600")
-            .style("color", "#A4A8AB")
-            .call(d3
-                .axisBottom(x)
-                .ticks(width / 80)
-                .tickFormat((d: any) => {
-                    const options: Intl.DateTimeFormatOptions = { weekday: "short" }
-                    return new Date(d).toLocaleDateString("en-US", options);
-                }))
-            .selectAll(".tick line") // Select the tick marks (lines)
-            .remove(); // Remove all tick marks
+            segment.push(current);
     
+            if (next && (current.price >= 1) !== (next.price >= 1)) {
+                // Transition detected, draw the segment
+                svg.append("path")
+                    .datum(segment)
+                    .attr("fill", "none")
+                    .attr("stroke", currentColor)
+                    .attr("stroke-width", 3)
+                    .attr("d", lineGenerator);
     
-        svg
-            .append("g")
-            .attr("transform", `translate(${marginLeft},0)`)
-            .style("font-size", "12px")
-            .style("font-weight", "400")
-            .style("color", "#A4A8AB")
-            .call(d3.axisLeft(y).ticks(height / 90))
-            .call((g) => g.select(".domain").remove())
-            .call((g) =>
-                g
-                .selectAll(".tick line")
-                .clone()
-                .attr("x2", width - marginLeft - marginRight)
-                .attr("stroke-opacity", 0.1)
-            )
+                // Reset segment with last point to maintain continuity
+                segment = [current];
+                currentColor = next.price >= 1 ? "green" : "red";
+            }
+        }
     
-        // Add area chart with gradient fill
-        svg
-            .append("path")
-            .datum(data)
-            .attr("fill", "url(#area-gradient)")
-            .attr("d", area);
+        // Draw the final segment
+        if (segment.length) {
+            svg.append("path")
+                .datum(segment)
+                .attr("fill", "none")
+                .attr("stroke", currentColor)
+                .attr("stroke-width", 3)
+                .attr("d", lineGenerator);
+        }
     
-        // Add the line chart
-        svg
-            .append("path")
-            .datum(data)
-            .attr("fill", "none")
-            .attr("stroke", "#C9F31D")
-            .attr("stroke-width", 3)
-            .attr("d", line);
-    
+        // Tooltip logic with enhanced info
         const tooltip = svg.append("g").style("display", "none");
-        const bisect = d3.bisector<{ timestamp: Date; price: number }, Date>((d) => d.timestamp).center;
-    
-
-        const dot = svg.append("g") // Create a group to hold both circles
-            .style("pointer-events", "none") // Avoid interaction
-            .style("opacity", 0) // Initially hide the dot
-
-        // Create the outer dot (green circle)
-        dot.append("circle")
-            .attr("r", 10) // Outer circle radius
-            .attr("fill", "#C9F31D"); // Green color for the outer circle
-
-        // Create the inner dot (black circle)
-        dot.append("circle")
-            .attr("r", 4) // Inner circle radius (smaller than outer circle)
-            .attr("fill", "black"); // Black color for the inner circle
-
+        const dot = svg.append("g").style("opacity", 0);
+        dot.append("circle").attr("r", 6).attr("fill", "black");
     
         function pointerMoved(event: any) {
-
-            if( data?.length === 0 ) return;
-
-            const i = bisect(data, x.invert(d3.pointer(event)[0]));
-            tooltip.style("display", null);
-            tooltip.attr(
-                "transform",
-                `translate(${x(data[i].timestamp)},${y(data[i].price)})`
-            );
+            const [xPos] = d3.pointer(event);
+            const timestamp = x.invert(xPos);
+            const bisect = d3.bisector<{ timestamp: Date; price: number }, Date>((d) => d.timestamp).center;
+            const i = bisect(data, timestamp);
     
-            // Update dot position
-            dot
-                .attr("transform", `translate(${x(data[i].timestamp)}, ${y(data[i].price)})`)
-                .style("opacity", 1); // Show the dot
+            if (i >= 0 && i < data.length) {
+                const nearest = data[i];
     
-            // Add white background behind the tooltip content
-            const padding = 6;
-            const textWidth = 150; // Adjust based on the length of the longest text
-            const textHeight = 40; // Adjust based on the number of rows
-            const marginTop = 50;
+                dot.attr("transform", `translate(${x(nearest.timestamp)}, ${y(nearest.price)})`)
+                    .style("opacity", 1);
     
-            tooltip.selectAll("rect")
-                .data([null])
-                .join("rect")
-                .attr("x", -textWidth / 2 - padding)
-                .attr("y", -textHeight / 2 - padding + marginTop)
-                .attr("width", textWidth + 2 * padding)
-                .attr("height", textHeight + 2 * padding)
-                .attr("fill", "#12181F87")
-                .attr("stroke", "black")
-                .attr("stroke-width", 0)
-                .attr("rx", 5) // Rounded corners
-                .attr("ry", 5);
+                tooltip.style("display", null);
+                tooltip.attr("transform", `translate(${x(nearest.timestamp)}, ${y(nearest.price) - 10})`);
     
-            // Add circles (dots) for each row
-            const dotRadius = 4; // Radius of the circle
-    
-            const circles = tooltip
-                .selectAll("circle")
-                .data([null, null]) // Two dots for two rows
-                .join("circle")
-                .attr("cx", -textWidth / 2 + dotRadius + 20) // Position the dots to the left of the text
-                .attr("cy", (_, i) => i * 20 - 10 + marginTop) // Vertical position
-                .attr("r", dotRadius) // Dot radius
-                .attr("fill", (_, i) => i === 0 ? "#C9F31D" : "#FF5733"); // Different colors for each dot
-    
-            // Add text elements for each row
-            const text = tooltip
-                .selectAll("text")
-                .data([null, null])
-                .join("text")
-                .attr("x", 100) // Adjust to align text with circles
-                .attr("y", (_, i) => i * 20 - 8 + marginTop) // Vertical position
-                .attr("margin-left", 10)
-                .attr("font-weight", (_, i) => (i ? null : "bold"))
-                .attr("font-size", (_, i) => (i ? 10 : 16))
-                .attr("fill", (_, i) => (i ? "#81818A" : "white"))
-                .call((text) =>
-                    text
-                        .selectAll("tspan")
-                        .data([
-                            "$500",
-                            "100",
-                        ])
-                        .join("tspan")
-                        .attr("x", -20)
-                        .text((d) => d)
-                );
+                tooltip.selectAll("text").remove();
+                tooltip.append("text")
+                    .text(`$${nearest.price.toFixed(4)}`)
+                    .attr("fill", "white")
+                    .attr("font-size", "12px")
+                    .attr("text-anchor", "middle");
+            }
         }
     
         function pointerLeft() {
             tooltip.style("display", "none");
-            dot.style("opacity", 0); // Hide dot on pointer leave
+            dot.style("opacity", 0);
         }
+    
+        // Crosshair cursor
+        svg.on("pointerenter pointermove", pointerMoved).on("pointerleave", pointerLeft);
+        svg.on("mousemove", function(event) {
+            const [xPos, yPos] = d3.pointer(event);
+            svg.selectAll(".crosshair").remove();
+    
+            // Crosshair vertical line
+            svg.append("line")
+                .attr("class", "crosshair")
+                .attr("x1", xPos)
+                .attr("x2", xPos)
+                .attr("y1", margin.top)
+                .attr("y2", height - margin.bottom)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 1)
+                .attr("stroke-dasharray", "5,5");
+    
+            // Crosshair horizontal line
+            svg.append("line")
+                .attr("class", "crosshair")
+                .attr("x1", margin.left)
+                .attr("x2", width - margin.right)
+                .attr("y1", yPos)
+                .attr("y2", yPos)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 1)
+                .attr("stroke-dasharray", "5,5");
+        });
+    };
+        
+    
+    
+
+
+    useEffect(() => {
+        const predictions: any = predictionsData?.predictions || {};
+
+        const selectedPrediction = predictions[selectedPool];
+
+        const data: {price: number, timestamp: Date}[] = [ ...(selectedPrediction?.predictedTrend ? selectedPrediction?.predictedTrend: []) ].slice(0, 20).map((pre: any) => ({price: selectedPrediction?.predictedPriceUsd / pre.price, timestamp: new Date(pre.timestamp)}));
+
+        // Format the data
+        const formattedData = [
+            {
+                "price": 0.991231,
+                "timestamp": "2025-01-30T01:35:53.076Z"
+            },
+            {
+                "price": 0.991631,
+                "timestamp": "2025-01-30T02:35:53.076Z"
+            },
+            {
+                "price": 0.998231,
+                "timestamp": "2025-01-30T03:35:53.076Z"
+            },
+            {
+                "price": 0.991731,
+                "timestamp": "2025-01-30T04:35:53.076Z"
+            },
+            {
+                "price": 1.0153129161118508,
+                "timestamp": "2025-01-30T05:35:53.076Z"
+            },
+            {
+                "price": 1.0166666666666666,
+                "timestamp": "2025-01-30T06:35:53.076Z"
+            },
+            {
+                "price": 1.0180240320427236,
+                "timestamp": "2025-01-30T07:35:53.076Z"
+            },
+            {
+                "price": 1.0193850267379678,
+                "timestamp": "2025-01-30T08:35:53.076Z"
+            },
+            {
+                "price": 1.0207496653279786,
+                "timestamp": "2025-01-30T09:35:53.076Z"
+            },
+            {
+                "price": 1.021661456007146,
+                "timestamp": "2025-01-30T10:35:53.076Z"
+            },
+            {
+                "price": 1.0202943800178412,
+                "timestamp": "2025-01-30T11:35:53.076Z"
+            },
+            {
+                "price": 1.0189309576837418,
+                "timestamp": "2025-01-30T12:35:53.076Z"
+            },
+            {
+                "price": 1.0175711743772242,
+                "timestamp": "2025-01-30T13:35:53.076Z"
+            },
+            {
+                "price": 1.0162150155486451,
+                "timestamp": "2025-01-30T14:35:53.076Z"
+            },
+            {
+                "price": 1.0180240320427236,
+                "timestamp": "2025-01-30T15:35:53.076Z"
+            },
+            {
+                "price": 1.019839500668747,
+                "timestamp": "2025-01-30T16:35:53.076Z"
+            },
+            {
+                "price": 1.021661456007146,
+                "timestamp": "2025-01-30T17:35:53.076Z"
+            },
+            {
+                "price": 1.023489932885906,
+                "timestamp": "2025-01-30T18:35:53.076Z"
+            },
+            {
+                "price": 1.0212053571428572,
+                "timestamp": "2025-01-30T19:35:53.076Z"
+            },
+            {
+                "price": 1.0189309576837418,
+                "timestamp": "2025-01-30T20:35:53.076Z"
+            }
+        ].map(d => ({
+            price: d.price,
+            timestamp: new Date(d.timestamp),
+        }));
+
+        console.log("formattedData: ", formattedData)
+        // drawChart(formattedData)
     
     }, [selectedPool, predictionsData, poolsData]);
     
 
     return (
-        <div className="w-full h-full border border-[#333333] rounded-[15px] bg-[#1C252F9E] flex flex-col justify-between gap-3 pt-[18px] pb-6 px-[22px]">
+        <div className="w-full h-full border border-[#333333] rounded-[15px] bg-[#1C252F9E] flex flex-col gap-3 pt-[18px] pb-6 px-[22px]">
             <div className="flex flex-col lg:flex-row gap-2 justify-between items-center w-full">
                 <div className="text-base font-semibold text-white lg:pl-8 w-full text-left">AI Predicted Trends</div>
                 {/* <div className="w-full flex gap-2 justify-end">
