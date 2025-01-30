@@ -69,10 +69,17 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
     return (
         <div className="w-full flex gap-2 overflow-x-auto">
             {
-                items.map((item) => (
+                items.map((item, index) => (
                     <div key={item.key} className="rounded-xl bg-[#12181F] h-[49px] px-5 flex items-center gap-1">
                         <div className="text-[#C2C2C2] text-sm font-normal text-nowrap">{item.label} : </div>
-                        <div className="text-white text-sm font-bold text-nowrap">{item.value}</div>
+                        <div className={`font-bold text-nowrap ${ ( index === 3 && Number(item.value) < 1 ) ? "animate-pulse-custom text-red-600 text-base": `${index === 3 ? "text-green-500": "text-white"} text-sm` }`}>
+                            {
+                                index === 3 ? 
+                                Number(item.value)
+                                :
+                                item.value
+                            }
+                        </div>
                     </div>
                 ))
             }

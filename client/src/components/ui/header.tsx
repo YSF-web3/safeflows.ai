@@ -121,7 +121,7 @@ export default function Header({
               <span className="text-white font-bold mr-2">
                 {(data ?? 0) / LAMPORTS_PER_SOL}
               </span>
-              <span className="text-sm">SOL</span>
+              <span className="text-sm text-white">SOL</span>
             </div>
           </button>
           <WalletButton />
