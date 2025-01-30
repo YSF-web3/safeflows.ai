@@ -37,14 +37,14 @@ const OnBoardingModal = ({ isOpen, onClose, poolsData }: any) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
       <div className="max-w-[697px] w-full border rounded-[13px] border-[#333333] bg-[#0B0E12] h-fit">
-        <div className="px-[38px] py-6 flex flex-col gap-5">
+        <div className="px-[38px] py-6 flex flex-col gap-2 lg:gap-5 pt-12">
           {!connected ? (
             <>
               <div className="flex flex-col gap-2 items-center">
-                <h2 className="text-2xl  text-white flex flex-col max-w-[300px] gap-1 mb-8">
-                  <span className="font-thin text-sm">Welcome to</span> <img src="/logo.svg" />
+                <h2 className="text-2xl text-white flex flex-col max-w-[300px] gap-1 mb-8">
+                  <span className="font-thin text-sm lg:w-full">Welcome to</span> <img className="w-[240px] lg:w-full" src="/logo.svg" />
                 </h2>
-                <h2 className="  text-[22px] ">
+                <h2 className="text-base lg:text-[22px] ">
                 REVOLUTIONIZING 
                   <span className=" font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#C9F31D] to-[#758D11]">
                     {" "}
@@ -52,8 +52,8 @@ const OnBoardingModal = ({ isOpen, onClose, poolsData }: any) => {
                   </span>{" "}
                   <br /> IN DECENTRALIZED FINANCE
                 </h2>
-                <div className="grid grid-cols-2   gap-6 w-full mt-8 mb-6">
-                <FeatureItem 
+                <div className="grid grid-cols-2 gap-4 lg:gap-6 w-full mt-8 mb-6">
+                  <FeatureItem 
                     icon={Shield}
                     title="Built on Solana"
                     description="Leverages Solana's high-speed, low-cost infrastructure."

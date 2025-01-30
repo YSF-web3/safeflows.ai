@@ -1,30 +1,32 @@
 import { useEffect, useState } from "react"
 import { Pools, Predictions, PricePredictions } from "./dashboard-data-access"
 
+const defaultItems = [
+    {
+        key: "collateral_value", 
+        label: "Total Collateral Value", 
+        value: "$ 0.00 USD"
+    }, 
+    {
+        key: "borrowed_value",
+        label: "Total Borrowed Value",
+        value: "$ 0.00 USD"
+    }, 
+    {
+        key: "hf",
+        label: "Current Health Factor (HF)",
+        value: "1"
+    }, 
+    {
+        key: "average_lending_pool_risk_score", 
+        label: "Average Lending Pool Risk Score",
+        value: "1.00"
+    }
+];
+
 export default function Cards({ poolsData, predictionsData }: { poolsData: Pools, predictionsData: Predictions }) {
 
-    const [ items, setItems ] = useState([
-        {
-            key: "collateral_value", 
-            label: "Total Collateral Value", 
-            value: "$ 0.00 USD"
-        }, 
-        {
-            key: "borrowed_value",
-            label: "Total Borrowed Value",
-            value: "$ 0.00 USD"
-        }, 
-        {
-            key: "hf",
-            label: "Current Health Factor (HF)",
-            value: "1"
-        }, 
-        {
-            key: "average_lending_pool_risk_score", 
-            label: "Average Lending Pool Risk Score",
-            value: "1.00"
-        }
-    ])
+    const [ items, setItems ] = useState(defaultItems)
 
     
     useEffect(() => {
@@ -62,6 +64,8 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
                 updatedItems[3].value = (average_LPRC || 1).toFixed(2);
                 return updatedItems;
             });
+        } else {
+            setItems(defaultItems)
         }
 
     }, [ poolsData, predictionsData ])
