@@ -111,7 +111,7 @@ export default function DashboardFeature() {
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-12 w-full gap-4 ">
                         <div className="h-full w-full lg:col-span-7">
-                            <AiPredictedTrends isLoading={predictionsQuery.isLoading} predictions={predictionsQuery.data} />
+                            <AiPredictedTrends poolsData={query.data} predictionsData={predictionsQuery.data} />
                         </div>
                         <div className="h-full w-full lg:col-span-5">
                             <PoolsHeatmap onItemClicked={onPoolItemClicked} poolsData={query.data} predictionsData={predictionsQuery.data} />

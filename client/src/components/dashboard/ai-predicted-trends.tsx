@@ -1,10 +1,12 @@
-
-
-
 import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
+import { Pools, Prices, Predictions } from "./dashboard-data-access"
 
-export default function AiPredictedTrends() {
+
+
+export default function AiPredictedTrends({ poolsData, predictionsData }: { poolsData: Pools, predictionsData: Predictions }) {
+
+    console.log(predictionsData)
 
     
     const svgRef = useRef(null);
@@ -244,14 +246,14 @@ export default function AiPredictedTrends() {
         <div className="w-full h-full border border-[#333333] rounded-[15px] bg-[#1C252F9E] flex flex-col justify-between gap-3 pt-[18px] pb-6 px-[22px]">
             <div className="flex flex-col lg:flex-row gap-2 justify-between items-center w-full">
                 <div className="text-base font-semibold text-white lg:pl-8 w-full text-left">AI Predicted Trends</div>
-                <div className="w-full flex gap-2 justify-end">
+                {/* <div className="w-full flex gap-2 justify-end">
                     <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">1D</button>
                     <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">1M</button>
                     <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">6M</button>
                     <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">1Y</button>
                     <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-[#C2C2C2]">YYD</button>
                     <button className="h-7 border border-[#8081954D] px-2 rounded-md text-[10px] font-normal leading-4 text-black bg-[#C9F31D]">All</button>
-                </div>
+                </div> */}
             </div>
 
             <svg ref={svgRef} className="w-full"></svg>

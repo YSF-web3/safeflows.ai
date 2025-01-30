@@ -128,6 +128,24 @@ export default function Header({
           </button>
           <WalletButton />
           {/* <div className="hidden lg:block">
+                <div className="bg-[#161D26] rounded-xl lg:w-[310px] h-[60px] px-[26px] hidden lg:flex items-center gap-[18px]">
+                    <Image src={SearchIcom} width={20} height={20} alt='Search' />
+                    <input type="text" placeholder="Search" className="bg-transparent outline-none w-full h-full text-white font-normal text-sm leading-5" />
+                </div>
+                 <button className="w-[60px] h-[60px] hidden lg:flex items-center justify-center bg-[#161D26] rounded-xl">
+                    <div className='flex items-baseline'>
+
+                    <span className='text-white font-bold mr-2'>
+                    {(data ?? 0 )/ LAMPORTS_PER_SOL}
+                    </span>
+                    <span className='text-sm text-white'>
+                        SOL
+                    </span>
+                    </div>
+                     
+                </button>
+                <WalletButton />
+                {/* <div className="hidden lg:block">
                     <ClusterUiSelect />
                 </div> */}
           {/* <button className="w-[60px] h-[60px] flex items-center justify-center bg-[#161D26] rounded-xl">
