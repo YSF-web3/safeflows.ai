@@ -23,10 +23,6 @@ export default function Footer ({ links }: { links: { label: string; path: strin
                     <Image src={GithubIcon} alt='github.com' className="size-6 lg:size-8 hover:color-[#C9F31D]" />
                 </Link>
 
-                <Link  className='hover:scale-105' href={"https://web.telegram.org"} target="_blank" >
-                    <Image src={TelegramIcon} alt='telegram.com' className="size-6 lg:size-8 hover:color-[#C9F31D]" />
-                </Link>
-
                 <Link  className='hover:scale-105' href={"https://x.com/SafeFlowsAI"} target="_blank" >
                     <Image src={XIcon} alt='x.com' className="size-6 lg:size-8 hover:color-[#C9F31D]" />
                 </Link>
