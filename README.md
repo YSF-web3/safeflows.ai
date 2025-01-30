@@ -169,7 +169,6 @@ Connect your Solana wallet and explore SafeFlows.ai's dashboards and real-time i
 Join our vibrant community to shape the future of DeFi risk management:
 
 - **Twitter**: [@SafeFlowsAI](https://twitter.com/SafeFlowsAI)
-- **Telegram**: [Join Our Telegram](https://t.me/SafeFlowsAI)
 
 ## 📝 License
 
