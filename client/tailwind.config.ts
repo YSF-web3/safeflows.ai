@@ -15,7 +15,7 @@ const config: Config = {
         pulse: {
           '0%': { transform: 'scale(1)', opacity: '1' },
           '25%': { transform: 'scale(1)', opacity: '1' },
-          '50%': { transform: 'scale(1.5)', opacity: '0.8' },
+          '50%': { transform: 'scale(2.5)', opacity: '0.8' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
       },

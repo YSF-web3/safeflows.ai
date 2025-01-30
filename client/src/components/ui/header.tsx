@@ -68,7 +68,7 @@ export default function Header({
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-[#0B0E12] rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-[#0B0E12] rounded-box z-[1] mt-3 w-48 p-2 shadow"
             >
               {links.map(({ label, path }) => (
                 <li key={path}>
@@ -78,7 +78,7 @@ export default function Header({
                       (path === "/" && pathname === "/")
                         ? "text-[#C9F31D] font-bold [&>span]:border-[#C9F31D]"
                         : "text-white font-normal [&>span]:border-transparent"
-                    } text-[22px] leading-8 flex flex-col gap-[18px]`}
+                    } text-base leading-8 flex flex-col gap-[18px]`}
                     href={path}
                   >
                     {label}
