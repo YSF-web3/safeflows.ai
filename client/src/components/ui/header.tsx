@@ -30,8 +30,6 @@ export default function Header({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log("POOLS", query.data, !query.data?.pools?.length, isModalOpen);
-
   useEffect(() => {
     setIsModalOpen(!publicKey);
     if(publicKey){
@@ -156,11 +154,7 @@ export default function Header({
      {isModalOpen&& <OnBoardingModal
         isOpen={Boolean(publicKey)}
         onClose={() => {
-            console.log("On close called");
-                
             setIsModalOpen(false)
-            console.log(isModalOpen);
-            
         }}
         poolsData={query.data?.pools ?? []}
       />}

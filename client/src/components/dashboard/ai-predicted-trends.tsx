@@ -1,37 +1,18 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
-import { Pools, Prices, Predictions } from "./dashboard-data-access"
+import { Pools, PriceData, Predictions } from "./dashboard-data-access"
 
 
 
 export default function AiPredictedTrends({ poolsData, predictionsData }: { poolsData: Pools, predictionsData: Predictions }) {
 
-    console.log(predictionsData)
-
-    
     const svgRef = useRef(null);
-    const [ data, setData ] = useState([
-        { Date: new Date(2023, 0, 1), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 2), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 3), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 4), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 5), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 6), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 7), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 8), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 9), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 10), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 11), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 12), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 13), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 14), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 15), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 16), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 17), Close: Math.random() * 100 },
-        { Date: new Date(2023, 0, 18), Close: Math.random() * 100 },
-    ]);
+    const [ selectedPool, setSelectedPool ] = useState<string>("So11111111111111111111111111111111111111112");
+
+
     const width = 800;
     const height = 300;
+
 
 
     useEffect(() => {
@@ -39,29 +20,35 @@ export default function AiPredictedTrends({ poolsData, predictionsData }: { pool
         const marginRight = 30;
         const marginBottom = 30;
         const marginLeft = 40;
+
+        const predictions: any = predictionsData?.predictions || {};
+
+        const data: {price: number, timestamp: Date}[] = [ ...(predictions[selectedPool]?.predictedTrend ? predictions[selectedPool]?.predictedTrend: []) ].map((pre: any) => ({price: pre.price, timestamp: new Date(pre.timestamp)}));
+
+        console.log(data)
     
         const x = d3
             .scaleUtc()
-            .domain(d3.extent(data, (d) => d.Date) as [Date, Date])
+            .domain(d3.extent(data, (d) => d.timestamp) as [Date, Date])
             .range([marginLeft, width - marginRight]);
     
         const y = d3
             .scaleLinear()
-            .domain([0, d3.max(data, (d) => d.Close) || 0])
+            .domain([0, d3.max(data, (d) => d.price) || 0])
             .nice()
             .range([height - marginBottom, marginTop]);
     
         const line = d3
-            .line<{ Date: Date; Close: number }>()
-            .x((d) => x(d.Date))
-            .y((d) => y(d.Close))
+            .line<{ timestamp: Date; price: number }>()
+            .x((d) => x(d.timestamp))
+            .y((d) => y(d.price))
             .curve(d3.curveMonotoneX);
     
         const area = d3
-            .area<{ Date: Date; Close: number }>()
-            .x((d) => x(d.Date))
+            .area<{ timestamp: Date; price: number }>()
+            .x((d) => x(d.timestamp))
             .y0(height - marginBottom) // Bottom of the chart
-            .y1((d) => y(d.Close))
+            .y1((d) => y(d.price))
             .curve(d3.curveMonotoneX); // Line position
     
         const svg = d3
@@ -148,7 +135,7 @@ export default function AiPredictedTrends({ poolsData, predictionsData }: { pool
             .attr("d", line);
     
         const tooltip = svg.append("g").style("display", "none");
-        const bisect = d3.bisector<{ Date: Date; Close: number }, Date>((d) => d.Date).center;
+        const bisect = d3.bisector<{ timestamp: Date; price: number }, Date>((d) => d.timestamp).center;
     
 
         const dot = svg.append("g") // Create a group to hold both circles
@@ -167,16 +154,19 @@ export default function AiPredictedTrends({ poolsData, predictionsData }: { pool
 
     
         function pointerMoved(event: any) {
+
+            if( data?.length === 0 ) return;
+
             const i = bisect(data, x.invert(d3.pointer(event)[0]));
             tooltip.style("display", null);
             tooltip.attr(
                 "transform",
-                `translate(${x(data[i].Date)},${y(data[i].Close)})`
+                `translate(${x(data[i].timestamp)},${y(data[i].price)})`
             );
     
             // Update dot position
             dot
-                .attr("transform", `translate(${x(data[i].Date)}, ${y(data[i].Close)})`)
+                .attr("transform", `translate(${x(data[i].timestamp)}, ${y(data[i].price)})`)
                 .style("opacity", 1); // Show the dot
     
             // Add white background behind the tooltip content
@@ -239,7 +229,7 @@ export default function AiPredictedTrends({ poolsData, predictionsData }: { pool
             dot.style("opacity", 0); // Hide dot on pointer leave
         }
     
-    }, [data, height, width]);
+    }, [selectedPool, predictionsData, poolsData]);
     
 
     return (

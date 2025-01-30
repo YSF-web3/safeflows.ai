@@ -38,7 +38,7 @@ export interface Prices {
     timestamp: string
 }
 
-type PriceData = {
+export type PriceData = {
     predictedPriceUsd: number;
     predictedTrend: any[];
     lastCalculated: string;

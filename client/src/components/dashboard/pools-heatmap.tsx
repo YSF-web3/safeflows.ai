@@ -23,8 +23,7 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
                 value: predictions[deposit.mint] / deposit.pricePerTokenInUSD,
             }))
         );
-    
-    
+
         let x_elements = Array.from(new Set(data?.map((item) => item.symbol)));
         let y_elements = Array.from(new Set(data?.map((item) => item.pool)));
 

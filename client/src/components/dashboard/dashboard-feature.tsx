@@ -80,11 +80,11 @@ export default function DashboardFeature() {
 
 
     return (
-        <div className="w-full py-8">
+        <div className="w-full py-4 lg:py-8">
             {/* <AppHero title="gm" subtitle="Say hi to your new Solana dApp." /> */}
             {
                 !showTable ? 
-                <div className="flex flex-col gap-8 w-full">
+                <div className="flex flex-col gap-4 lg:gap-8 w-full">
                     <Cards poolsData={query.data} predictionsData={predictionsQuery.data} />
                     <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-4">
                         <div className="w-full h-full">
