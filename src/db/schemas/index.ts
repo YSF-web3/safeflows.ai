@@ -126,6 +126,7 @@ export const PredictionSchema = new mongoose.Schema({
   mint: {
     type: String,
     required: true,
+    unique: true
   },
   price: {
     type: Number,

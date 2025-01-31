@@ -115,11 +115,14 @@ export class PricesService {
         predictions[mint].predictedPriceUsd = prediction.predictedPriceUsd;
         predictions[mint].predictedTrend = predictedTrend;
 
-        if (predictionExists) {
-          await updatePrediction(mint, predictions[mint].predictedPriceUsd, prediction.message, predictedTrend);
-        } else {
-          await createPrediction(mint, predictions[mint].predictedPriceUsd, prediction.message, predictedTrend);
+        if(predictedTrend.length > 0){
+          if (predictionExists) {
+            await updatePrediction(mint, predictions[mint].predictedPriceUsd, prediction.message, predictedTrend);
+          } else {
+            await createPrediction(mint, predictions[mint].predictedPriceUsd, prediction.message, predictedTrend);
+          }
         }
+        
       } else {
         if(!Boolean(predictions[mint])){
           predictions[mint] = {
