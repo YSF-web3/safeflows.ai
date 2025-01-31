@@ -64,7 +64,7 @@ export function UiLayout({
 
                 {
                     loading && 
-                    <div className="absolute z-20 w-[100vw] h-[100vh] flex items-center justify-center">
+                    <div className="absolute z-20 w-[100vw] h-full min-h-[100vh] flex items-center justify-center">
                         <LoadingScreen />
                     </div>
                 }
