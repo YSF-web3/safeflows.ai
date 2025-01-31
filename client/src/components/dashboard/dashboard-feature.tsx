@@ -15,6 +15,8 @@ import SupplyBorrowFactor from "./HF";
 import PoolsHeatmap from "./pools-heatmap";
 import AiPredictedTrends from "./ai-predicted-trends";
 import PoolsTable from "./pools-table";
+import { useDashboard } from "./dashboard-data-access";
+
 
 import { useGetPools, useGetPredictions, useGetPrices } from "./dashboard-data-access";
 
@@ -66,37 +68,37 @@ export default function DashboardFeature() {
 
     const [ showTable, setShowTable ] = useState(false)
     const { publicKey } = useWallet()
-    const [symbols, setSymbols] = useState<string[]>([]);
+    // const [symbols, setSymbols] = useState<string[]>([]);
     const [mints, setMints] = useState<string[]>([]);
+    const { addLoading, loading } = useDashboard()
 
     const onPoolItemClicked = (item: any) => {
         setShowTable(true)
     }
 
     const query = useGetPools({ address: publicKey || undefined })
-    const pricesQuery = useGetPrices({ symbols })
+    // const pricesQuery = useGetPrices({ symbols })
     const predictionsQuery = useGetPredictions({ mints })
     
     useEffect(() => {
-    
+        addLoading(true)
         if (publicKey) {
-            query.refetch();  // Initial refetch when publicKey changes
+            query.refetch();
 
             const interval = setInterval(() => {
                 console.log("Auto refetching pools...");
                 query.refetch();
             }, 10000);
     
-            return () => clearInterval(interval);  // Cleanup the interval
+            return () => clearInterval(interval);
         }
-    
         
-        return () => {};  // Proper cleanup when publicKey is falsy
+        return () => {};
     }, [publicKey]);
+
 
     useEffect(() => {
         if( query.data ) {
-           
 
             const mintsDeposits = query.data.pools.map((pool: any) => {
                 return pool.deposits.map((deposit: any) => deposit.mint);
@@ -111,6 +113,13 @@ export default function DashboardFeature() {
             setMints(uniqueMints)
         }
     }, [ query.data ])
+
+
+    useEffect(() => {
+        if( loading && (query.data || !query.isLoading || predictionsQuery.data || !predictionsQuery.isLoading) ) {
+            addLoading(false)
+        }
+    }, [query.isLoading, predictionsQuery.isLoading, query.data, predictionsQuery.data])
 
 
     return (
@@ -139,7 +148,7 @@ export default function DashboardFeature() {
                         <AnimatedBrain size={40} color="#c9f31d"/>
                         {
                             <span className=" text-md text-[white] text-opacity-60">
-{query.data?.message?.analysis || "No Summary"}
+                                {query.data?.message?.analysis || "No Summary"}
                             </span>
                             
                         }

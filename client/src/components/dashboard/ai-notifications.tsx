@@ -7,7 +7,8 @@ import { useState } from "react";
 import OnBoardingModal from "../ui/onboarding-modal";
 import {MessageSquareWarning} from "lucide-react"
 
-export default function AiNotifications ({ poolsData }: { poolsData: Pools }) {
+
+export default function AiNotifications ({poolsData }: {poolsData: Pools }) {
 
     const { notifications } = useDashboard()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -74,12 +75,12 @@ export default function AiNotifications ({ poolsData }: { poolsData: Pools }) {
                 }
             </div>
             {isModalOpen&& <OnBoardingModal
-        isOpen={isModalOpen}
-        onClose={() => {
-            setIsModalOpen(false)
-        }}
-        poolsData={ []}
-      />}
+                isOpen={isModalOpen}
+                onClose={() => {
+                    setIsModalOpen(false)
+                }}
+                poolsData={ []}
+            />}
         </div>
     )
 }

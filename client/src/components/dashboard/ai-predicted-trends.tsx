@@ -28,13 +28,11 @@ const calculatePredictedHF = (selectedPool: any, predictions: any) => {
     });
 
     const min = Math.min(...lengths);
-    console.log("min",min);
     
     let liquidationsPerHour: number[] = [];
     let borrowWeightPerHour: number[] = [];
 
     deposits.forEach((d: any, i: number) => {
-    console.log("d,i",d,i);
       predctionPerMint[d.mint].forEach((k:any, j:number) => {
         if (j > min - 1) return;
         console.log("xxxx" ,d.liquidationThreshold,
@@ -80,7 +78,6 @@ const calculatePredictedHF = (selectedPool: any, predictions: any) => {
 
     
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -97,24 +94,22 @@ export default function AiPredictedTrends({
   const [options, setOptions] = useState<string[]>([]);
 
   const handleMintChange = (e:any) => {
-    console.log(e.target.value);
 
     setSelectedPool(
       poolsData.pools.find((x) => {
         return x.lendingMarketName == e.target.value;
       })
     );
-    console.log(
-      poolsData.pools.find((x) => {
-        return x.lendingMarketName == e.target.value;
-      })
-    );
+    // console.log(
+    //   poolsData.pools.find((x) => {
+    //     return x.lendingMarketName == e.target.value;
+    //   })
+    // );
   };
 
   useEffect(() => {
     if (!poolsData || !predictionsData || !poolsData.pools) return;
 
-    console.log("PASSED", poolsData.pools, predictionsData);
     setOptions(
       poolsData.pools.map((x) => {
         return x.lendingMarketName;
