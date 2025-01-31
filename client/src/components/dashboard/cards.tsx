@@ -109,7 +109,7 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
     }, [ poolsData, predictionsData ])
 
     return (
-        <div className="w-full flex gap-2 overflow-x-auto h-[24]">
+        <div className="w-full flex gap-2 overflow-x-auto h-[24] overflow-y-hidden">
             {
                 items.map((item, index) => (
                     <AnimatedBorderCard item={item} key={index} />
