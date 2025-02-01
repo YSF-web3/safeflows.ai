@@ -20,7 +20,7 @@ export default function ActiveAlerts({notifications}:any) {
       <div className="overflow-y-auto pr-3 space-y-2">
       {notifications?.map((notification:any) => (
         <div
-          className="w-full lg:h-[80px] border-none rounded-xl bg-[#151B21] flex flex-row justify-between items-center px-[21px] pb-3 pt-[14px] hover:bg-[#1a2128] transition-colors duration-200"
+          className="w-full lg:h-[80px] rounded-xl bg-[black] border border-[#151B21] flex flex-row justify-between items-center px-[21px] pb-3 pt-[14px] hover:bg-[#1a2128] transition-colors duration-200"
           key={notification._id}
         >
           <div className="flex gap-3">

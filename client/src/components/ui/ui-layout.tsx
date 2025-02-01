@@ -58,18 +58,18 @@ export function UiLayout({
                 }
             `}</style>
 
-            <div className="relative h-screen bg-[#000000] min-h-fit overflow-x-hidden">
+            <div className="relative h-screen bg-[#000000] max-h-[100vh] overflow-x-hidden">
                 <div className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"></div>
                 <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
 
                 {
                     loading && 
-                    <div className="absolute z-20 w-[100vw] h-full min-h-[100vh] flex items-center justify-center">
+                    <div className="absolute z-20 w-[100vw] min-h-[100vh] flex items-center justify-center">
                         <LoadingScreen />
                     </div>
                 }
 
-                <div className="relative z-10 text-center min-h-fit">
+                <div className="relative z-10 text-center h-[100vh] overflow-y-auto">
                     <div className="h-full px-4 lg:px-11 pt-4 lg:pt-11 pb-8 min-h-fit">
                         <div className="flex items-center justify-center w-full">
                             <Header links={links} />
