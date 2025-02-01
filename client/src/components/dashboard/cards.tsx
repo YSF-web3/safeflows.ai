@@ -80,7 +80,7 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
             const predictions: PricePredictions = { ...predictionsData?.predictions };
 
             const data = poolsData?.pools?.flatMap((pool: any) =>
-                pool.deposits.map((deposit: any) => predictions[deposit.mint].predictedPriceUsd / deposit.pricePerTokenInUSD)
+                pool.deposits.map((deposit: any) => predictions[deposit.mint]?.predictedPriceUsd / deposit.pricePerTokenInUSD)
             );
 
             const average_LPRC = data.reduce((acc, val) => acc + val, 0) / data.length;
