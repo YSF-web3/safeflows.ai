@@ -35,9 +35,7 @@ const calculatePredictedHF = (selectedPool: any, predictions: any) => {
     deposits.forEach((d: any, i: number) => {
       predctionPerMint[d.mint].forEach((k:any, j:number) => {
         if (j > min - 1) return;
-        console.log("xxxx" ,d.liquidationThreshold,
-            d.depositedAmount ,
-            predctionPerMint[d.mint][j].price);
+        
         
         
         if (i > 0) {
