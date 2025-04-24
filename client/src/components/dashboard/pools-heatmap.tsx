@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from "d3";
+import { motion } from "framer-motion";
 import { Pools, Prices, Predictions } from "./dashboard-data-access"
 
 
@@ -159,25 +160,25 @@ export default function PoolsHeatmap({ onItemClicked, poolsData, predictionsData
             .style("opacity", 0);
     };
     
-    
-    
-
-
     useEffect(() => {
         drawChart();
     }, [poolsData, predictionsData]);
 
     
     return (
-        <div className="w-full h-full flex flex-col gap-3 border p-[18px] rounded-[13px] border-[#333333]">
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full h-full glass-container rounded-2xl border border-white/10 p-6 flex flex-col gap-3"
+        >
             <div className="flex flex-col lg:flex-row justify-between items-center w-full gap-2">
-                <div className="text-base font-semibold text-white lg:pl-8 w-full text-left">Real Time Risk Scoring (RTRS)</div>
-
+                <div className="text-white text-xl font-medium">Real Time Risk Scoring (RTRS)</div>
             </div>
-            <div>
+            <div className="flex-grow">
                 <svg ref={svgRef} />
                 <div ref={tooltipRef}></div>
             </div>
-        </div>
+        </motion.div>
     )
 }

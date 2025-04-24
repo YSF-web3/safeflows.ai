@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 import QuestionIcon from "@/assets/svg/question.svg";
 import SortIcon from "@/assets/svg/sort.svg";
@@ -6,16 +7,21 @@ import GreenCheck from "@/assets/svg/green-check.svg";
 
 export default function PoolsTable () {
     return (
-        <div className="w-full rounded-[13px] border border-[#333333] p-6 flex flex-col gap-4">
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full h-full glass-container rounded-2xl border border-white/10 p-6 flex flex-col gap-4"
+        >
             <div className="w-full flex justify-between items-end">
-                <div className="text-white text-[22px] font-normal leading-8">Top Selling NFTs</div>
+                <div className="text-white text-xl font-medium">Top Selling NFTs</div>
                 <Image src={QuestionIcon} alt="question" width={20} height={20} />
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto flex-grow">
                 <table className="w-full">
                     <thead>
-                        <tr className="border-b">
+                        <tr className="border-b border-white/10">
                             <th className="w-[5%]">
                                 <div className="text-white flex items-center gap-2 cursor-pointer text-xs font-normal pb-2 text-nowrap pr-4">
                                         #
@@ -79,6 +85,6 @@ export default function PoolsTable () {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </motion.div>
     )
 }

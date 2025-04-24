@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 import { Pools, Predictions, PricePredictions } from "./dashboard-data-access"
 
 const defaultItems = [
@@ -24,36 +25,37 @@ const defaultItems = [
     }
 ];
 
-const AnimatedBorderCard = ({ item, index }:any) => {
+const StatCard = ({ item, index }:any) => {
+    const getValueColor = (index: number, value: string) => {
+        if (index === 2) { // Health Factor
+            const numValue = Number(value);
+            if (numValue >= 1.5) return "text-[#3BD32D]"; // Good
+            if (numValue >= 1.2) return "text-[#FDAA35]"; // Ordinary
+            return "text-[#B52C24]"; // Critical
+        } else if (index === 3) { // Risk Score
+            const numValue = Number(value);
+            if (numValue > 1) return "text-[#3BD32D]"; // Good
+            return "text-[#B52C24]"; // Critical
+        }
+        return "text-white"; // Default
+    };
+
     return (
-      <div className="relative group " style={{
-        zIndex:-1
-      }}>
-        {/* Animated border gradient background */}
-        <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-sm group-hover:blur opacity-70 transition-all duration-500 animate-gradient-xy" />
-        
-        {/* Main content */}
-        <div className="relative rounded-xl border border-[#12181F]/50 bg-black h-[49px] px-5 flex items-center gap-1">
-          <div className="text-[#C2C2C2] text-sm font-normal text-nowrap">
-            {item.label} :
-          </div>
-          <div
-            className={`font-bold text-nowrap ${
-              index === 3 && Number(item.value) < 1
-                ? "text-red-600 text-base"
-                : `${
-                    index === 3 && Number(item.value) > 1
-                      ? "text-green-500"
-                      : "text-white"
-                  } text-sm`
-            }`}
-          >
-            {index === 3 ? Number(item.value) : item.value}
-          </div>
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }} 
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: index * 0.1 }}
+        className="glass-container rounded-xl border border-white/10 px-4 py-3 flex flex-col min-w-[180px]"
+      >
+        <div className="text-text-secondary text-xs mb-1">
+          {item.label}
         </div>
-      </div>
+        <div className={`text-lg font-semibold ${getValueColor(index, item.value)}`}>
+          {item.value}
+        </div>
+      </motion.div>
     );
-  };
+};
 
 export default function Cards({ poolsData, predictionsData }: { poolsData: Pools, predictionsData: Predictions }) {
 
@@ -109,12 +111,20 @@ export default function Cards({ poolsData, predictionsData }: { poolsData: Pools
     }, [ poolsData, predictionsData ])
 
     return (
-        <div className="w-full flex gap-2 overflow-x-auto h-[24] overflow-y-hidden">
-            {
-                items.map((item, index) => (
-                    <AnimatedBorderCard item={item} key={index} />
-                ))
-            }
-        </div>
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full glass-container rounded-2xl border border-white/10 p-6"
+        >
+            <div className="text-white text-xl font-medium mb-4">Dashboard Overview</div>
+            <div className="w-full flex gap-4 overflow-x-auto overflow-y-hidden pb-2">
+                {
+                    items.map((item, index) => (
+                        <StatCard item={item} key={index} index={index} />
+                    ))
+                }
+            </div>
+        </motion.div>
     )
 }
