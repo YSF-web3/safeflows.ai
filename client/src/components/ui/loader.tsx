@@ -1,11 +1,11 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import {BeatLoader} from "react-spinners"
+import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 
 const LoadingScreen = ({ 
-    isLoading = false,
+    isLoading = true,
     loadingMessages = [
         "Getting Data...",
         "Calculating predictions...",
@@ -14,46 +14,88 @@ const LoadingScreen = ({
         "Processing information..."
     ], 
     imageSrc = "/coin.png",
-    imageAlt = ""
+    imageAlt = "SafeFlows Loading"
 }) => {
-    const [loadingText, setLoadingText] = useState('');
+    const [loadingText, setLoadingText] = useState(loadingMessages[0] || '');
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
         if (loadingMessages.length === 0) return;
 
-        let currentIndex = 0;
         const interval = setInterval(() => {
-            setLoadingText(loadingMessages[currentIndex]);
-            currentIndex = (currentIndex + 1) % loadingMessages.length;
+            setCurrentIndex((prevIndex) => {
+                const newIndex = (prevIndex + 1) % loadingMessages.length;
+                setLoadingText(loadingMessages[newIndex]);
+                return newIndex;
+            });
         }, 2000);
 
         return () => clearInterval(interval);
-    }, [isLoading, loadingMessages]);
-
+    }, [loadingMessages]);
 
     return (
-        <div className="flex flex-col absolute w-full h-full items-center justify-center bg-opacity-80 bg-black">
-            <div className="relative">
-                <img
-                  className="mx-auto w-[200px]  "
-                  src={imageSrc}
-                  width="40"
-                  height="40"
-                  alt={imageAlt}
-                />
-            </div>
-            <div className="mt-[-25px] w-full flex flex-col items-center justify-center">
-                <BeatLoader color="#C9F31D"/>
-                {loadingMessages.length > 0 && (
-                    <div className="mt-2 flex flex-col items-center justify-center gap-4">
-                      <p className="text-sm text-gray-400 animate-fade-in">
-                          {loadingText ?? loadingMessages[0]}
-                      </p>
+        <motion.div 
+            className="flex flex-col justify-center items-center w-full h-full bg-black/70 backdrop-blur-md z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+        >
+            <div className="glass-container p-8 rounded-2xl flex flex-col items-center justify-center">
+                <motion.div
+                    className="relative mb-4"
+                    animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 10, -10, 0],
+                    }}
+                    transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                    }}
+                >
+                    <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full"></div>
+                    <img
+                        className="relative w-[160px] h-[160px] object-contain"
+                        src={imageSrc}
+                        width="160"
+                        height="160"
+                        alt={imageAlt}
+                    />
+                </motion.div>
+                
+                <div className="flex flex-col items-center">
+                    <div className="mb-4 flex flex-col items-center gap-2">
+                        <div className="relative h-[6px] w-[180px] bg-background-light/40 overflow-hidden rounded-full">
+                            <motion.div
+                                className="absolute top-0 left-0 h-full bg-primary/80 rounded-full"
+                                animate={{
+                                    x: ["-100%", "100%"],
+                                }}
+                                transition={{
+                                    duration: 1.5,
+                                    repeat: Infinity,
+                                    ease: "linear",
+                                }}
+                            />
+                        </div>
+                        
+                        <AnimatePresence mode="wait">
+                            <motion.p
+                                key={currentIndex}
+                                className="text-sm text-text-secondary text-center min-h-[20px]"
+                                initial={{ opacity: 0, y: 5 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -5 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {loadingText}
+                            </motion.p>
+                        </AnimatePresence>
                     </div>
-                )}
+                </div>
             </div>
-        
-        </div>
+        </motion.div>
     );
 };
 

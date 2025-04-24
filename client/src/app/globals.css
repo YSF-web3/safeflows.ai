@@ -5,48 +5,131 @@
 html,
 body {
     height: 100%;
+    @apply bg-background-dark;
+    scroll-behavior: smooth;
 }
 
-.wallet-adapter-button-trigger {
-    background: rgb(100, 26, 230) !important;
-    border-radius: 8px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+/* Modern button styles */
+.btn {
+    @apply transition-all duration-300 ease-in-out;
 }
+
+.btn-primary {
+    @apply bg-primary hover:bg-primary-light text-black font-semibold;
+    box-shadow: 0 0 10px rgba(201, 243, 29, 0.3);
+}
+
+.btn-secondary {
+    @apply bg-background-light hover:bg-border/30 text-white;
+}
+
+/* Card styling */
+.card {
+    @apply rounded-2xl bg-background-light border border-border backdrop-blur-lg transition-all duration-300;
+}
+
+.card-hover {
+    @apply hover:border-primary/40 hover:shadow-inner-glow;
+}
+
+/* Glassmorphism effect for containers */
+.glass-container {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+}
+
+/* Wallet adapter styling overrides */
+.wallet-adapter-button-trigger {
+    @apply bg-background-light hover:bg-primary/20 border border-border !rounded-xl !h-[60px] transition-all duration-300 !px-6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .wallet-adapter-dropdown-list,
 .wallet-adapter-button {
     font-family: inherit !important;
 }
 
+.wallet-adapter-dropdown-list {
+    @apply !rounded-xl !bg-background-light !border !border-border;
+}
+
+.wallet-adapter-dropdown-list-item {
+    @apply transition-colors duration-300 hover:!bg-primary/10 !rounded-lg;
+}
 
 /* Override global scrollbar settings */
 * {
     scrollbar-color: unset !important;
-  }
+}
   
-  /* Apply your custom scrollbar styles globally */
-  ::-webkit-scrollbar {
-    width: 5px !important;
-    height: 5px !important;
-  }
+/* Apply your custom scrollbar styles globally */
+::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
   
-  ::-webkit-scrollbar-track {
-    background: transparent !important;
-    border-radius: 10px !important;
-    border: 0px solid transparent !important;
-  }
+::-webkit-scrollbar-track {
+    @apply !bg-transparent !rounded-full;
+}
   
-  ::-webkit-scrollbar-thumb {
-    background: #D9D9D930 !important;
-    border-radius: 10px !important;
-  }
+::-webkit-scrollbar-thumb {
+    @apply !bg-white/20 !rounded-full transition-colors duration-300;
+}
   
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555 !important;
-  }
-  
+::-webkit-scrollbar-thumb:hover {
+    @apply !bg-primary/30;
+}
 
-  .wallet-adapter-button-trigger {
-    background-color: #161D26 !important;
-    height: 60px !important;
-  }
+/* Modal styling */
+.modal {
+    @apply !backdrop-blur-md;
+}
+
+.modal-box {
+    @apply !bg-background-card !border !border-border !rounded-2xl;
+}
+
+/* Animation utilities */
+@layer utilities {
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .animate-slide-in {
+        animation: slideIn 0.5s ease-in-out;
+    }
+}
+
+/* Input styling */
+input, select, textarea {
+    @apply bg-background-dark border border-border rounded-xl px-4 py-2 outline-none focus:border-primary/50 transition-colors duration-300;
+}
+
+/* Table styling */
+table {
+    @apply w-full rounded-xl overflow-hidden;
+}
+
+thead {
+    @apply bg-background-light text-white font-semibold;
+}
+
+tbody tr {
+    @apply border-b border-border/30 hover:bg-background-light/30 transition-colors duration-200;
+}
+
+/* Badge styling */
+.badge {
+    @apply rounded-full px-3 py-1 text-xs font-medium;
+}
+
+.badge-primary {
+    @apply bg-primary/20 text-primary;
+}
+
+.badge-secondary {
+    @apply bg-white/10 text-white;
+}

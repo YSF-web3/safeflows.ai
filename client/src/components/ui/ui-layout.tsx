@@ -9,7 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDashboard } from "../dashboard/dashboard-data-access";
 import { AccountChecker } from "../account/account-ui";
 
-
 import {
   ClusterChecker,
   ClusterUiSelect,
@@ -26,16 +25,27 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-const slideVariants = {
-  initial: { opacity: 0, x: "100%" },
-  animate: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: "-100%" },
-};
-
-const pageTransition = {
-  type: "tween",
-  ease: "anticipate",
-  duration: 0.5,
+const pageVariants = {
+  initial: { 
+    opacity: 0, 
+    y: 20,
+  },
+  animate: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.4, 0, 0.2, 1],
+    }
+  },
+  exit: { 
+    opacity: 0, 
+    y: -20,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1],
+    }
+  },
 };
 
 export function UiLayout({
@@ -46,66 +56,144 @@ export function UiLayout({
     links: { label: string; path: string }[];
 }) {
     const pathname = usePathname();
-
-    const { loading } = useDashboard()
-
+    const { loading } = useDashboard();
 
     return (
         <>
             <style jsx global>{`
                 html {
-                font-family: ${poppins.style.fontFamily};
+                    font-family: ${poppins.style.fontFamily};
                 }
             `}</style>
 
-            <div className="relative h-screen bg-[#000000] max-h-[100vh] overflow-x-hidden">
-                <div className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"></div>
-                <div className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"></div>
+            <div className="relative min-h-screen bg-background-dark max-h-[100vh] overflow-x-hidden">
+                {/* Dynamic gradient background effects */}
+                <div className="fixed inset-0 z-0">
+                    {/* Top left gradient blob */}
+                    <motion.div 
+                        className="absolute -top-[200px] -left-[200px] size-[600px] bg-gradient-radial rounded-full opacity-35"
+                        animate={{
+                            scale: [1, 1.1, 1],
+                            opacity: [0.35, 0.4, 0.35],
+                        }}
+                        transition={{
+                            duration: 8,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                        }}
+                    />
+                    
+                    {/* Bottom right gradient blob */}
+                    <motion.div 
+                        className="absolute top-[calc(100vh_/_3)] -right-[300px] size-[600px] bg-gradient-radial rounded-full opacity-25"
+                        animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.25, 0.3, 0.25],
+                        }}
+                        transition={{
+                            duration: 10,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            delay: 1,
+                        }}
+                    />
+                    
+                    {/* Additional small accent gradients */}
+                    <motion.div 
+                        className="absolute top-[calc(20vh)] left-[10vw] size-[200px] bg-gradient-conic rounded-full opacity-15"
+                        animate={{
+                            scale: [1, 1.3, 1],
+                            opacity: [0.15, 0.2, 0.15],
+                        }}
+                        transition={{
+                            duration: 12,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            delay: 2,
+                        }}
+                    />
 
-                {
-                    loading && 
-                    <div className="absolute z-20 w-[100vw] min-h-[100vh] flex items-center justify-center">
+                    {/* Subtle gradient overlay */}
+                    <div className="absolute inset-0 bg-background-dark/30 backdrop-blur-xs" />
+                </div>
+
+                {/* Loading screen */}
+                {loading && 
+                    <motion.div 
+                        className="fixed z-20 w-full h-full flex items-center justify-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <LoadingScreen />
-                    </div>
+                    </motion.div>
                 }
 
-                <div className="relative z-10 text-center h-[100vh] overflow-y-auto">
-                    <div className="h-full px-4 lg:px-11 pt-4 lg:pt-11 pb-8 min-h-fit">
-                        <div className="flex items-center justify-center w-full">
+                {/* Main content */}
+                <div className="relative z-10 h-[100vh] overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/20">
+                    <div className="min-h-screen flex flex-col px-4 lg:px-11 pt-4 lg:pt-8 pb-8">
+                        {/* Header */}
+                        <div className="flex items-center justify-center w-full mb-6">
                             <Header links={links} />
                         </div>
+
+                        {/* Main content area */}
                         <ClusterChecker>
                             <AccountChecker />
                         </ClusterChecker>
-                        <div className="w-full h-full flex justify-center min-h-fit">
-                            <div className="w-full h-full container min-h-fit">
+                        
+                        <div className="w-full flex-1 flex justify-center">
+                            <div className="w-full container">
                                 <Suspense
                                     fallback={
-                                        <div className="text-center my-32">
-                                            <span className="loading loading-spinner loading-lg"></span>
+                                        <div className="flex items-center justify-center my-32">
+                                            <div className="relative">
+                                                <div className="h-12 w-12 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                                                <div className="absolute inset-0 flex items-center justify-center text-xs text-primary">
+                                                    Loading
+                                                </div>
+                                            </div>
                                         </div>
                                     }
                                 >
-                                    <AnimatePresence initial={false} mode="wait">
+                                    <AnimatePresence mode="wait">
                                         <motion.div
                                             key={pathname}
-                                            variants={slideVariants}
-                                            initial="enter"
-                                            animate="center"
+                                            variants={pageVariants}
+                                            initial="initial"
+                                            animate="animate"
                                             exit="exit"
-                                            transition={{
-                                                x: { type: "spring", stiffness: 300, damping: 30 },
-                                                opacity: { duration: 0.1 },
-                                            }}
+                                            className="w-full min-h-fit pb-8"
                                         >
-                                        {children}
+                                            {children}
                                         </motion.div>
                                     </AnimatePresence>
                                 </Suspense>
-                                <Toaster position="top-center" />
+                                
+                                <Toaster 
+                                    position="top-center"
+                                    toastOptions={{
+                                        className: 'glass-container border border-white/10 text-white',
+                                        style: {
+                                            background: 'rgba(27, 32, 43, 0.9)',
+                                            color: 'white',
+                                            borderRadius: '12px',
+                                            backdropFilter: 'blur(10px)',
+                                        },
+                                        success: {
+                                            iconTheme: {
+                                                primary: '#C9F31D',
+                                                secondary: 'black',
+                                            },
+                                        },
+                                    }} 
+                                />
                             </div>
                         </div>
-                        <div className="flex items-center justify-center w-full mt-8">
+                        
+                        {/* Footer */}
+                        <div className="flex items-center justify-center w-full mt-auto pt-4">
                             <Footer links={links} />
                         </div>
                     </div>
@@ -145,26 +233,42 @@ export function AppModal({
 
   return (
     <dialog className="modal" ref={dialogRef}>
-      <div className="modal-box space-y-5">
+      <motion.div 
+        className="modal-box space-y-5"
+        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.2 }}
+      >
         <h3 className="font-bold text-lg">{title}</h3>
         {children}
         <div className="modal-action">
-          <div className="join space-x-2">
+          <div className="flex space-x-3">
             {submit ? (
-              <button
-                className="btn btn-xs lg:btn-md btn-primary"
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn btn-primary btn-md"
                 onClick={submit}
                 disabled={submitDisabled}
               >
                 {submitLabel || "Save"}
-              </button>
+              </motion.button>
             ) : null}
-            <button onClick={hide} className="btn">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={hide} 
+              className="btn btn-secondary"
+            >
               Close
-            </button>
+            </motion.button>
           </div>
         </div>
-      </div>
+      </motion.div>
+      <form method="dialog" className="modal-backdrop">
+        <button onClick={hide}>close</button>
+      </form>
     </dialog>
   );
 }
@@ -179,21 +283,26 @@ export function AppHero({
   subtitle: ReactNode;
 }) {
   return (
-    <div className="hero py-[64px]">
+    <div className="hero py-12">
       <div className="hero-content text-center">
-        <div className="max-w-2xl">
+        <motion.div 
+          className="max-w-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           {typeof title === "string" ? (
-            <h1 className="text-5xl font-bold">{title}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-primary">{title}</h1>
           ) : (
             title
           )}
           {typeof subtitle === "string" ? (
-            <p className="py-6">{subtitle}</p>
+            <p className="py-6 text-text-secondary">{subtitle}</p>
           ) : (
             subtitle
           )}
           {children}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
@@ -211,8 +320,8 @@ export function ellipsify(str = "", len = 4) {
 export function useTransactionToast() {
   return (signature: string) => {
     toast.success(
-      <div className={"text-center"}>
-        <div className="text-lg">Transaction sent</div>
+      <div className="text-center">
+        <div className="text-lg font-medium mb-2">Transaction sent</div>
         <ExplorerLink
           path={`tx/${signature}`}
           label={"View Transaction"}
