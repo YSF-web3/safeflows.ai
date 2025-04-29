@@ -4,7 +4,17 @@ import { WalletButton } from "../solana/solana-provider";
 import { Shield, Lightbulb, Layout, Bell, ExternalLink } from 'lucide-react';
 import { motion } from "framer-motion";
 
-const FeatureItem = ({ icon: Icon, title, description, delay = 0 }) => (
+const FeatureItem = ({ 
+  icon: Icon, 
+  title, 
+  description, 
+  delay = 0 
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  delay?: number;
+}) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -25,7 +35,7 @@ const FeatureItem = ({ icon: Icon, title, description, delay = 0 }) => (
   </motion.div>
 );
 
-export const ProtocolCard = ({ logo, name, isLive = true, delay = 0 }) => (
+export const ProtocolCard = ({ logo, name, isLive = true, delay = 0 }:any) => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -67,7 +77,7 @@ const OnBoardingModal = ({ isOpen, onClose, poolsData }: any) => {
   
   const fadeInUpVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: (custom) => ({
+    visible: (custom: number) => ({
       opacity: 1,
       y: 0,
       transition: {

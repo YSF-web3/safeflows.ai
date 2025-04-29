@@ -22,7 +22,7 @@ import { Search, Menu, X } from "lucide-react";
 export default function Header({
   links,
 }: {
-  links: { label: string; path: string }[];
+  links: { label: string; path: string; isNew?: boolean }[];
 }) {
   const pathname = usePathname();
   const { publicKey } = useWallet();
@@ -72,21 +72,34 @@ export default function Header({
           </motion.div>
 
           <div className="hidden lg:flex gap-11 items-end">
-            {links.map(({ label, path }) => (
+            {links.map(({ label, path, isNew }) => (
               <Link
                 key={path}
                 href={path}
                 className="group relative"
               >
-                <div
-                  className={`${
-                    (path !== "/" && pathname.startsWith(path)) ||
-                    (path === "/" && pathname === "/")
-                      ? "text-primary font-bold"
-                      : "text-white font-normal"
-                  } text-[22px] leading-8 transition-colors duration-300 group-hover:text-primary-light`}
-                >
-                  {label}
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`${
+                      (path !== "/" && pathname.startsWith(path)) ||
+                      (path === "/" && pathname === "/")
+                        ? "text-primary font-bold"
+                        : "text-white font-normal"
+                    } text-[22px] leading-8 transition-colors duration-300 group-hover:text-primary-light`}
+                  >
+                    {label}
+                  </div>
+                  {isNew && (
+                    <div className="absolute -top-2 -right-8">
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="bg-primary text-black text-xs font-bold px-1.5 py-0.5 rounded-full"
+                      >
+                        NEW
+                      </motion.div>
+                    </div>
+                  )}
                 </div>
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary"
@@ -212,7 +225,7 @@ export default function Header({
               className="absolute top-full left-0 right-0 glass-container backdrop-blur-xl mt-2 rounded-xl border border-white/10 overflow-hidden z-[100] shadow-card"
             >
               <ul className="py-2">
-                {links.map(({ label, path }) => (
+                {links.map(({ label, path, isNew }) => (
                   <motion.li 
                     key={path}
                     whileHover={{ x: 5 }}
@@ -224,10 +237,19 @@ export default function Header({
                         (path === "/" && pathname === "/")
                           ? "text-primary font-bold"
                           : "text-white"
-                      } block px-6 py-3 hover:bg-white/5 transition-colors text-base`}
+                      } block px-6 py-3 hover:bg-white/5 transition-colors text-base flex items-center gap-2`}
                       href={path}
                     >
                       {label}
+                      {isNew && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="bg-primary text-black text-xs font-bold px-1.5 py-0.5 rounded-full"
+                        >
+                          NEW
+                        </motion.div>
+                      )}
                     </Link>
                   </motion.li>
                 ))}
