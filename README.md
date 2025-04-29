@@ -1,4 +1,3 @@
-
 ![Logo](https://github.com/YSF-web3/safeflows.ai/blob/main/client/public/safeflow-logo.png?raw=true)
 
 
@@ -10,10 +9,10 @@ https://github.com/user-attachments/assets/2c957f7c-0978-4a05-84c2-6534c4ea769e
 
 SafeFlows.ai is a next-generation, AI-powered platform designed to simplify and elevate risk management in the decentralized finance (DeFi) space. Powered by the **Solana Blockchain** and enhanced by DeepSeek AI, SafeFlows.ai combines cutting-edge technology with an intuitive interface to deliver **real-time insights**, **smart monitoring tools**, and **customizable strategies**.
 
-Whether you’re a seasoned DeFi trader or a beginner, SafeFlows.ai strikes the perfect balance between simplicity and sophistication, empowering you to protect your investments, fine-tune your strategies, and thrive in the dynamic DeFi ecosystem.
+Whether you're a seasoned DeFi trader or a beginner, SafeFlows.ai strikes the perfect balance between simplicity and sophistication, empowering you to protect your investments, fine-tune your strategies, and thrive in the dynamic DeFi ecosystem.
 
 ## 🚀  **Why SafeFlows.ai**   
-- 🛡️ **Built on Solana**: Leverages Solana’s high-speed, low-cost infrastructure for seamless blockchain operations.
+- 🛡️ **Built on Solana**: Leverages Solana's high-speed, low-cost infrastructure for seamless blockchain operations.
 - 💡 **AI-Driven Insights**: Personalized recommendations powered by DeepSeek AI for institutional-grade risk management.
 - 🎨 **User-Friendly Interface**: Simplifies complex DeFi strategies into easy-to-navigate dashboards.
 - 🔔 **Real-Time Alerts**: Stay ahead of market changes with instant notifications.
@@ -21,6 +20,111 @@ Whether you’re a seasoned DeFi trader or a beginner, SafeFlows.ai strikes the 
 
 
 ## 🛠️ Core Features
+
+### 🤖 Model Context Protocol (MCP) for DeFi Risk Analysis
+
+The Model Context Protocol (MCP) is our advanced AI conversation management system that powers SafeFlows.ai's risk analysis capabilities. It maintains contextual awareness across multiple interactions while integrating Solend protocol data with AI-powered insights.
+
+#### Key Features
+- **Solend Integration**: Direct connection to Solend's lending protocol metrics
+- **Risk-Aware Context**: Maintains awareness of user's positions, market conditions, and risk thresholds
+- **Multi-Model Analysis**: Combines insights from GPT and Deepseek models for comprehensive risk assessment
+- **Persistent Memory**: Remembers user preferences and past risk assessments
+- **Automated Monitoring**: Continuous analysis of lending positions with smart alerts
+
+#### Example Use Cases
+```typescript
+// Initialize risk monitoring conversation
+POST /api/mcp/conversation
+{
+  "modelId": "gpt-4",
+  "modelType": "gpt",
+  "systemPrompt": "You are a DeFi risk analyst monitoring Solend positions",
+  "parameters": {
+    "riskThreshold": 0.75,
+    "monitoredAssets": ["SOL", "ETH", "USDC"],
+    "alertLevel": "conservative"
+  }
+}
+
+// Query position health
+POST /api/mcp/conversation/:contextId/message
+{
+  "message": "Analyze my SOL-USDC position's liquidation risk",
+  "context": {
+    "position": {
+      "collateral": "SOL",
+      "borrowed": "USDC",
+      "ltv": 0.65,
+      "healthFactor": 1.4
+    },
+    "market": {
+      "volatility": "high",
+      "trend": "bearish"
+    }
+  }
+}
+
+// Get risk analysis history
+GET /api/mcp/conversation/:contextId/history
+```
+
+#### Integration Points
+- **Solend Data Feed**:
+  - Real-time lending pool metrics
+  - User position details
+  - Market health indicators
+  - Liquidation thresholds
+
+- **AI Risk Analysis**:
+  - Position health assessment
+  - Market trend analysis
+  - Liquidation risk predictions
+  - Rebalancing recommendations
+
+#### Event Types
+- `context.risk_alert`: Position approaching risk threshold
+- `context.market_update`: Significant market changes affecting positions
+- `context.recommendation`: AI-generated risk mitigation suggestions
+- `context.position_update`: Changes in user's lending positions
+
+#### Risk Management Flow
+1. **Position Monitoring**:
+   - Continuous tracking of Solend positions
+   - Real-time health factor calculations
+   - Market condition assessment
+
+2. **Risk Analysis**:
+   - AI models evaluate position safety
+   - Historical pattern recognition
+   - Volatility impact predictions
+
+3. **Smart Alerts**:
+   - Proactive risk notifications
+   - Customized threshold warnings
+   - Market opportunity alerts
+
+4. **Action Recommendations**:
+   - Position rebalancing suggestions
+   - Collateral adjustment strategies
+   - Risk mitigation options
+
+#### Example Risk Assessment Response
+```json
+{
+  "riskAnalysis": {
+    "currentRisk": "moderate",
+    "healthFactor": 1.4,
+    "liquidationPrice": 18.5,
+    "timeToLiquidation": "72h at current trend",
+    "recommendations": [
+      "Add 2 SOL as collateral to improve health factor",
+      "Consider partial USDC repayment of 100 USDC",
+      "Monitor SOL price volatility in next 24h"
+    ]
+  }
+}
+```
 
 ### 🚨 Real-Time Risk Scoring (RTRS)
 * **Easily assess lending pool risks** with AI-driven models analyzing:
@@ -82,10 +186,7 @@ HF = Collateral Value ÷ Borrowed Value
 
 ## **🐋 Supercharged by DeepSeek AI**
 
-
-
 Protect your positions and maximize lending yields with institutional-grade AI. SafeFlows.ai leverages DeepSeek's advanced AI to revolutionize Solana lending:
-
 
 ![Logo](https://camo.githubusercontent.com/411fd835329fcfba1075b78394c85e18837862872c07620d052cc1dd6196da9c/68747470733a2f2f63646e2e646565707365656b2e636f6d2f6c6f676f2e706e67)
 
@@ -117,10 +218,7 @@ Protect your positions and maximize lending yields with institutional-grade AI. 
 - **Phase 2: Q3 2025**
     - Expand to Ethereum and BNB Chain for cross-chain compatibility.
 
-
-
 ## **Tech Stack**  
-
 
 SafeFlows.ai delivers unparalleled functionality through innovative technology:  
 - **Smart Risk Analytics**: AI-driven models that identify, assess, and mitigate risks in real-time.  
@@ -128,11 +226,9 @@ SafeFlows.ai delivers unparalleled functionality through innovative technology:
 - **Streamlined Interfaces**: Intuitive dashboards that simplify complex data for user clarity.  
 - **Future-Ready Architecture**: Designed for multi-chain support, ensuring scalability and adaptability.  
 
-
-
 ## **Driving Innovation**  
 
-Innovation is at the heart of SafeFlows.ai’s mission to redefine how users engage with DeFi risk management:  
+Innovation is at the heart of SafeFlows.ai's mission to redefine how users engage with DeFi risk management:  
 - **Blockchain**: Solana SDK with Web3.js and Anchor.
 - **Backend**: Node.js (Express.js).
 - **Frontend**: React.js with Material-UI.
@@ -140,7 +236,6 @@ Innovation is at the heart of SafeFlows.ai’s mission to redefine how users eng
 - **APIs**: Pyth and Switchboard for real-time data.
 - **Visualization**: D3.js or Chart.js for interactive dashboards.
 - **AI Integration**: DeepSeek AI for predictive analytics and risk management.
-
 
 ## 🚀 Getting Started
 
