@@ -1,5 +1,5 @@
-import { OpenAIApi, ChatCompletionCreateParams } from '@ai-sdk/openai';
-import { DeepseekApi, CompletionCreateParams } from '@ai-sdk/deepseek';
+// import { OpenAIApi, ChatCompletionCreateParams } from '@ai-sdk/openai';
+// import { DeepseekApi, CompletionCreateParams } from '@ai-sdk/deepseek';
 import { ModelContext } from '../types/ModelContext';
 import { RiskAnalysisResult } from '../types/RiskAnalysisResult';
 

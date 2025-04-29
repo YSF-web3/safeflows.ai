@@ -11,10 +11,11 @@ export const metadata = {
   description: "Description",
 };
 
-const links: { label: string; path: string }[] = [
+const links: { label: string; path: string; isNew?: boolean }[] = [
   { label: "Dashboard", path: "/" },
   { label: "Notifications", path: "/notifications" },
   { label: "Pools", path: "/pools" },
+  { label: "MCP", path: "/mcp", isNew: true },
 ];
 
 export default function RootLayout({
