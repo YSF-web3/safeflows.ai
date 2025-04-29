@@ -9,6 +9,7 @@ import {
 	reservesRouter,
 	notificationsRouter,
 } from '@/routes'
+import mcpRouter from './routes/mcp.routes'
 import { connectDatabase } from '@/db'
 import logger from '@/utils/logger'
 
@@ -23,6 +24,7 @@ app.use(express.json())
 app.use('/api', pricesRouter, poolsRouter, reservesRouter)
 app.use('/api/notifications', notificationsRouter)
 app.use('/api/health', healthRouter)
+app.use('/api/mcp', mcpRouter)
 
 const startServer = async () => {
 	// Connect to database
