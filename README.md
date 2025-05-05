@@ -1,5 +1,7 @@
-![Logo](https://github.com/YSF-web3/safeflows.ai/blob/main/client/public/safeflow-logo.png?raw=true)
 
+
+![Logo](https://github.com/YSF-web3/safeflows.ai/blob/main/client/public/safeflow-logo.png?raw=true)
+## Official twitter account: https://x.com/SafeFlowsAI
 
 https://github.com/user-attachments/assets/2c957f7c-0978-4a05-84c2-6534c4ea769e
 
